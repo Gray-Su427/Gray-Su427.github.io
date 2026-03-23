@@ -292,7 +292,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Per Aspera Ad Astra 循此苦旅,以达天际"></span>
+            <span id="subtitle" data-typed-text="Per Aspera Ad Astra,循此苦旅,以达天际,已往不谏,来者可追,博观而约取,厚积而勃发,真正的高贵是优于过去的自己,命是弱者的借口,运是强者的谦辞,On the way to honor, not flowers"></span>
           
         </div>
 
@@ -447,7 +447,9 @@
       }
       var text = subtitle.getAttribute('data-typed-text');
       
-        typing(text);
+        var texts = ["Per Aspera Ad Astra","循此苦旅,以达天际","已往不谏,来者可追","博观而约取,厚积而勃发","真正的高贵是优于过去的自己","命是弱者的借口,运是强者的谦辞","On the way to honor, not flowers"];
+        var idx = Math.floor(Math.random() * texts.length);
+        typing(texts[idx]);
       
     })(window, document);
   </script>
