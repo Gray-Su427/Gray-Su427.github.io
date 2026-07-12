@@ -4,6 +4,35 @@
   
   
   <entry>
+    <title>正好课表——为 NJU 选课做的一个小工具</title>
+    <link href="/2026/07/12/PFSchedule/"/>
+    <url>/2026/07/12/PFSchedule/</url>
+    
+    <content type="html"><![CDATA[<p>这学期选课的时候，面对教务网上密密麻麻的课程列表，我一直在想——有没有一个工具能让我<strong>像看日历一样看课表</strong>？于是就有了正好课表。(<a href="https://github.com/Gray-Su427/Perfect-Schedule">GitHub</a>)</p><h1 id="功能介绍"><a href="#功能介绍" class="headerlink" title="功能介绍"></a>功能介绍</h1><h2 id="课表可视化"><a href="#课表可视化" class="headerlink" title="课表可视化"></a>课表可视化</h2><p>应用打开就是一个完整的 <strong>7 天 × 12 节次</strong> 的课表网格，每门课按时间位置准确落格。顶部的周次滑块（W1–W20）可以快速过滤查看不同周数的排课情况，不用再对着 Excel 一页页翻。</p><p><img src="/../img/2026-7-12-PFSchedule/%E7%95%8C%E9%9D%A2%E6%BC%94%E7%A4%BA.png"></p><h2 id="教务网自动导入"><a href="#教务网自动导入" class="headerlink" title="教务网自动导入"></a>教务网自动导入</h2><p>设置好入学年份后，点击<strong>从教务网导入</strong>，应用会内嵌浏览器打开 NJU 统一身份认证页面——登录后自动爬取<strong>全部 8 个学期</strong>的课表数据。爬取完成后会弹出一个学期映射窗口，确认每个学期的数据导入到正确的位置，一键写入本地数据库。</p><p>整个过程不需要手动下载任何文件，登录一次即可完成大学四年的课表迁移。</p><h2 id="班级选择"><a href="#班级选择" class="headerlink" title="班级选择"></a>班级选择</h2><p>同一门课程如果有多个教学班（比如不同老师、不同时间），可以在编辑课程时用<strong>圆点 radio</strong> 选择其中一个显示在课表上，未选中的班级会自动变淡。同一课程只会看到你关注的那一个班级，课表保持清晰。</p><h2 id="冲突检测"><a href="#冲突检测" class="headerlink" title="冲突检测"></a>冲突检测</h2><p>同一学期内，如果两门课在同一天、同节次、同周数范围内重叠，系统会自动检测并以<strong>红色高亮</strong>标出。选课阶段用来排查时间冲突非常实用。</p><h2 id="8-学期管理"><a href="#8-学期管理" class="headerlink" title="8 学期管理"></a>8 学期管理</h2><p>预置了从<strong>大一上到大四下</strong>共 8 个学期，每个学期独立排课、互不干扰。切换学期即可查看对应学年的课表，毕业前所有选课计划一目了然。</p><h2 id="学分统计"><a href="#学分统计" class="headerlink" title="学分统计"></a>学分统计</h2><p>底部面板实时统计当前学期的学分，按<strong>专业必修、专业选修、通识、体育、未分类</strong>等类别分类汇总。毕业需要多少分、还差多少分，心里有数。</p><h2 id="灵活周数模式"><a href="#灵活周数模式" class="headerlink" title="灵活周数模式"></a>灵活周数模式</h2><p>南大的课程周数安排五花八门，工具支持以下所有模式：</p><table><thead><tr><th>模式</th><th>示例</th></tr></thead><tbody><tr><td>连续区间</td><td><code>1-16</code></td></tr><tr><td>离散周</td><td><code>2,5,8,11</code></td></tr><tr><td>奇偶周</td><td><code>odd</code> &#x2F; <code>even</code></td></tr><tr><td>混合</td><td><code>1-8,10,12-16</code></td></tr><tr><td>全部</td><td><code>*</code></td></tr></tbody></table><h2 id="数据导入导出"><a href="#数据导入导出" class="headerlink" title="数据导入导出"></a>数据导入导出</h2><p>全部课程数据可一键<strong>导出为 JSON</strong>，换电脑或重装后直接导入恢复，不用重新录入。</p><h2 id="自定义背景"><a href="#自定义背景" class="headerlink" title="自定义背景"></a>自定义背景</h2><p>支持上传图片作为课表网格背景，把校徽、风景图或者喜欢的壁纸放上去，让课表更有个人风格。</p><h2 id="暗色主题"><a href="#暗色主题" class="headerlink" title="暗色主题"></a>暗色主题</h2><p>默认采用<strong>紫色系暗色主题</strong>，长时间盯着看也不会太累，适合晚上排课。</p><h1 id="快速上手"><a href="#快速上手" class="headerlink" title="快速上手"></a>快速上手</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 克隆仓库</span><br>git <span class="hljs-built_in">clone</span> https://github.com/Gray-Su427/Perfect-Schedule.git<br><br><span class="hljs-comment"># 安装依赖</span><br>npm install<br><br><span class="hljs-comment"># 开发模式</span><br>npm run dev<br><br><span class="hljs-comment"># 打包安装程序</span><br>npm run dist<br></code></pre></td></tr></table></figure><p>也可以直接在 <a href="https://github.com/Gray-Su427/Perfect-Schedule/releases">Releases 页面</a> 下载最新的安装包（v1.2.0），开箱即用。</p><h1 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h1><ul><li><strong>Electron 33</strong> — 跨平台桌面应用框架</li><li><strong>React 18 + TypeScript 7</strong> — 类型安全的前端开发体验</li><li><strong>electron-vite</strong> — 现代化的构建工具链</li><li><strong>Zustand 5</strong> — 轻量且高效的状态管理</li><li><strong>Dexie.js</strong> — 基于 IndexedDB 的本地数据持久化</li></ul><h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>正好课表目前完全满足了我自己的选课管理需求，如果你也是 NJU 的同学（或者觉得它有用），欢迎去 GitHub 点个 Star 或提 Issue。项目使用 MIT 协议开源，欢迎 PR。</p><p><a href="https://github.com/Gray-Su427/Perfect-Schedule">Gray-Su427&#x2F;Perfect-Schedule</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>小东西</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>TypeScript</tag>
+      
+      <tag>Electron</tag>
+      
+      <tag>React</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>漂流瓶插件介绍</title>
     <link href="/2026/05/09/astrbot-plugin-driftbottle/"/>
     <url>/2026/05/09/astrbot-plugin-driftbottle/</url>
