@@ -19,26 +19,21 @@
   <meta name="author" content="Gray-Su">
   <meta name="keywords" content="">
   
-    <meta name="description" content="为辅助选课开发的一个轻量桌面小程序，支持可视化课表、冲突检测、8学期管理与学分追踪">
+    <meta name="description" content="第二章 模型评估与选择——评估方法、性能度量与比较检验">
 <meta property="og:type" content="article">
-<meta property="og:title" content="正好课表——为 NJU 选课做的一个小工具">
-<meta property="og:url" content="https://suzhenghao.top/2026/07/12/PFSchedule/index.html">
+<meta property="og:title" content="《机器学习》自学日记（二）">
+<meta property="og:url" content="https://suzhenghao.top/2026/07/15/ML-note2/index.html">
 <meta property="og:site_name" content="Gray-Su&#39;s Blog">
-<meta property="og:description" content="为辅助选课开发的一个轻量桌面小程序，支持可视化课表、冲突检测、8学期管理与学分追踪">
+<meta property="og:description" content="第二章 模型评估与选择——评估方法、性能度量与比较检验">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://suzhenghao.top/img/2026-7-12-PFSchedule/%E7%95%8C%E9%9D%A2%E6%BC%94%E7%A4%BA.png">
-<meta property="article:published_time" content="2026-07-12T03:43:00.000Z">
-<meta property="article:modified_time" content="2026-07-12T10:43:00.254Z">
+<meta property="article:published_time" content="2026-07-15T08:57:16.000Z">
+<meta property="article:modified_time" content="2026-07-15T09:07:01.280Z">
 <meta property="article:author" content="Gray-Su">
-<meta property="article:tag" content="Electron">
-<meta property="article:tag" content="React">
-<meta property="article:tag" content="TypeScript">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://suzhenghao.top/img/2026-7-12-PFSchedule/%E7%95%8C%E9%9D%A2%E6%BC%94%E7%A4%BA.png">
   
   
   
-  <title>正好课表——为 NJU 选课做的一个小工具 - Gray-Su&#39;s Blog</title>
+  <title>《机器学习》自学日记（二） - Gray-Su&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -307,7 +302,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="正好课表——为 NJU 选课做的一个小工具"></span>
+            <span id="subtitle" data-typed-text="《机器学习》自学日记（二）"></span>
           
         </div>
 
@@ -318,8 +313,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2026-07-12 11:43" pubdate>
-          2026年7月12日 中午
+        <time datetime="2026-07-15 16:57" pubdate>
+          2026年7月15日 下午
         </time>
       </span>
     
@@ -330,7 +325,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.2k 字
+          2.7k 字
         
       </span>
     
@@ -341,7 +336,7 @@
         
         
         
-          11 分钟
+          23 分钟
         
       </span>
     
@@ -380,64 +375,170 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">正好课表——为 NJU 选课做的一个小工具</h1>
+            <h1 id="seo-header">《机器学习》自学日记（二）</h1>
             
             
               <div class="markdown-body">
                 
-                <p>这学期选课的时候，面对教务网上密密麻麻的课程列表，我一直在想——有没有一个工具能让我<strong>像看日历一样看课表</strong>？于是就有了正好课表。(<a target="_blank" rel="noopener" href="https://github.com/Gray-Su427/Perfect-Schedule">GitHub</a>)</p>
-<h1 id="功能介绍"><a href="#功能介绍" class="headerlink" title="功能介绍"></a>功能介绍</h1><h2 id="课表可视化"><a href="#课表可视化" class="headerlink" title="课表可视化"></a>课表可视化</h2><p>应用打开就是一个完整的 <strong>7 天 × 12 节次</strong> 的课表网格，每门课按时间位置准确落格。顶部的周次滑块（W1–W20）可以快速过滤查看不同周数的排课情况，不用再对着 Excel 一页页翻。</p>
-<p><img src="/../img/2026-7-12-PFSchedule/%E7%95%8C%E9%9D%A2%E6%BC%94%E7%A4%BA.png" srcset="/img/loading.gif" lazyload></p>
-<h2 id="教务网自动导入"><a href="#教务网自动导入" class="headerlink" title="教务网自动导入"></a>教务网自动导入</h2><p>设置好入学年份后，点击<strong>从教务网导入</strong>，应用会内嵌浏览器打开 NJU 统一身份认证页面——登录后自动爬取<strong>全部 8 个学期</strong>的课表数据。爬取完成后会弹出一个学期映射窗口，确认每个学期的数据导入到正确的位置，一键写入本地数据库。</p>
-<p>整个过程不需要手动下载任何文件，登录一次即可完成大学四年的课表迁移。</p>
-<h2 id="班级选择"><a href="#班级选择" class="headerlink" title="班级选择"></a>班级选择</h2><p>同一门课程如果有多个教学班（比如不同老师、不同时间），可以在编辑课程时用<strong>圆点 radio</strong> 选择其中一个显示在课表上，未选中的班级会自动变淡。同一课程只会看到你关注的那一个班级，课表保持清晰。</p>
-<h2 id="冲突检测"><a href="#冲突检测" class="headerlink" title="冲突检测"></a>冲突检测</h2><p>同一学期内，如果两门课在同一天、同节次、同周数范围内重叠，系统会自动检测并以<strong>红色高亮</strong>标出。选课阶段用来排查时间冲突非常实用。</p>
-<h2 id="8-学期管理"><a href="#8-学期管理" class="headerlink" title="8 学期管理"></a>8 学期管理</h2><p>预置了从<strong>大一上到大四下</strong>共 8 个学期，每个学期独立排课、互不干扰。切换学期即可查看对应学年的课表，毕业前所有选课计划一目了然。</p>
-<h2 id="学分统计"><a href="#学分统计" class="headerlink" title="学分统计"></a>学分统计</h2><p>底部面板实时统计当前学期的学分，按<strong>专业必修、专业选修、通识、体育、未分类</strong>等类别分类汇总。毕业需要多少分、还差多少分，心里有数。</p>
-<h2 id="灵活周数模式"><a href="#灵活周数模式" class="headerlink" title="灵活周数模式"></a>灵活周数模式</h2><p>南大的课程周数安排五花八门，工具支持以下所有模式：</p>
-<table>
+                <h2 id="第二章-模型评估与选择"><a href="#第二章-模型评估与选择" class="headerlink" title="第二章 模型评估与选择"></a>第二章 模型评估与选择</h2><h3 id="2-1-经验误差与过拟合"><a href="#2-1-经验误差与过拟合" class="headerlink" title="2.1 经验误差与过拟合"></a>2.1 经验误差与过拟合</h3><table>
 <thead>
 <tr>
-<th>模式</th>
-<th>示例</th>
+<th>概念</th>
+<th>定义</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>连续区间</td>
-<td><code>1-16</code></td>
+<td><strong>错误率</strong> (error rate)</td>
+<td>$E &#x3D; a&#x2F;m$（$a$ 个样本分类错误）</td>
 </tr>
 <tr>
-<td>离散周</td>
-<td><code>2,5,8,11</code></td>
+<td><strong>精度</strong> (accuracy)</td>
+<td>$1 - \text{错误率}$</td>
 </tr>
 <tr>
-<td>奇偶周</td>
-<td><code>odd</code> &#x2F; <code>even</code></td>
+<td><strong>训练误差&#x2F;经验误差</strong></td>
+<td>学习器在训练集上的误差</td>
 </tr>
 <tr>
-<td>混合</td>
-<td><code>1-8,10,12-16</code></td>
+<td><strong>泛化误差</strong></td>
+<td>学习器在新样本上的误差</td>
 </tr>
 <tr>
-<td>全部</td>
-<td><code>*</code></td>
+<td><strong>过拟合</strong> (overfitting)</td>
+<td>把训练样本自身特点当作一般性质，泛化下降</td>
+</tr>
+<tr>
+<td><strong>欠拟合</strong> (underfitting)</td>
+<td>对训练样本的一般性质尚未学好</td>
 </tr>
 </tbody></table>
-<h2 id="数据导入导出"><a href="#数据导入导出" class="headerlink" title="数据导入导出"></a>数据导入导出</h2><p>全部课程数据可一键<strong>导出为 JSON</strong>，换电脑或重装后直接导入恢复，不用重新录入。</p>
-<h2 id="自定义背景"><a href="#自定义背景" class="headerlink" title="自定义背景"></a>自定义背景</h2><p>支持上传图片作为课表网格背景，把校徽、风景图或者喜欢的壁纸放上去，让课表更有个人风格。</p>
-<h2 id="暗色主题"><a href="#暗色主题" class="headerlink" title="暗色主题"></a>暗色主题</h2><p>默认采用<strong>紫色系暗色主题</strong>，长时间盯着看也不会太累，适合晚上排课。</p>
-<h1 id="快速上手"><a href="#快速上手" class="headerlink" title="快速上手"></a>快速上手</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 克隆仓库</span><br>git <span class="hljs-built_in">clone</span> https://github.com/Gray-Su427/Perfect-Schedule.git<br><br><span class="hljs-comment"># 安装依赖</span><br>npm install<br><br><span class="hljs-comment"># 开发模式</span><br>npm run dev<br><br><span class="hljs-comment"># 打包安装程序</span><br>npm run dist<br></code></pre></td></tr></table></figure>
-
-<p>也可以直接在 <a target="_blank" rel="noopener" href="https://github.com/Gray-Su427/Perfect-Schedule/releases">Releases 页面</a> 下载最新的安装包（v1.2.0），开箱即用。</p>
-<h1 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h1><ul>
-<li><strong>Electron 33</strong> — 跨平台桌面应用框架</li>
-<li><strong>React 18 + TypeScript 7</strong> — 类型安全的前端开发体验</li>
-<li><strong>electron-vite</strong> — 现代化的构建工具链</li>
-<li><strong>Zustand 5</strong> — 轻量且高效的状态管理</li>
-<li><strong>Dexie.js</strong> — 基于 IndexedDB 的本地数据持久化</li>
+<p><strong>关键洞察</strong>：过拟合无法彻底避免，只能缓解（若可彻底避免则 P &#x3D; NP）。</p>
+<p><strong>模型选择</strong>：在多个学习算法或参数配置中选择泛化误差最小的模型。</p>
+<hr>
+<h3 id="2-2-评估方法"><a href="#2-2-评估方法" class="headerlink" title="2.2 评估方法"></a>2.2 评估方法</h3><p>基本思路：用<strong>测试集</strong>上的<strong>测试误差</strong>近似泛化误差。测试集必须与训练集<strong>互斥</strong>。</p>
+<h4 id="留出法-hold-out"><a href="#留出法-hold-out" class="headerlink" title="留出法 (hold-out)"></a>留出法 (hold-out)</h4><ul>
+<li>将数据集 $D$ 划分为互斥的训练集 $S$ 和测试集 $T$</li>
+<li>分层采样保持类别比例</li>
+<li>单次划分不稳定，需多次随机划分取平均值</li>
+<li>常用比例：$2&#x2F;3 \sim 4&#x2F;5$ 训练，其余测试</li>
 </ul>
-<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>正好课表目前完全满足了我自己的选课管理需求，如果你也是 NJU 的同学（或者觉得它有用），欢迎去 GitHub 点个 Star 或提 Issue。项目使用 MIT 协议开源，欢迎 PR。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Gray-Su427/Perfect-Schedule">Gray-Su427&#x2F;Perfect-Schedule</a></p>
+<h4 id="交叉验证法-cross-validation"><a href="#交叉验证法-cross-validation" class="headerlink" title="交叉验证法 (cross validation)"></a>交叉验证法 (cross validation)</h4><ul>
+<li>将 $D$ 划分为 $k$ 个互斥子集（分层采样）</li>
+<li>每次用 $k-1$ 个子集训练，剩下 1 个测试，重复 $k$ 次</li>
+<li>$k$ 常用取值：5、10、20</li>
+<li><strong>留一法 (LOO)</strong>：$k&#x3D;m$，结果准确但计算开销大</li>
+</ul>
+<h4 id="自助法-bootstrapping"><a href="#自助法-bootstrapping" class="headerlink" title="自助法 (bootstrapping)"></a>自助法 (bootstrapping)</h4><ul>
+<li>从 $D$ 中有放回采样 $m$ 次，形成训练集 $D’$</li>
+<li>约 $36.8%$ 的样本未被采到（可用作测试集）</li>
+<li>优点：数据集小时有效；缺点：改变数据分布</li>
+</ul>
+<h4 id="调参与最终模型"><a href="#调参与最终模型" class="headerlink" title="调参与最终模型"></a>调参与最终模型</h4><ul>
+<li><strong>参数调节 (调参)</strong>：选定参数范围与步长，评估候选值</li>
+<li><strong>验证集</strong>：模型选择与调参时使用的数据集</li>
+<li>模型选择完成后，应用全量数据 $D$ 重新训练最终模型</li>
+</ul>
+<hr>
+<h3 id="2-3-性能度量"><a href="#2-3-性能度量" class="headerlink" title="2.3 性能度量"></a>2.3 性能度量</h3><h4 id="回归任务"><a href="#回归任务" class="headerlink" title="回归任务"></a>回归任务</h4><p><strong>均方误差 (MSE)</strong>：<br>$$<br>E(f;D) &#x3D; \frac{1}{m}\sum_{i&#x3D;1}^m (f(x_i)-y_i)^2<br>$$</p>
+<h4 id="分类任务"><a href="#分类任务" class="headerlink" title="分类任务"></a>分类任务</h4><p><strong>错误率与精度</strong>：<br>$$<br>E(f;D) &#x3D; \frac{1}{m}\sum_{i&#x3D;1}^m \mathbb{I}(f(x_i)\neq y_i),\quad \text{acc}&#x3D;1-E<br>$$</p>
+<p><strong>查准率与查全率</strong>（基于混淆矩阵）：</p>
+<table>
+<thead>
+<tr>
+<th align="left">真实</th>
+<th align="left">预测正例</th>
+<th align="left">预测反例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">正例</td>
+<td align="left">TP (真正例)</td>
+<td align="left">FN (假反例)</td>
+</tr>
+<tr>
+<td align="left">反例</td>
+<td align="left">FP (假正例)</td>
+<td align="left">TN (真反例)</td>
+</tr>
+</tbody></table>
+<p>$$<br>P &#x3D; \frac{TP}{TP+FP} \quad (\text{查准率}),\qquad<br>R &#x3D; \frac{TP}{TP+FN} \quad (\text{查全率})<br>$$</p>
+<p><strong>P-R 曲线</strong>：纵轴为查准率，横轴为查全率。曲线包围面积越大越好。</p>
+<p><strong>平衡点 (BEP)</strong>：查准率 &#x3D; 查全率时的取值。</p>
+<p><strong>$F1$ 度量</strong>（调和平均）：<br>$$<br>F1 &#x3D; \frac{2\times P\times R}{P+R}<br>$$</p>
+<p><strong>$F_\beta$</strong>（加权调和平均）：<br>$$<br>F_\beta &#x3D; \frac{(1+\beta^2)\times P\times R}{(\beta^2\times P)+R}<br>$$</p>
+<ul>
+<li>$\beta&#x3D;1$：标准 F1；$\beta&gt;1$：更重查全率；$\beta&lt;1$：更重查准率</li>
+</ul>
+<p><strong>宏&#x2F;微平均</strong>：多混淆矩阵时，宏（先算再平均）vs 微（先平均再算）。</p>
+<h4 id="ROC-与-AUC"><a href="#ROC-与-AUC" class="headerlink" title="ROC 与 AUC"></a>ROC 与 AUC</h4><p><strong>ROC 曲线</strong>：纵轴 TPR（真正例率），横轴 FPR（假正例率）。</p>
+<p>$$<br>TPR &#x3D; \frac{TP}{TP+FN},\quad FPR &#x3D; \frac{FP}{TN+FP}<br>$$</p>
+<ul>
+<li>对角线 &#x3D; 随机猜测，点 (0,1) &#x3D; 理想模型</li>
+<li>AUC &#x3D; ROC 曲线下面积</li>
+</ul>
+<p><strong>AUC 与排序损失</strong>：<br>$$<br>\ell_{rank} &#x3D; \frac{1}{m^+m^-}\sum_{x^+\in D^+}\sum_{x^-\in D^-}\big(\mathbb{I}(f(x^+)&lt;f(x^-)) + \tfrac12\mathbb{I}(f(x^+)&#x3D;f(x^-))\big)<br>$$<br>$$<br>AUC &#x3D; 1 - \ell_{rank}<br>$$</p>
+<h4 id="代价敏感错误率"><a href="#代价敏感错误率" class="headerlink" title="代价敏感错误率"></a>代价敏感错误率</h4><p>非均等代价下使用<strong>代价矩阵</strong>，最小化总体代价而非错误次数。</p>
+<p><strong>代价曲线</strong>：横轴为正例概率代价 $P(+)cost$，纵轴为归一化代价 $cost_{norm}$。</p>
+<hr>
+<h3 id="2-4-比较检验"><a href="#2-4-比较检验" class="headerlink" title="2.4 比较检验"></a>2.4 比较检验</h3><h4 id="假设检验基础"><a href="#假设检验基础" class="headerlink" title="假设检验基础"></a>假设检验基础</h4><ul>
+<li>泛化错误率 $\epsilon$ 未知，只能获得测试错误率 $\hat{\epsilon}$</li>
+<li><strong>二项检验</strong>：对假设 $\epsilon \leq \epsilon_0$ 进行检验</li>
+<li><strong>t 检验</strong>：多次训练&#x2F;测试得到多个测试错误率，用 t 分布检验均值</li>
+</ul>
+<h4 id="交叉验证-t-检验"><a href="#交叉验证-t-检验" class="headerlink" title="交叉验证 t 检验"></a>交叉验证 t 检验</h4><ul>
+<li>对两学习器 A、B，计算每折差值 $\Delta_i &#x3D; \epsilon_i^A - \epsilon_i^B$</li>
+<li>若差值均值显著不为零，则两学习器性能有显著差别</li>
+<li><strong>$5\times2$ 交叉验证</strong>缓解样本重叠导致的非独立性</li>
+</ul>
+<h4 id="McNemar-检验"><a href="#McNemar-检验" class="headerlink" title="McNemar 检验"></a>McNemar 检验</h4><ul>
+<li>基于列联表 $e_{01}$（A 错 B 对）和 $e_{10}$（A 对 B 错）</li>
+<li>$\tau_{\chi^2} &#x3D; (|e_{01}-e_{10}|-1)^2 &#x2F; (e_{01}+e_{10})$ 服从 $\chi^2(1)$</li>
+</ul>
+<h4 id="Friedman-检验-Nemenyi-后续检验"><a href="#Friedman-检验-Nemenyi-后续检验" class="headerlink" title="Friedman 检验 + Nemenyi 后续检验"></a>Friedman 检验 + Nemenyi 后续检验</h4><ul>
+<li>在多个数据集上比较多个算法</li>
+<li>计算各算法在每个数据集上的<strong>平均序值</strong></li>
+<li>Friedman 检验判断是否所有算法性能相同</li>
+<li>若拒绝原假设，用 Nemenyi 检验计算临界差值 CD</li>
+</ul>
+<hr>
+<h3 id="2-5-偏差与方差"><a href="#2-5-偏差与方差" class="headerlink" title="2.5 偏差与方差"></a>2.5 偏差与方差</h3><p><strong>偏差-方差分解</strong>（以回归任务为例）：</p>
+<p>$$<br>E(f;D) &#x3D; bias^2(x) + var(x) + \epsilon^2<br>$$</p>
+<table>
+<thead>
+<tr>
+<th>分量</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>偏差</strong> $bias^2(x)$</td>
+<td>期望预测与真实标记的偏离 → 刻画算法拟合能力</td>
+</tr>
+<tr>
+<td><strong>方差</strong> $var(x)$</td>
+<td>不同训练集产生的预测变化 → 刻画数据扰动的影响</td>
+</tr>
+<tr>
+<td><strong>噪声</strong> $\epsilon^2$</td>
+<td>当前任务任何算法能达到的泛化误差下界 → 刻画问题本身难度</td>
+</tr>
+</tbody></table>
+<p><strong>偏差-方差窘境 (bias-variance dilemma)</strong>：</p>
+<ul>
+<li>训练不足 → 偏差主导（欠拟合）</li>
+<li>训练加深 → 方差逐渐主导</li>
+<li>训练过度 → 发生过拟合</li>
+</ul>
+<p><strong>实际指导意义</strong>：偏差大 → 欠拟合（增加模型复杂度）；方差大 → 过拟合（降低模型复杂度 &#x2F; 增加数据）。</p>
+<hr>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>第二章构建了完整的模型评估与选择框架：</p>
+<ol>
+<li><strong>评估方法</strong>：如何划分训练&#x2F;测试集（留出法、交叉验证、自助法）</li>
+<li><strong>性能度量</strong>：如何量化模型好坏（MSE、错误率、P&#x2F;R&#x2F;F1、ROC&#x2F;AUC、代价敏感）</li>
+<li><strong>比较检验</strong>：如何统计判断差异是否显著（t 检验、McNemar、Friedman）</li>
+<li><strong>偏差-方差分析</strong>：从理论上解释泛化误差的来源</li>
+</ol>
+<p>这些内容是后续各章学习算法”好不好”的判断基础。</p>
 
                 
               </div>
@@ -456,7 +557,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E5%B0%8F%E4%B8%9C%E8%A5%BF/" class="category-chain-item">小东西</a>
+  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" class="category-chain-item">机器学习</a>
   
   
 
@@ -468,17 +569,6 @@
     </div>
   
   
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/TypeScript/" class="print-no-link">#TypeScript</a>
-      
-        <a href="/tags/Electron/" class="print-no-link">#Electron</a>
-      
-        <a href="/tags/React/" class="print-no-link">#React</a>
-      
-    </div>
-  
 </div>
 
 
@@ -487,8 +577,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>正好课表——为 NJU 选课做的一个小工具</div>
-      <div>https://suzhenghao.top/2026/07/12/PFSchedule/</div>
+      <div>《机器学习》自学日记（二）</div>
+      <div>https://suzhenghao.top/2026/07/15/ML-note2/</div>
     </div>
     <div class="license-meta">
       
@@ -500,7 +590,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2026年7月12日</div>
+          <div>2026年7月15日</div>
         </div>
       
       
@@ -532,18 +622,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2026/07/15/ML-note2/" title="《机器学习》自学日记（二）">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">《机器学习》自学日记（二）</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2026/07/11/ML-note1/" title="《机器学习》自学日记（一）">
-                        <span class="hidden-mobile">《机器学习》自学日记（一）</span>
+                      <a href="/2026/07/12/PFSchedule/" title="正好课表——为 NJU 选课做的一个小工具">
+                        <span class="hidden-mobile">正好课表——为 NJU 选课做的一个小工具</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
