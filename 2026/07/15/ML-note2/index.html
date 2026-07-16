@@ -325,7 +325,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.7k 字
+          2.3k 字
         
       </span>
     
@@ -336,7 +336,7 @@
         
         
         
-          23 分钟
+          19 分钟
         
       </span>
     
@@ -380,165 +380,191 @@
             
               <div class="markdown-body">
                 
-                <h2 id="第二章-模型评估与选择"><a href="#第二章-模型评估与选择" class="headerlink" title="第二章 模型评估与选择"></a>第二章 模型评估与选择</h2><h3 id="2-1-经验误差与过拟合"><a href="#2-1-经验误差与过拟合" class="headerlink" title="2.1 经验误差与过拟合"></a>2.1 经验误差与过拟合</h3><table>
+                <h2 id="第二章-模型评估与选择">第二章 模型评估与选择</h2>
+<h3 id="经验误差与过拟合">2.1 经验误差与过拟合</h3>
+<table>
 <thead>
-<tr>
+<tr class="header">
 <th>概念</th>
 <th>定义</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr class="odd">
 <td><strong>错误率</strong> (error rate)</td>
-<td>$E &#x3D; a&#x2F;m$（$a$ 个样本分类错误）</td>
+<td><span class="math inline"><em>E</em> = <em>a</em>/<em>m</em></span>（<span class="math inline"><em>a</em></span> 个样本分类错误）</td>
 </tr>
-<tr>
+<tr class="even">
 <td><strong>精度</strong> (accuracy)</td>
-<td>$1 - \text{错误率}$</td>
+<td><span class="math inline">1 − 错误率</span></td>
 </tr>
-<tr>
-<td><strong>训练误差&#x2F;经验误差</strong></td>
+<tr class="odd">
+<td><strong>训练误差/经验误差</strong></td>
 <td>学习器在训练集上的误差</td>
 </tr>
-<tr>
+<tr class="even">
 <td><strong>泛化误差</strong></td>
 <td>学习器在新样本上的误差</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><strong>过拟合</strong> (overfitting)</td>
 <td>把训练样本自身特点当作一般性质，泛化下降</td>
 </tr>
-<tr>
+<tr class="even">
 <td><strong>欠拟合</strong> (underfitting)</td>
 <td>对训练样本的一般性质尚未学好</td>
 </tr>
-</tbody></table>
-<p><strong>关键洞察</strong>：过拟合无法彻底避免，只能缓解（若可彻底避免则 P &#x3D; NP）。</p>
+</tbody>
+</table>
+<p><strong>关键洞察</strong>：过拟合无法彻底避免，只能缓解（若可彻底避免则 P = NP）。</p>
 <p><strong>模型选择</strong>：在多个学习算法或参数配置中选择泛化误差最小的模型。</p>
-<hr>
-<h3 id="2-2-评估方法"><a href="#2-2-评估方法" class="headerlink" title="2.2 评估方法"></a>2.2 评估方法</h3><p>基本思路：用<strong>测试集</strong>上的<strong>测试误差</strong>近似泛化误差。测试集必须与训练集<strong>互斥</strong>。</p>
-<h4 id="留出法-hold-out"><a href="#留出法-hold-out" class="headerlink" title="留出法 (hold-out)"></a>留出法 (hold-out)</h4><ul>
-<li>将数据集 $D$ 划分为互斥的训练集 $S$ 和测试集 $T$</li>
+<hr />
+<h3 id="评估方法">2.2 评估方法</h3>
+<p>基本思路：用<strong>测试集</strong>上的<strong>测试误差</strong>近似泛化误差。测试集必须与训练集<strong>互斥</strong>。</p>
+<h4 id="留出法-hold-out">留出法 (hold-out)</h4>
+<ul>
+<li>将数据集 <span class="math inline"><em>D</em></span> 划分为互斥的训练集 <span class="math inline"><em>S</em></span> 和测试集 <span class="math inline"><em>T</em></span></li>
 <li>分层采样保持类别比例</li>
 <li>单次划分不稳定，需多次随机划分取平均值</li>
-<li>常用比例：$2&#x2F;3 \sim 4&#x2F;5$ 训练，其余测试</li>
+<li>常用比例：<span class="math inline">2/3 ∼ 4/5</span> 训练，其余测试</li>
 </ul>
-<h4 id="交叉验证法-cross-validation"><a href="#交叉验证法-cross-validation" class="headerlink" title="交叉验证法 (cross validation)"></a>交叉验证法 (cross validation)</h4><ul>
-<li>将 $D$ 划分为 $k$ 个互斥子集（分层采样）</li>
-<li>每次用 $k-1$ 个子集训练，剩下 1 个测试，重复 $k$ 次</li>
-<li>$k$ 常用取值：5、10、20</li>
-<li><strong>留一法 (LOO)</strong>：$k&#x3D;m$，结果准确但计算开销大</li>
+<h4 id="交叉验证法-cross-validation">交叉验证法 (cross validation)</h4>
+<ul>
+<li>将 <span class="math inline"><em>D</em></span> 划分为 <span class="math inline"><em>k</em></span> 个互斥子集（分层采样）</li>
+<li>每次用 <span class="math inline"><em>k</em> − 1</span> 个子集训练，剩下 1 个测试，重复 <span class="math inline"><em>k</em></span> 次</li>
+<li><span class="math inline"><em>k</em></span> 常用取值：5、10、20</li>
+<li><strong>留一法 (LOO)</strong>：<span class="math inline"><em>k</em> = <em>m</em></span>，结果准确但计算开销大</li>
 </ul>
-<h4 id="自助法-bootstrapping"><a href="#自助法-bootstrapping" class="headerlink" title="自助法 (bootstrapping)"></a>自助法 (bootstrapping)</h4><ul>
-<li>从 $D$ 中有放回采样 $m$ 次，形成训练集 $D’$</li>
-<li>约 $36.8%$ 的样本未被采到（可用作测试集）</li>
+<h4 id="自助法-bootstrapping">自助法 (bootstrapping)</h4>
+<ul>
+<li>从 <span class="math inline"><em>D</em></span> 中有放回采样 <span class="math inline"><em>m</em></span> 次，形成训练集 <span class="math inline"><em>D</em>′</span></li>
+<li>约 <span class="math inline">36.8%</span> 的样本未被采到（可用作测试集）</li>
 <li>优点：数据集小时有效；缺点：改变数据分布</li>
 </ul>
-<h4 id="调参与最终模型"><a href="#调参与最终模型" class="headerlink" title="调参与最终模型"></a>调参与最终模型</h4><ul>
+<h4 id="调参与最终模型">调参与最终模型</h4>
+<ul>
 <li><strong>参数调节 (调参)</strong>：选定参数范围与步长，评估候选值</li>
 <li><strong>验证集</strong>：模型选择与调参时使用的数据集</li>
-<li>模型选择完成后，应用全量数据 $D$ 重新训练最终模型</li>
+<li>模型选择完成后，应用全量数据 <span class="math inline"><em>D</em></span> 重新训练最终模型</li>
 </ul>
-<hr>
-<h3 id="2-3-性能度量"><a href="#2-3-性能度量" class="headerlink" title="2.3 性能度量"></a>2.3 性能度量</h3><h4 id="回归任务"><a href="#回归任务" class="headerlink" title="回归任务"></a>回归任务</h4><p><strong>均方误差 (MSE)</strong>：<br>$$<br>E(f;D) &#x3D; \frac{1}{m}\sum_{i&#x3D;1}^m (f(x_i)-y_i)^2<br>$$</p>
-<h4 id="分类任务"><a href="#分类任务" class="headerlink" title="分类任务"></a>分类任务</h4><p><strong>错误率与精度</strong>：<br>$$<br>E(f;D) &#x3D; \frac{1}{m}\sum_{i&#x3D;1}^m \mathbb{I}(f(x_i)\neq y_i),\quad \text{acc}&#x3D;1-E<br>$$</p>
+<hr />
+<h3 id="性能度量">2.3 性能度量</h3>
+<h4 id="回归任务">回归任务</h4>
+<p><strong>均方误差 (MSE)</strong>： <span class="math display">$$
+E(f;D) = \frac{1}{m}\sum_{i=1}^m (f(x_i)-y_i)^2
+$$</span></p>
+<h4 id="分类任务">分类任务</h4>
+<p><strong>错误率与精度</strong>： <span class="math display">$$
+E(f;D) = \frac{1}{m}\sum_{i=1}^m \mathbb{I}(f(x_i)\neq y_i),\quad \text{acc}=1-E
+$$</span></p>
 <p><strong>查准率与查全率</strong>（基于混淆矩阵）：</p>
 <table>
 <thead>
-<tr>
-<th align="left">真实</th>
-<th align="left">预测正例</th>
-<th align="left">预测反例</th>
+<tr class="header">
+<th style="text-align: left;">真实</th>
+<th style="text-align: left;">预测正例</th>
+<th style="text-align: left;">预测反例</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">正例</td>
-<td align="left">TP (真正例)</td>
-<td align="left">FN (假反例)</td>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">正例</td>
+<td style="text-align: left;">TP (真正例)</td>
+<td style="text-align: left;">FN (假反例)</td>
 </tr>
-<tr>
-<td align="left">反例</td>
-<td align="left">FP (假正例)</td>
-<td align="left">TN (真反例)</td>
+<tr class="even">
+<td style="text-align: left;">反例</td>
+<td style="text-align: left;">FP (假正例)</td>
+<td style="text-align: left;">TN (真反例)</td>
 </tr>
-</tbody></table>
-<p>$$<br>P &#x3D; \frac{TP}{TP+FP} \quad (\text{查准率}),\qquad<br>R &#x3D; \frac{TP}{TP+FN} \quad (\text{查全率})<br>$$</p>
+</tbody>
+</table>
+<p><span class="math display">$$
+P = \frac{TP}{TP+FP} \quad (\text{查准率}),\qquad 
+R = \frac{TP}{TP+FN} \quad (\text{查全率})
+$$</span></p>
 <p><strong>P-R 曲线</strong>：纵轴为查准率，横轴为查全率。曲线包围面积越大越好。</p>
-<p><strong>平衡点 (BEP)</strong>：查准率 &#x3D; 查全率时的取值。</p>
-<p><strong>$F1$ 度量</strong>（调和平均）：<br>$$<br>F1 &#x3D; \frac{2\times P\times R}{P+R}<br>$$</p>
-<p><strong>$F_\beta$</strong>（加权调和平均）：<br>$$<br>F_\beta &#x3D; \frac{(1+\beta^2)\times P\times R}{(\beta^2\times P)+R}<br>$$</p>
+<p><strong>平衡点 (BEP)</strong>：查准率 = 查全率时的取值。</p>
+<p><strong><span class="math inline"><em>F</em>1</span> 度量</strong>（调和平均）： <span class="math display">$$
+F1 = \frac{2\times P\times R}{P+R}
+$$</span></p>
+<p><strong><span class="math inline"><em>F</em><sub><em>β</em></sub></span></strong>（加权调和平均）： <span class="math display">$$
+F_\beta = \frac{(1+\beta^2)\times P\times R}{(\beta^2\times P)+R}
+$$</span> - <span class="math inline"><em>β</em> = 1</span>：标准 F1；<span class="math inline"><em>β</em> &gt; 1</span>：更重查全率；<span class="math inline"><em>β</em> &lt; 1</span>：更重查准率</p>
+<p><strong>宏/微平均</strong>：多混淆矩阵时，宏（先算再平均）vs 微（先平均再算）。</p>
+<h4 id="roc-与-auc">ROC 与 AUC</h4>
+<p><strong>ROC 曲线</strong>：纵轴 TPR（真正例率），横轴 FPR（假正例率）。</p>
+<p><span class="math display">$$
+TPR = \frac{TP}{TP+FN},\quad FPR = \frac{FP}{TN+FP}
+$$</span></p>
 <ul>
-<li>$\beta&#x3D;1$：标准 F1；$\beta&gt;1$：更重查全率；$\beta&lt;1$：更重查准率</li>
+<li>对角线 = 随机猜测，点 (0,1) = 理想模型</li>
+<li>AUC = ROC 曲线下面积</li>
 </ul>
-<p><strong>宏&#x2F;微平均</strong>：多混淆矩阵时，宏（先算再平均）vs 微（先平均再算）。</p>
-<h4 id="ROC-与-AUC"><a href="#ROC-与-AUC" class="headerlink" title="ROC 与 AUC"></a>ROC 与 AUC</h4><p><strong>ROC 曲线</strong>：纵轴 TPR（真正例率），横轴 FPR（假正例率）。</p>
-<p>$$<br>TPR &#x3D; \frac{TP}{TP+FN},\quad FPR &#x3D; \frac{FP}{TN+FP}<br>$$</p>
+<p><strong>AUC 与排序损失</strong>： <span class="math display">$$
+\ell_{rank} = \frac{1}{m^+m^-}\sum_{x^+\in D^+}\sum_{x^-\in D^-}\big(\mathbb{I}(f(x^+)&lt;f(x^-)) + \tfrac12\mathbb{I}(f(x^+)=f(x^-))\big)
+$$</span> <span class="math display"><em>A</em><em>U</em><em>C</em> = 1 − ℓ<sub><em>r</em><em>a</em><em>n</em><em>k</em></sub></span></p>
+<h4 id="代价敏感错误率">代价敏感错误率</h4>
+<p>非均等代价下使用<strong>代价矩阵</strong>，最小化总体代价而非错误次数。</p>
+<p><strong>代价曲线</strong>：横轴为正例概率代价 <span class="math inline"><em>P</em>( + )<em>c</em><em>o</em><em>s</em><em>t</em></span>，纵轴为归一化代价 <span class="math inline"><em>c</em><em>o</em><em>s</em><em>t</em><sub><em>n</em><em>o</em><em>r</em><em>m</em></sub></span>。</p>
+<hr />
+<h3 id="比较检验">2.4 比较检验</h3>
+<h4 id="假设检验基础">假设检验基础</h4>
 <ul>
-<li>对角线 &#x3D; 随机猜测，点 (0,1) &#x3D; 理想模型</li>
-<li>AUC &#x3D; ROC 曲线下面积</li>
+<li>泛化错误率 <span class="math inline"><em>ϵ</em></span> 未知，只能获得测试错误率 <span class="math inline"><em>ϵ̂</em></span></li>
+<li><strong>二项检验</strong>：对假设 <span class="math inline"><em>ϵ</em> ≤ <em>ϵ</em><sub>0</sub></span> 进行检验</li>
+<li><strong>t 检验</strong>：多次训练/测试得到多个测试错误率，用 t 分布检验均值</li>
 </ul>
-<p><strong>AUC 与排序损失</strong>：<br>$$<br>\ell_{rank} &#x3D; \frac{1}{m^+m^-}\sum_{x^+\in D^+}\sum_{x^-\in D^-}\big(\mathbb{I}(f(x^+)&lt;f(x^-)) + \tfrac12\mathbb{I}(f(x^+)&#x3D;f(x^-))\big)<br>$$<br>$$<br>AUC &#x3D; 1 - \ell_{rank}<br>$$</p>
-<h4 id="代价敏感错误率"><a href="#代价敏感错误率" class="headerlink" title="代价敏感错误率"></a>代价敏感错误率</h4><p>非均等代价下使用<strong>代价矩阵</strong>，最小化总体代价而非错误次数。</p>
-<p><strong>代价曲线</strong>：横轴为正例概率代价 $P(+)cost$，纵轴为归一化代价 $cost_{norm}$。</p>
-<hr>
-<h3 id="2-4-比较检验"><a href="#2-4-比较检验" class="headerlink" title="2.4 比较检验"></a>2.4 比较检验</h3><h4 id="假设检验基础"><a href="#假设检验基础" class="headerlink" title="假设检验基础"></a>假设检验基础</h4><ul>
-<li>泛化错误率 $\epsilon$ 未知，只能获得测试错误率 $\hat{\epsilon}$</li>
-<li><strong>二项检验</strong>：对假设 $\epsilon \leq \epsilon_0$ 进行检验</li>
-<li><strong>t 检验</strong>：多次训练&#x2F;测试得到多个测试错误率，用 t 分布检验均值</li>
-</ul>
-<h4 id="交叉验证-t-检验"><a href="#交叉验证-t-检验" class="headerlink" title="交叉验证 t 检验"></a>交叉验证 t 检验</h4><ul>
-<li>对两学习器 A、B，计算每折差值 $\Delta_i &#x3D; \epsilon_i^A - \epsilon_i^B$</li>
+<h4 id="交叉验证-t-检验">交叉验证 t 检验</h4>
+<ul>
+<li>对两学习器 A、B，计算每折差值 <span class="math inline"><em>Δ</em><sub><em>i</em></sub> = <em>ϵ</em><sub><em>i</em></sub><sup><em>A</em></sup> − <em>ϵ</em><sub><em>i</em></sub><sup><em>B</em></sup></span></li>
 <li>若差值均值显著不为零，则两学习器性能有显著差别</li>
-<li><strong>$5\times2$ 交叉验证</strong>缓解样本重叠导致的非独立性</li>
+<li><strong><span class="math inline">5 × 2</span> 交叉验证</strong>缓解样本重叠导致的非独立性</li>
 </ul>
-<h4 id="McNemar-检验"><a href="#McNemar-检验" class="headerlink" title="McNemar 检验"></a>McNemar 检验</h4><ul>
-<li>基于列联表 $e_{01}$（A 错 B 对）和 $e_{10}$（A 对 B 错）</li>
-<li>$\tau_{\chi^2} &#x3D; (|e_{01}-e_{10}|-1)^2 &#x2F; (e_{01}+e_{10})$ 服从 $\chi^2(1)$</li>
+<h4 id="mcnemar-检验">McNemar 检验</h4>
+<ul>
+<li>基于列联表 <span class="math inline"><em>e</em><sub>01</sub></span>（A 错 B 对）和 <span class="math inline"><em>e</em><sub>10</sub></span>（A 对 B 错）</li>
+<li><span class="math inline"><em>τ</em><sub><em>χ</em><sup>2</sup></sub> = (|<em>e</em><sub>01</sub> − <em>e</em><sub>10</sub>| − 1)<sup>2</sup>/(<em>e</em><sub>01</sub> + <em>e</em><sub>10</sub>)</span> 服从 <span class="math inline"><em>χ</em><sup>2</sup>(1)</span></li>
 </ul>
-<h4 id="Friedman-检验-Nemenyi-后续检验"><a href="#Friedman-检验-Nemenyi-后续检验" class="headerlink" title="Friedman 检验 + Nemenyi 后续检验"></a>Friedman 检验 + Nemenyi 后续检验</h4><ul>
+<h4 id="friedman-检验-nemenyi-后续检验">Friedman 检验 + Nemenyi 后续检验</h4>
+<ul>
 <li>在多个数据集上比较多个算法</li>
 <li>计算各算法在每个数据集上的<strong>平均序值</strong></li>
 <li>Friedman 检验判断是否所有算法性能相同</li>
 <li>若拒绝原假设，用 Nemenyi 检验计算临界差值 CD</li>
 </ul>
-<hr>
-<h3 id="2-5-偏差与方差"><a href="#2-5-偏差与方差" class="headerlink" title="2.5 偏差与方差"></a>2.5 偏差与方差</h3><p><strong>偏差-方差分解</strong>（以回归任务为例）：</p>
-<p>$$<br>E(f;D) &#x3D; bias^2(x) + var(x) + \epsilon^2<br>$$</p>
+<hr />
+<h3 id="偏差与方差">2.5 偏差与方差</h3>
+<p><strong>偏差-方差分解</strong>（以回归任务为例）：</p>
+<p><span class="math display"><em>E</em>(<em>f</em>; <em>D</em>) = <em>b</em><em>i</em><em>a</em><em>s</em><sup>2</sup>(<em>x</em>) + <em>v</em><em>a</em><em>r</em>(<em>x</em>) + <em>ϵ</em><sup>2</sup></span></p>
 <table>
 <thead>
-<tr>
+<tr class="header">
 <th>分量</th>
 <th>含义</th>
 </tr>
 </thead>
-<tbody><tr>
-<td><strong>偏差</strong> $bias^2(x)$</td>
+<tbody>
+<tr class="odd">
+<td><strong>偏差</strong> <span class="math inline"><em>b</em><em>i</em><em>a</em><em>s</em><sup>2</sup>(<em>x</em>)</span></td>
 <td>期望预测与真实标记的偏离 → 刻画算法拟合能力</td>
 </tr>
-<tr>
-<td><strong>方差</strong> $var(x)$</td>
+<tr class="even">
+<td><strong>方差</strong> <span class="math inline"><em>v</em><em>a</em><em>r</em>(<em>x</em>)</span></td>
 <td>不同训练集产生的预测变化 → 刻画数据扰动的影响</td>
 </tr>
-<tr>
-<td><strong>噪声</strong> $\epsilon^2$</td>
+<tr class="odd">
+<td><strong>噪声</strong> <span class="math inline"><em>ϵ</em><sup>2</sup></span></td>
 <td>当前任务任何算法能达到的泛化误差下界 → 刻画问题本身难度</td>
 </tr>
-</tbody></table>
-<p><strong>偏差-方差窘境 (bias-variance dilemma)</strong>：</p>
-<ul>
-<li>训练不足 → 偏差主导（欠拟合）</li>
-<li>训练加深 → 方差逐渐主导</li>
-<li>训练过度 → 发生过拟合</li>
-</ul>
-<p><strong>实际指导意义</strong>：偏差大 → 欠拟合（增加模型复杂度）；方差大 → 过拟合（降低模型复杂度 &#x2F; 增加数据）。</p>
-<hr>
-<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>第二章构建了完整的模型评估与选择框架：</p>
-<ol>
-<li><strong>评估方法</strong>：如何划分训练&#x2F;测试集（留出法、交叉验证、自助法）</li>
-<li><strong>性能度量</strong>：如何量化模型好坏（MSE、错误率、P&#x2F;R&#x2F;F1、ROC&#x2F;AUC、代价敏感）</li>
-<li><strong>比较检验</strong>：如何统计判断差异是否显著（t 检验、McNemar、Friedman）</li>
-<li><strong>偏差-方差分析</strong>：从理论上解释泛化误差的来源</li>
-</ol>
-<p>这些内容是后续各章学习算法”好不好”的判断基础。</p>
+</tbody>
+</table>
+<p><strong>偏差-方差窘境 (bias-variance dilemma)</strong>： - 训练不足 → 偏差主导（欠拟合） - 训练加深 → 方差逐渐主导 - 训练过度 → 发生过拟合</p>
+<p><strong>实际指导意义</strong>：偏差大 → 欠拟合（增加模型复杂度）；方差大 → 过拟合（降低模型复杂度 / 增加数据）。</p>
+<hr />
+<h3 id="小结">小结</h3>
+<p>第二章构建了完整的模型评估与选择框架： 1. <strong>评估方法</strong>：如何划分训练/测试集（留出法、交叉验证、自助法） 2. <strong>性能度量</strong>：如何量化模型好坏（MSE、错误率、P/R/F1、ROC/AUC、代价敏感） 3. <strong>比较检验</strong>：如何统计判断差异是否显著（t 检验、McNemar、Friedman） 4. <strong>偏差-方差分析</strong>：从理论上解释泛化误差的来源</p>
+<p>这些内容是后续各章学习算法“好不好”的判断基础。</p>
 
                 
               </div>
@@ -621,6 +647,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2026/07/16/ML-note3/" title="《机器学习》自学日记（三）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">《机器学习》自学日记（三）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">

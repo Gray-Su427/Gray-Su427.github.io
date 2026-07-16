@@ -19,26 +19,21 @@
   <meta name="author" content="Gray-Su">
   <meta name="keywords" content="">
   
-    <meta name="description" content="为辅助选课开发的一个轻量桌面小程序，支持可视化课表、冲突检测、8学期管理与学分追踪">
+    <meta name="description" content="第三章 线性模型——线性回归、对数几率回归、线性判别分析">
 <meta property="og:type" content="article">
-<meta property="og:title" content="正好课表——为 NJU 选课做的一个小工具">
-<meta property="og:url" content="https://suzhenghao.top/2026/07/12/PFSchedule/index.html">
+<meta property="og:title" content="《机器学习》自学日记（三）">
+<meta property="og:url" content="https://suzhenghao.top/2026/07/16/ML-note3/index.html">
 <meta property="og:site_name" content="Gray-Su&#39;s Blog">
-<meta property="og:description" content="为辅助选课开发的一个轻量桌面小程序，支持可视化课表、冲突检测、8学期管理与学分追踪">
+<meta property="og:description" content="第三章 线性模型——线性回归、对数几率回归、线性判别分析">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://suzhenghao.top/2026/07/12/img/2026-7-12-PFSchedule/%E7%95%8C%E9%9D%A2%E6%BC%94%E7%A4%BA.png">
-<meta property="article:published_time" content="2026-07-12T03:43:00.000Z">
-<meta property="article:modified_time" content="2026-07-12T10:43:00.254Z">
+<meta property="article:published_time" content="2026-07-16T08:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-16T14:23:23.585Z">
 <meta property="article:author" content="Gray-Su">
-<meta property="article:tag" content="Electron">
-<meta property="article:tag" content="React">
-<meta property="article:tag" content="TypeScript">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://suzhenghao.top/2026/07/12/img/2026-7-12-PFSchedule/%E7%95%8C%E9%9D%A2%E6%BC%94%E7%A4%BA.png">
   
   
   
-  <title>正好课表——为 NJU 选课做的一个小工具 - Gray-Su&#39;s Blog</title>
+  <title>《机器学习》自学日记（三） - Gray-Su&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -307,7 +302,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="正好课表——为 NJU 选课做的一个小工具"></span>
+            <span id="subtitle" data-typed-text="《机器学习》自学日记（三）"></span>
           
         </div>
 
@@ -318,8 +313,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2026-07-12 11:43" pubdate>
-          2026年7月12日 中午
+        <time datetime="2026-07-16 16:00" pubdate>
+          2026年7月16日 下午
         </time>
       </span>
     
@@ -330,7 +325,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.2k 字
+          2.9k 字
         
       </span>
     
@@ -341,7 +336,7 @@
         
         
         
-          11 分钟
+          24 分钟
         
       </span>
     
@@ -380,79 +375,177 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">正好课表——为 NJU 选课做的一个小工具</h1>
+            <h1 id="seo-header">《机器学习》自学日记（三）</h1>
             
             
               <div class="markdown-body">
                 
-                <p>这学期选课的时候，面对教务网上密密麻麻的课程列表，我一直在想——有没有一个工具能让我<strong>像看日历一样看课表</strong>？于是就有了正好课表。(<a target="_blank" rel="noopener" href="https://github.com/Gray-Su427/Perfect-Schedule">GitHub</a>)</p>
-<h1 id="功能介绍">功能介绍</h1>
-<h2 id="课表可视化">课表可视化</h2>
-<p>应用打开就是一个完整的 <strong>7 天 × 12 节次</strong> 的课表网格，每门课按时间位置准确落格。顶部的周次滑块（W1–W20）可以快速过滤查看不同周数的排课情况，不用再对着 Excel 一页页翻。</p>
-<p><img src="../img/2026-7-12-PFSchedule/界面演示.png" srcset="/img/loading.gif" lazyload /></p>
-<h2 id="教务网自动导入">教务网自动导入</h2>
-<p>设置好入学年份后，点击<strong>从教务网导入</strong>，应用会内嵌浏览器打开 NJU 统一身份认证页面——登录后自动爬取<strong>全部 8 个学期</strong>的课表数据。爬取完成后会弹出一个学期映射窗口，确认每个学期的数据导入到正确的位置，一键写入本地数据库。</p>
-<p>整个过程不需要手动下载任何文件，登录一次即可完成大学四年的课表迁移。</p>
-<h2 id="班级选择">班级选择</h2>
-<p>同一门课程如果有多个教学班（比如不同老师、不同时间），可以在编辑课程时用<strong>圆点 radio</strong> 选择其中一个显示在课表上，未选中的班级会自动变淡。同一课程只会看到你关注的那一个班级，课表保持清晰。</p>
-<h2 id="冲突检测">冲突检测</h2>
-<p>同一学期内，如果两门课在同一天、同节次、同周数范围内重叠，系统会自动检测并以<strong>红色高亮</strong>标出。选课阶段用来排查时间冲突非常实用。</p>
-<h2 id="学期管理">8 学期管理</h2>
-<p>预置了从<strong>大一上到大四下</strong>共 8 个学期，每个学期独立排课、互不干扰。切换学期即可查看对应学年的课表，毕业前所有选课计划一目了然。</p>
-<h2 id="学分统计">学分统计</h2>
-<p>底部面板实时统计当前学期的学分，按<strong>专业必修、专业选修、通识、体育、未分类</strong>等类别分类汇总。毕业需要多少分、还差多少分，心里有数。</p>
-<h2 id="灵活周数模式">灵活周数模式</h2>
-<p>南大的课程周数安排五花八门，工具支持以下所有模式：</p>
+                <h2 id="第三章-线性模型">第三章 线性模型</h2>
+<h3 id="基本形式">3.1 基本形式</h3>
+<p><strong>线性模型</strong>：试图学得一个通过属性的线性组合来进行预测的函数</p>
+<p><span class="math display"><em>f</em>(<strong>x</strong>) = <strong>w</strong><sup><em>T</em></sup><strong>x</strong> + <em>b</em></span></p>
+<ul>
+<li><span class="math inline"><strong>w</strong> = (<em>w</em><sub>1</sub>; <em>w</em><sub>2</sub>; …; <em>w</em><sub><em>d</em></sub>)</span> 直观表达了各属性在预测中的重要性</li>
+<li>线性模型<strong>可解释性</strong>强，例如 <span class="math inline"><em>f</em><sub>好瓜</sub>(<em>x</em>) = 0.2 ⋅ <em>x</em><sub>色泽</sub> + 0.5 ⋅ <em>x</em><sub>根蒂</sub> + 0.3 ⋅ <em>x</em><sub>敲声</sub> + 1</span></li>
+<li>许多非线性模型可通过引入层级结构或高维映射得到</li>
+</ul>
+<hr />
+<h3 id="线性回归">3.2 线性回归</h3>
+<h4 id="一元线性回归">一元线性回归</h4>
+<p>给定 <span class="math inline"><em>D</em> = {(<em>x</em><sub><em>i</em></sub>, <em>y</em><sub><em>i</em></sub>)}<sub><em>i</em> = 1</sub><sup><em>m</em></sup></span>，试图学得 <span class="math inline"><em>f</em>(<em>x</em><sub><em>i</em></sub>) = <em>w</em><em>x</em><sub><em>i</em></sub> + <em>b</em></span>，使 <span class="math inline"><em>f</em>(<em>x</em><sub><em>i</em></sub>) ≃ <em>y</em><sub><em>i</em></sub></span>。</p>
+<p><strong>最小二乘法</strong>：基于均方误差最小化求解 <span class="math inline"><em>w</em>, <em>b</em></span></p>
+<p><span class="math display">$$
+(w^*,b^*) = \arg\min_{(w,b)} \sum_{i=1}^m (y_i - wx_i - b)^2
+$$</span></p>
+<p><span class="math inline"><em>E</em><sub>(<em>w</em>, <em>b</em>)</sub></span> 是凸函数，令导数为零得闭式解：</p>
+<p><span class="math display">$$
+w = \frac{\sum_{i=1}^m y_i(x_i - \bar{x})}{\sum_{i=1}^m x_i^2 - \frac1m (\sum_{i=1}^m x_i)^2}, \quad b = \frac1m \sum_{i=1}^m (y_i - wx_i)
+$$</span></p>
+<p>其中 <span class="math inline">$\bar{x} = \frac1m \sum_{i=1}^m x_i$</span>。</p>
+<h4 id="多元线性回归">多元线性回归</h4>
+<p>样本由 <span class="math inline"><em>d</em></span> 个属性描述，将 <span class="math inline">$\hat{\pmb{w}} = (\pmb{w};b)$</span> 吸收入向量形式，数据集表示为 <span class="math inline"><em>m</em> × (<em>d</em> + 1)</span> 的矩阵 <span class="math inline"><strong>X</strong></span>。</p>
+<p>目标函数：</p>
+<p><span class="math display">$$
+\hat{\pmb{w}}^* = \arg\min_{\hat{\pmb{w}}} (\pmb{y} - \mathbf{X}\hat{\pmb{w}})^{\mathrm{T}}(\pmb{y} - \mathbf{X}\hat{\pmb{w}})
+$$</span></p>
+<p>令导数为零，当 <span class="math inline"><strong>X</strong><sup><em>T</em></sup><strong>X</strong></span> 满秩时：</p>
+<p><span class="math display">$$
+\hat{\pmb{w}}^* = (\mathbf{X}^{\mathrm{T}}\mathbf{X})^{-1}\mathbf{X}^{\mathrm{T}}\pmb{y}
+$$</span></p>
+<p>若 <span class="math inline"><strong>X</strong><sup><em>T</em></sup><strong>X</strong></span> 不满秩（如变量数超过样例数），则引入<strong>正则化</strong>项由归纳偏好决定解。</p>
+<h4 id="广义线性模型">广义线性模型</h4>
+<p><strong>对数线性回归</strong>： <span class="math display">ln <em>y</em> = <strong>w</strong><sup><em>T</em></sup><em>x</em> + <em>b</em>  ⇒  <em>y</em> = <em>e</em><sup><strong>w</strong><sup><em>T</em></sup><em>x</em> + <em>b</em></sup></span></p>
+<p><strong>广义线性模型</strong>： <span class="math display"><em>y</em> = <em>g</em><sup> − 1</sup>(<strong>w</strong><sup><em>T</em></sup><em>x</em> + <em>b</em>)</span></p>
+<p>其中 <span class="math inline"><em>g</em>( ⋅ )</span> 称为<strong>联系函数</strong>（link function）。对数线性回归是其特例（<span class="math inline"><em>g</em>( ⋅ ) = ln ( ⋅ )</span>）。</p>
+<hr />
+<h3 id="对数几率回归">3.3 对数几率回归</h3>
+<p>用于二分类任务，输出 <span class="math inline"><em>y</em> ∈ {0, 1}</span>。</p>
+<p><strong>单位阶跃函数</strong>不连续，无法直接使用。用<strong>对数几率函数</strong>（Sigmoid）替代：</p>
+<p><span class="math display">$$
+y = \frac{1}{1 + e^{-z}}, \quad z = \pmb{w}^{\mathrm{T}}x + b
+$$</span></p>
+<p>变换得：</p>
+<p><span class="math display">$$
+\ln \frac{y}{1-y} = \pmb{w}^{\mathrm{T}}x + b
+$$</span></p>
+<ul>
+<li><span class="math inline">$\frac{y}{1-y}$</span> 称为<strong>几率</strong>（odds），反映正例相对可能性</li>
+<li><span class="math inline">$\ln \frac{y}{1-y}$</span> 称为<strong>对数几率</strong>（log odds / logit）</li>
+</ul>
+<p><strong>特点</strong>：直接对分类可能性建模，无需假设数据分布；输出近似概率；目标函数是凸函数。</p>
+<h4 id="参数求解极大似然法">参数求解（极大似然法）</h4>
+<p>令 <span class="math inline"><strong>β</strong> = (<strong>w</strong>; <em>b</em>)</span>, <span class="math inline">$\hat{\pmb{x}} = (x;1)$</span>，最大化对数似然等价于最小化：</p>
+<p><span class="math display">$$
+\ell(\pmb{\beta}) = \sum_{i=1}^m \left(-y_i\pmb{\beta}^{\mathrm{T}}\hat{\pmb{x}}_i + \ln(1 + e^{\pmb{\beta}^{\mathrm{T}}\hat{\pmb{x}}_i})\right)
+$$</span></p>
+<p>该函数是凸函数，可用梯度下降法、牛顿法等求解。牛顿法迭代公式：</p>
+<p><span class="math display">$$
+\pmb{\beta}^{t+1} = \pmb{\beta}^t - \left(\frac{\partial^2\ell(\pmb{\beta})}{\partial\pmb{\beta}\partial\pmb{\beta}^{\mathrm{T}}}\right)^{-1} \frac{\partial\ell(\pmb{\beta})}{\partial\pmb{\beta}}
+$$</span></p>
+<hr />
+<h3 id="线性判别分析lda">3.4 线性判别分析（LDA）</h3>
+<p><strong>核心思想</strong>：将样例投影到一条直线上，使<strong>同类投影点尽可能接近</strong>、<strong>异类投影点尽可能远离</strong>。</p>
+<p><strong>Fisher判别分析</strong>：LDA在二分类上的别称。</p>
+<h4 id="目标函数">目标函数</h4>
+<p>定义<strong>类内散度矩阵</strong> <span class="math inline"><strong>S</strong><sub><em>w</em></sub></span> 和<strong>类间散度矩阵</strong> <span class="math inline"><strong>S</strong><sub><em>b</em></sub></span>：</p>
+<p><span class="math display"><strong>S</strong><sub><em>w</em></sub> = <em>Σ</em><sub>0</sub> + <em>Σ</em><sub>1</sub> = ∑<sub><strong>x</strong> ∈ <em>X</em><sub>0</sub></sub>(<strong>x</strong> − <em>μ</em><sub>0</sub>)(<strong>x</strong> − <em>μ</em><sub>0</sub>)<sup><em>T</em></sup> + ∑<sub><strong>x</strong> ∈ <em>X</em><sub>1</sub></sub>(<strong>x</strong> − <em>μ</em><sub>1</sub>)(<strong>x</strong> − <em>μ</em><sub>1</sub>)<sup><em>T</em></sup></span></p>
+<p><span class="math display"><strong>S</strong><sub><em>b</em></sub> = (<em>μ</em><sub>0</sub> − <em>μ</em><sub>1</sub>)(<em>μ</em><sub>0</sub> − <em>μ</em><sub>1</sub>)<sup><em>T</em></sup></span></p>
+<p>最大化<strong>广义瑞利商</strong>：</p>
+<p><span class="math display">$$
+J = \frac{\pmb{w}^{\mathrm{T}}\mathbf{S}_b\pmb{w}}{\pmb{w}^{\mathrm{T}}\mathbf{S}_w\pmb{w}}
+$$</span></p>
+<p>解为：</p>
+<p><span class="math display"><strong>w</strong> = <strong>S</strong><sub><em>w</em></sub><sup> − 1</sup>(<em>μ</em><sub>0</sub> − <em>μ</em><sub>1</sub>)</span></p>
+<h4 id="多分类lda">多分类LDA</h4>
+<p>将样本投影到 <span class="math inline"><em>N</em> − 1</span> 维空间（<span class="math inline"><em>N</em></span> 为类别数），最大化：</p>
+<p><span class="math display">$$
+\max_{\mathbf{W}} \frac{\operatorname{tr}(\mathbf{W}^{\mathrm{T}}\mathbf{S}_b\mathbf{W})}{\operatorname{tr}(\mathbf{W}^{\mathrm{T}}\mathbf{S}_w\mathbf{W})}
+$$</span></p>
+<p><span class="math inline"><strong>W</strong></span> 的闭式解是 <span class="math inline"><strong>S</strong><sub><em>w</em></sub><sup> − 1</sup><strong>S</strong><sub><em>b</em></sub></span> 的 <span class="math inline"><em>N</em> − 1</span> 个最大广义特征值对应的特征向量。LDA 也常被视为一种<strong>监督降维</strong>技术。</p>
+<hr />
+<h3 id="多分类学习">3.5 多分类学习</h3>
+<p>基本思路：<strong>拆解法</strong>（将多分类拆为多个二分类任务）。</p>
 <table>
 <thead>
 <tr class="header">
-<th>模式</th>
-<th>示例</th>
+<th>策略</th>
+<th>方法</th>
+<th>分类器数量</th>
+<th>优缺点</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>连续区间</td>
-<td><code>1-16</code></td>
+<td><strong>OvO</strong>（一对一）</td>
+<td>每两类配对训练一个分类器</td>
+<td><span class="math inline"><em>N</em>(<em>N</em> − 1)/2</span></td>
+<td>训练快（每类只用两个类数据），测试慢</td>
 </tr>
 <tr class="even">
-<td>离散周</td>
-<td><code>2,5,8,11</code></td>
+<td><strong>OvR</strong>（一对其余）</td>
+<td>每类 vs 其余</td>
+<td><span class="math inline"><em>N</em></span></td>
+<td>训练慢（用全部数据），测试快</td>
 </tr>
 <tr class="odd">
-<td>奇偶周</td>
-<td><code>odd</code> / <code>even</code></td>
-</tr>
-<tr class="even">
-<td>混合</td>
-<td><code>1-8,10,12-16</code></td>
-</tr>
-<tr class="odd">
-<td>全部</td>
-<td><code>*</code></td>
+<td><strong>MvM</strong>（多对多）</td>
+<td>若干类为正，若干为反</td>
+<td>由编码决定</td>
+<td>需特殊构造，如ECOC</td>
 </tr>
 </tbody>
 </table>
-<h2 id="数据导入导出">数据导入导出</h2>
-<p>全部课程数据可一键<strong>导出为 JSON</strong>，换电脑或重装后直接导入恢复，不用重新录入。</p>
-<h2 id="自定义背景">自定义背景</h2>
-<p>支持上传图片作为课表网格背景，把校徽、风景图或者喜欢的壁纸放上去，让课表更有个人风格。</p>
-<h2 id="暗色主题">暗色主题</h2>
-<p>默认采用<strong>紫色系暗色主题</strong>，长时间盯着看也不会太累，适合晚上排课。</p>
-<h1 id="快速上手">快速上手</h1>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 克隆仓库</span><br>git <span class="hljs-built_in">clone</span> https://github.com/Gray-Su427/Perfect-Schedule.git<br><br><span class="hljs-comment"># 安装依赖</span><br>npm install<br><br><span class="hljs-comment"># 开发模式</span><br>npm run dev<br><br><span class="hljs-comment"># 打包安装程序</span><br>npm run dist<br></code></pre></td></tr></table></figure>
-<p>也可以直接在 <a target="_blank" rel="noopener" href="https://github.com/Gray-Su427/Perfect-Schedule/releases">Releases 页面</a> 下载最新的安装包（v1.2.0），开箱即用。</p>
-<h1 id="技术选型">技术选型</h1>
-<ul>
-<li><strong>Electron 33</strong> — 跨平台桌面应用框架</li>
-<li><strong>React 18 + TypeScript 7</strong> — 类型安全的前端开发体验</li>
-<li><strong>electron-vite</strong> — 现代化的构建工具链</li>
-<li><strong>Zustand 5</strong> — 轻量且高效的状态管理</li>
-<li><strong>Dexie.js</strong> — 基于 IndexedDB 的本地数据持久化</li>
-</ul>
-<h1 id="结语">结语</h1>
-<p>正好课表目前完全满足了我自己的选课管理需求，如果你也是 NJU 的同学（或者觉得它有用），欢迎去 GitHub 点个 Star 或提 Issue。项目使用 MIT 协议开源，欢迎 PR。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/Gray-Su427/Perfect-Schedule">Gray-Su427/Perfect-Schedule</a></p>
+<p><strong>ECOC（纠错输出码）</strong>： - <strong>编码</strong>：对 <span class="math inline"><em>N</em></span> 个类别做 <span class="math inline"><em>M</em></span> 次划分，训练 <span class="math inline"><em>M</em></span> 个分类器 - <strong>解码</strong>：<span class="math inline"><em>M</em></span> 个分类器预测结果组成编码，与各类别编码比较距离 - 编码越长，纠错能力越强，但代价也越大 - 对同等码长，各类编码距离越远纠错越强（找到最优编码是NP难）</p>
+<hr />
+<h3 id="类别不平衡问题">3.6 类别不平衡问题</h3>
+<p><strong>问题</strong>：不同类别训练样例数目差别很大（如998反例:2正例）。</p>
+<p><strong>基本策略——再缩放</strong>：</p>
+<p><span class="math display">$$
+\frac{y'}{1-y'} = \frac{y}{1-y} \times \frac{m^-}{m^+}
+$$</span></p>
+<p>三种实现方式：</p>
+<table>
+<thead>
+<tr class="header">
+<th>方法</th>
+<th>操作</th>
+<th>代表算法</th>
+<th>注意</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>欠采样</strong></td>
+<td>去除反例</td>
+<td>EasyEnsemble</td>
+<td>可能丢失重要信息</td>
+</tr>
+<tr class="even">
+<td><strong>过采样</strong></td>
+<td>增加正例</td>
+<td>SMOTE（插值生成）</td>
+<td>不能简单重复采样（会过拟合）</td>
+</tr>
+<tr class="odd">
+<td><strong>阈值移动</strong></td>
+<td>不改数据，调整决策阈值</td>
+<td>—</td>
+<td>直接嵌入再缩放到决策过程</td>
+</tr>
+</tbody>
+</table>
+<p>再缩放也是<strong>代价敏感学习</strong>的基础，将 <span class="math inline">$\frac{m^-}{m^+}$</span> 替换为 <span class="math inline">$\frac{cost^+}{cost^-}$</span> 即可。</p>
+<hr />
+<h3 id="小结">小结</h3>
+<p>第三章介绍了线性模型这一基础而重要的模型族：</p>
+<ol type="1">
+<li><strong>线性回归</strong>：最小二乘法求最优参数，广义线性模型扩展表达能力</li>
+<li><strong>对数几率回归</strong>：用 Sigmoid 函数将线性模型用于分类，极大似然法求解</li>
+<li><strong>线性判别分析</strong>：通过最大化类间/类内散度比，实现分类与降维</li>
+<li><strong>多分类学习</strong>：OvO/OvR/MvM 拆分策略，ECOC 编码纠错</li>
+<li><strong>类别不平衡</strong>：再缩放思想及其三种实现</li>
+</ol>
+<p>线性模型虽形式简单，但蕴含了正则化、似然函数、降维投影等许多核心思想，是后续复杂模型的基础。</p>
 
                 
               </div>
@@ -471,7 +564,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E5%B0%8F%E4%B8%9C%E8%A5%BF/" class="category-chain-item">小东西</a>
+  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" class="category-chain-item">机器学习</a>
   
   
 
@@ -483,17 +576,6 @@
     </div>
   
   
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/TypeScript/" class="print-no-link">#TypeScript</a>
-      
-        <a href="/tags/Electron/" class="print-no-link">#Electron</a>
-      
-        <a href="/tags/React/" class="print-no-link">#React</a>
-      
-    </div>
-  
 </div>
 
 
@@ -502,8 +584,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>正好课表——为 NJU 选课做的一个小工具</div>
-      <div>https://suzhenghao.top/2026/07/12/PFSchedule/</div>
+      <div>《机器学习》自学日记（三）</div>
+      <div>https://suzhenghao.top/2026/07/16/ML-note3/</div>
     </div>
     <div class="license-meta">
       
@@ -515,7 +597,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2026年7月12日</div>
+          <div>2026年7月16日</div>
         </div>
       
       
@@ -547,18 +629,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2026/07/15/ML-note2/" title="《机器学习》自学日记（二）">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">《机器学习》自学日记（二）</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2026/07/11/ML-note1/" title="《机器学习》自学日记（一）">
-                        <span class="hidden-mobile">《机器学习》自学日记（一）</span>
+                      <a href="/2026/07/15/ML-note2/" title="《机器学习》自学日记（二）">
+                        <span class="hidden-mobile">《机器学习》自学日记（二）</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
