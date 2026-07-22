@@ -19,21 +19,21 @@
   <meta name="author" content="Gray-Su">
   <meta name="keywords" content="">
   
-    <meta name="description" content="第五章 神经网络——神经元、感知机、BP算法、深度学习">
+    <meta name="description" content="第六章 支持向量机——间隔、对偶、核技巧、软间隔与SVR">
 <meta property="og:type" content="article">
-<meta property="og:title" content="《机器学习》自学日记（五）">
-<meta property="og:url" content="https://suzhenghao.top/2026/07/20/ML-note5/index.html">
+<meta property="og:title" content="《机器学习》自学日记（六）">
+<meta property="og:url" content="https://suzhenghao.top/2026/07/22/ML-note6/index.html">
 <meta property="og:site_name" content="Gray-Su&#39;s Blog">
-<meta property="og:description" content="第五章 神经网络——神经元、感知机、BP算法、深度学习">
+<meta property="og:description" content="第六章 支持向量机——间隔、对偶、核技巧、软间隔与SVR">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2026-07-20T11:48:33.000Z">
-<meta property="article:modified_time" content="2026-07-20T04:36:10.164Z">
+<meta property="article:published_time" content="2026-07-22T11:41:09.000Z">
+<meta property="article:modified_time" content="2026-07-22T11:43:21.209Z">
 <meta property="article:author" content="Gray-Su">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>《机器学习》自学日记（五） - Gray-Su&#39;s Blog</title>
+  <title>《机器学习》自学日记（六） - Gray-Su&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -302,7 +302,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="《机器学习》自学日记（五）"></span>
+            <span id="subtitle" data-typed-text="《机器学习》自学日记（六）"></span>
           
         </div>
 
@@ -313,8 +313,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2026-07-20 19:48" pubdate>
-          2026年7月20日 晚上
+        <time datetime="2026-07-22 19:41" pubdate>
+          2026年7月22日 晚上
         </time>
       </span>
     
@@ -325,7 +325,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2k 字
+          2.7k 字
         
       </span>
     
@@ -336,7 +336,7 @@
         
         
         
-          17 分钟
+          23 分钟
         
       </span>
     
@@ -375,135 +375,152 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">《机器学习》自学日记（五）</h1>
+            <h1 id="seo-header">《机器学习》自学日记（六）</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="第五章-神经网络">第五章 神经网络</h2>
-<h3 id="神经元模型">5.1 神经元模型</h3>
-<p><strong>M-P 神经元模型</strong>（McCulloch &amp; Pitts, 1943）： <span class="math display">$$
-y = f\left(\sum_{i=1}^{n} w_i x_i - \theta\right)
-$$</span> - 输入信号通过带权重的连接传递 - 神经元接收总输入与阈值 <span class="math inline"><em>θ</em></span> 比较 - 通过激活函数处理产生输出</p>
-<p><strong>激活函数</strong>： - <strong>阶跃函数</strong>：理想但不可微，不连续 - <strong>Sigmoid 函数</strong>：常用替代，将输入挤压到 <span class="math inline">(0, 1)</span> <span class="math display">$$
-  \text{sigmoid}(x) = \frac{1}{1 + e^{-x}}
+                <h2 id="第六章-支持向量机">第六章 支持向量机</h2>
+<h3 id="间隔与支持向量">6.1 间隔与支持向量</h3>
+<p><strong>SVM 的核心思想</strong>：寻找具有“最大间隔”的划分超平面，使分类结果最鲁棒。</p>
+<p><strong>划分超平面</strong>： <span class="math display"><em>w</em><sup><em>T</em></sup><em>x</em> + <em>b</em> = 0</span> - <span class="math inline"><em>w</em></span> 为法向量，决定超平面方向；<span class="math inline"><em>b</em></span> 为位移项，决定与原点距离</p>
+<p><strong>样本点到超平面距离</strong>： <span class="math display">$$
+r = \frac{|w^{\mathrm{T}}x + b|}{\|w\|}
+$$</span></p>
+<p><strong>支持向量与间隔</strong>： - 令 <span class="math inline"><em>y</em><sub><em>i</em></sub> =  + 1</span> 时 <span class="math inline"><em>w</em><sup><em>T</em></sup><em>x</em><sub><em>i</em></sub> + <em>b</em> ≥  + 1</span>，<span class="math inline"><em>y</em><sub><em>i</em></sub> =  − 1</span> 时 <span class="math inline"><em>w</em><sup><em>T</em></sup><em>x</em><sub><em>i</em></sub> + <em>b</em> ≤  − 1</span> - <strong>支持向量</strong>：使等号成立的训练样本点 - <strong>间隔</strong>（margin）：两个异类支持向量到超平面距离之和 <span class="math display">$$
+  \gamma = \frac{2}{\|w\|}
   $$</span></p>
-<p>神经网络 = 多个神经元按层次结构连接而成的数学模型。</p>
-<hr />
-<h3 id="感知机与多层网络">5.2 感知机与多层网络</h3>
-<p><strong>感知机</strong>：两层神经元（输入层 + 输出层），输出层是 M-P 神经元。</p>
-<p>感知机可实现逻辑与、或、非运算。学习规则： <span class="math display"><em>w</em><sub><em>i</em></sub> ← <em>w</em><sub><em>i</em></sub> + <em>Δ</em><em>w</em><sub><em>i</em></sub>,  <em>Δ</em><em>w</em><sub><em>i</em></sub> = <em>η</em>(<em>y</em> − <em>ŷ</em>)<em>x</em><sub><em>i</em></sub></span> 其中 <span class="math inline"><em>η</em> ∈ (0, 1)</span> 为学习率。</p>
-<p><strong>局限</strong>：只能解决<strong>线性可分</strong>问题（如与、或、非），但无法解决<strong>异或 (XOR)</strong> 等非线性可分问题（Minsky &amp; Papert, 1969）。</p>
-<p><strong>多层网络</strong>：引入隐层（hidden layer）解决非线性问题。<strong>多层前馈神经网络</strong>的结构特点： - 每层与下一层全互连 - 无同层连接、无跨层连接 - 输入层仅传递信号，隐层和输出层包含功能神经元 - 学习到的知识蕴涵在连接权与阈值中</p>
-<hr />
-<h3 id="误差逆传播算法bp">5.3 误差逆传播算法（BP）</h3>
-<p>BP 算法是迄今最成功的神经网络学习算法，基于<strong>梯度下降</strong>策略。</p>
-<h4 id="符号定义">符号定义</h4>
-<p>以 <span class="math inline"><em>d</em></span> 个输入、<span class="math inline"><em>l</em></span> 个输出、<span class="math inline"><em>q</em></span> 个隐层神经元为例： - <span class="math inline"><em>v</em><sub><em>i</em><em>h</em></sub></span>：输入层第 <span class="math inline"><em>i</em></span> 个神经元 → 隐层第 <span class="math inline"><em>h</em></span> 个神经元的连接权 - <span class="math inline"><em>w</em><sub><em>h</em><em>j</em></sub></span>：隐层第 <span class="math inline"><em>h</em></span> 个神经元 → 输出层第 <span class="math inline"><em>j</em></span> 个神经元的连接权 - <span class="math inline"><em>γ</em><sub><em>h</em></sub></span>：隐层第 <span class="math inline"><em>h</em></span> 个神经元的阈值 - <span class="math inline"><em>θ</em><sub><em>j</em></sub></span>：输出层第 <span class="math inline"><em>j</em></span> 个神经元的阈值</p>
-<h4 id="前向传播">前向传播</h4>
-<p>隐层输入 <span class="math inline"><em>α</em><sub><em>h</em></sub> = ∑<sub><em>i</em></sub><em>v</em><sub><em>i</em><em>h</em></sub><em>x</em><sub><em>i</em></sub></span>，输出层输入 <span class="math inline"><em>β</em><sub><em>j</em></sub> = ∑<sub><em>h</em></sub><em>w</em><sub><em>h</em><em>j</em></sub><em>b</em><sub><em>h</em></sub></span></p>
-<h4 id="误差与梯度">误差与梯度</h4>
-<p>对训练例 <span class="math inline">(<em>x</em><sub><em>k</em></sub>, <em>y</em><sub><em>k</em></sub>)</span>，均方误差： <span class="math display">$$
-E_k = \frac12 \sum_{j=1}^{l} (\hat{y}_j^k - y_j^k)^2
+<p><strong>SVM 基本型</strong>： <span class="math display">$$
+\min_{w,b} \frac12 \|w\|^2 \quad \text{s.t.} \quad y_i(w^{\mathrm{T}}x_i + b) \geqslant 1,\; i = 1,\dots,m
 $$</span></p>
-<p>Sigmoid 函数重要性质：<span class="math inline"><em>f</em>′(<em>x</em>) = <em>f</em>(<em>x</em>)(1 − <em>f</em>(<em>x</em>))</span></p>
-<h4 id="权值更新公式链式法则推导">权值更新公式（链式法则推导）</h4>
-<p>输出层梯度项 <span class="math inline"><em>g</em><sub><em>j</em></sub></span>： <span class="math display"><em>g</em><sub><em>j</em></sub> = <em>ŷ</em><sub><em>j</em></sub><sup><em>k</em></sup>(1 − <em>ŷ</em><sub><em>j</em></sub><sup><em>k</em></sup>)(<em>y</em><sub><em>j</em></sub><sup><em>k</em></sup> − <em>ŷ</em><sub><em>j</em></sub><sup><em>k</em></sup>)</span></p>
-<p>隐层梯度项 <span class="math inline"><em>e</em><sub><em>h</em></sub></span>： <span class="math display">$$
-e_h = b_h (1 - b_h) \sum_{j=1}^{l} w_{hj} g_j
+<hr />
+<h3 id="对偶问题">6.2 对偶问题</h3>
+<p>利用<strong>拉格朗日乘子法</strong>将原问题转化为对偶问题：</p>
+<p><strong>拉格朗日函数</strong>： <span class="math display">$$
+L(w,b,\alpha) = \frac12 \|w\|^2 + \sum_{i=1}^m \alpha_i (1 - y_i(w^{\mathrm{T}}x_i + b))
 $$</span></p>
-<p>更新公式： <span class="math display"><em>Δ</em><em>w</em><sub><em>h</em><em>j</em></sub> = <em>η</em><em>g</em><sub><em>j</em></sub><em>b</em><sub><em>h</em></sub>,  <em>Δ</em><em>θ</em><sub><em>j</em></sub> =  − <em>η</em><em>g</em><sub><em>j</em></sub></span> <span class="math display"><em>Δ</em><em>v</em><sub><em>i</em><em>h</em></sub> = <em>η</em><em>e</em><sub><em>h</em></sub><em>x</em><sub><em>i</em></sub>,  <em>Δ</em><em>γ</em><sub><em>h</em></sub> =  − <em>η</em><em>e</em><sub><em>h</em></sub></span></p>
-<h4 id="标准bp-vs-累积bp">标准BP vs 累积BP</h4>
+<p>令偏导为零得： <span class="math display">$$
+w = \sum_{i=1}^m \alpha_i y_i x_i,\quad 0 = \sum_{i=1}^m \alpha_i y_i
+$$</span></p>
+<p><strong>对偶问题</strong>： <span class="math display">$$
+\max_{\alpha} \sum_{i=1}^m \alpha_i - \frac12 \sum_{i=1}^m \sum_{j=1}^m \alpha_i \alpha_j y_i y_j x_i^{\mathrm{T}}x_j
+$$</span> <span class="math display">$$
+\text{s.t.} \quad \sum_{i=1}^m \alpha_i y_i = 0,\quad \alpha_i \geqslant 0
+$$</span></p>
+<p><strong>KKT 条件</strong>： <span class="math display">$$
+\begin{cases}
+\alpha_i \geqslant 0 \\
+y_i f(x_i) - 1 \geqslant 0 \\
+\alpha_i (y_i f(x_i) - 1) = 0
+\end{cases}
+$$</span></p>
+<p>核心结论：最终模型仅与 <span class="math inline"><em>α</em><sub><em>i</em></sub> &gt; 0</span> 的<strong>支持向量</strong>有关，非支持向量对模型无影响。</p>
+<p><strong>SMO 算法</strong>（Sequential Minimal Optimization）： 1. 每次选取两个变量 <span class="math inline"><em>α</em><sub><em>i</em></sub>, <em>α</em><sub><em>j</em></sub></span>，固定其余参数 2. 利用约束 <span class="math inline"><em>α</em><sub><em>i</em></sub><em>y</em><sub><em>i</em></sub> + <em>α</em><sub><em>j</em></sub><em>y</em><sub><em>j</em></sub> = <em>c</em></span> 消元，得到关于 <span class="math inline"><em>α</em><sub><em>i</em></sub></span> 的单变量二次规划（有闭式解） 3. 变量选择启发式：找违背 KKT 程度最大的 + 间隔最大的对应样本</p>
+<p><strong>偏移项 <span class="math inline"><em>b</em></span> 的求解</strong>：对所有支持向量求解后取平均： <span class="math display">$$
+b = \frac{1}{|S|} \sum_{s \in S} \left(y_s - \sum_{i \in S} \alpha_i y_i x_i^{\mathrm{T}} x_s\right)
+$$</span></p>
+<hr />
+<h3 id="核函数">6.3 核函数</h3>
+<p><strong>动机</strong>：现实任务中原始空间可能不存在线性可分超平面 → 映射到更高维特征空间。</p>
+<p><strong>核技巧</strong>（kernel trick）：不显式计算 <span class="math inline"><em>ϕ</em>(<em>x</em><sub><em>i</em></sub>)<sup><em>T</em></sup><em>ϕ</em>(<em>x</em><sub><em>j</em></sub>)</span>，而是通过核函数直接计算： <span class="math display"><em>κ</em>(<em>x</em><sub><em>i</em></sub>, <em>x</em><sub><em>j</em></sub>) = ⟨<em>ϕ</em>(<em>x</em><sub><em>i</em></sub>), <em>ϕ</em>(<em>x</em><sub><em>j</em></sub>)⟩ = <em>ϕ</em>(<em>x</em><sub><em>i</em></sub>)<sup><em>T</em></sup><em>ϕ</em>(<em>x</em><sub><em>j</em></sub>)</span></p>
+<p><strong>常用核函数</strong>：</p>
 <table>
+
 <thead>
 <tr class="header">
-<th>方式</th>
-<th>每次更新</th>
-<th>频率</th>
-<th>适用场景</th>
+<th>名称</th>
+<th>表达式</th>
+<th>参数</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>标准BP</strong></td>
-<td>单个样例</td>
-<td>高，可能抵消</td>
-<td>大数据集时更快获得好解</td>
+<td>线性核</td>
+<td><span class="math inline"><em>x</em><sub><em>i</em></sub><sup><em>T</em></sup><em>x</em><sub><em>j</em></sub></span></td>
+<td>—</td>
 </tr>
 <tr class="even">
-<td><strong>累积BP</strong></td>
-<td>整个训练集</td>
-<td>低</td>
-<td>累积误差下降到一定程度后变慢</td>
+<td>多项式核</td>
+<td><span class="math inline">(<em>x</em><sub><em>i</em></sub><sup><em>T</em></sup><em>x</em><sub><em>j</em></sub>)<sup><em>d</em></sup></span></td>
+<td><span class="math inline"><em>d</em> ≥ 1</span> 次数</td>
+</tr>
+<tr class="odd">
+<td>高斯核（RBF）</td>
+<td><span class="math inline">$\exp\left(-\dfrac{\|x_i - x_j\|^2}{2\sigma^2}\right)$</span></td>
+<td><span class="math inline"><em>σ</em> &gt; 0</span> 带宽</td>
+</tr>
+<tr class="even">
+<td>拉普拉斯核</td>
+<td><span class="math inline">$\exp\left(-\dfrac{\|x_i - x_j\|}{\sigma}\right)$</span></td>
+<td><span class="math inline"><em>σ</em> &gt; 0</span></td>
+</tr>
+<tr class="odd">
+<td>Sigmoid 核</td>
+<td><span class="math inline">tanh (<em>β</em><em>x</em><sub><em>i</em></sub><sup><em>T</em></sup><em>x</em><sub><em>j</em></sub> + <em>θ</em>)</span></td>
+<td><span class="math inline"><em>β</em> &gt; 0, <em>θ</em> &lt; 0</span></td>
 </tr>
 </tbody>
 </table>
-<p><strong>表示能力</strong>：只需一个足够宽的隐层，多层前馈网络就能以任意精度逼近任意复杂连续函数（Hornik et al., 1989）。</p>
-<h4 id="缓解过拟合">缓解过拟合</h4>
-<ol type="1">
-<li><strong>早停</strong>：训练集误差↓但验证集误差↑ → 停止，返回最小验证集误差的参数</li>
-<li><strong>正则化</strong>：在误差函数中添加网络复杂度项（连接权与阈值的平方和） <span class="math display">$$
-E = \lambda \frac1m \sum_{k=1}^{m} E_k + (1-\lambda) \sum_i w_i^2
-$$</span></li>
-</ol>
+<p><strong>核函数判定（Mercer 定理）</strong>：对称函数 <span class="math inline"><em>κ</em></span> 是核函数 <span class="math inline">⇔</span> 对任意数据，核矩阵 <span class="math inline"><strong>K</strong></span> 半正定。</p>
+<p><strong>核函数组合</strong>： - 线性组合 <span class="math inline"><em>γ</em><sub>1</sub><em>κ</em><sub>1</sub> + <em>γ</em><sub>2</sub><em>κ</em><sub>2</sub></span> - 直积 <span class="math inline"><em>κ</em><sub>1</sub> ⊗ <em>κ</em><sub>2</sub>(<em>x</em>, <em>z</em>) = <em>κ</em><sub>1</sub>(<em>x</em>, <em>z</em>)<em>κ</em><sub>2</sub>(<em>x</em>, <em>z</em>)</span> - 函数缩放 <span class="math inline"><em>κ</em>(<em>x</em>, <em>z</em>) = <em>g</em>(<em>x</em>)<em>κ</em><sub>1</sub>(<em>x</em>, <em>z</em>)<em>g</em>(<em>z</em>)</span></p>
+<p>核函数选择是 SVM 的最大变数。</p>
 <hr />
-<h3 id="全局最小与局部极小">5.4 全局最小与局部极小</h3>
-<ul>
-<li><strong>局部极小</strong>：邻域内误差函数值均不小于该点</li>
-<li><strong>全局最小</strong>：所有点的误差函数值均不小于该点</li>
-</ul>
-<p>跳出局部极小的常用策略： 1. <strong>多组初始化</strong>：从不同起点搜索，选误差最小的 2. <strong>模拟退火</strong>：以一定概率接受次优解，概率随时间下降 3. <strong>随机梯度下降</strong>：梯度中引入随机因素，即使陷入局部极小梯度也可能不为零</p>
-<p>这些方法大多是启发式，理论上缺乏保障。</p>
-<hr />
-<h3 id="其他常见神经网络">5.5 其他常见神经网络</h3>
+<h3 id="软间隔与正则化">6.4 软间隔与正则化</h3>
+<p><strong>硬间隔</strong>：要求所有样本满足 <span class="math inline"><em>y</em><sub><em>i</em></sub>(<em>w</em><sup><em>T</em></sup><em>x</em><sub><em>i</em></sub> + <em>b</em>) ≥ 1</span>（线性可分假设） <strong>软间隔</strong>：允许部分样本不满足约束，引入损失项</p>
+<p><strong>优化目标</strong>： <span class="math display">$$
+\min_{w,b} \frac12 \|w\|^2 + C \sum_{i=1}^m \ell_{0/1}\big(y_i(w^{\mathrm{T}}x_i + b) - 1\big)
+$$</span></p>
+<p><strong>替代损失函数</strong>（<span class="math inline">ℓ<sub>0/1</sub></span> 非凸、不连续，需用凸替代）：</p>
 <table>
 <thead>
 <tr class="header">
-<th>网络</th>
-<th>类型</th>
-<th>特点</th>
+<th>名称</th>
+<th>表达式</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>RBF 网络</strong></td>
-<td>前馈</td>
-<td>径向基函数激活，可任意逼近连续函数</td>
+<td>Hinge 损失</td>
+<td><span class="math inline">max (0, 1 − <em>z</em>)</span></td>
 </tr>
 <tr class="even">
-<td><strong>ART 网络</strong></td>
-<td>竞争型无监督</td>
-<td>可塑性-稳定性平衡，支持增量学习</td>
+<td>指数损失</td>
+<td><span class="math inline">exp ( − <em>z</em>)</span></td>
 </tr>
 <tr class="odd">
-<td><strong>SOM 网络</strong></td>
-<td>竞争型无监督</td>
-<td>高维→低维映射，保持拓扑结构</td>
-</tr>
-<tr class="even">
-<td><strong>级联相关网络</strong></td>
-<td>结构自适应</td>
-<td>逐步增加隐层结点，训练快</td>
-</tr>
-<tr class="odd">
-<td><strong>Elman 网络</strong></td>
-<td>递归</td>
-<td>隐层输出反馈作为下一时刻输入，处理时序</td>
-</tr>
-<tr class="even">
-<td><strong>Boltzmann 机</strong></td>
-<td>能量模型</td>
-<td>基于能量最小化，受限Boltzmann机(RBM)用CD算法训练</td>
+<td>对率损失</td>
+<td><span class="math inline">log (1 + exp ( − <em>z</em>))</span></td>
 </tr>
 </tbody>
 </table>
+<p><strong>软间隔 SVM（采用 Hinge 损失）</strong>： <span class="math display">$$
+\min_{w,b,\xi_i} \frac12 \|w\|^2 + C \sum_{i=1}^m \xi_i
+$$</span> <span class="math display">s.t.  <em>y</em><sub><em>i</em></sub>(<em>w</em><sup><em>T</em></sup><em>x</em><sub><em>i</em></sub> + <em>b</em>) ≥ 1 − <em>ξ</em><sub><em>i</em></sub>,  <em>ξ</em><sub><em>i</em></sub> ≥ 0</span></p>
+<p><strong>对偶问题</strong>：与硬间隔的唯一差别是 <span class="math inline"><em>α</em><sub><em>i</em></sub></span> 加了上界： <span class="math display">0 ≤ <em>α</em><sub><em>i</em></sub> ≤ <em>C</em></span></p>
+<p><strong>结构风险 vs 经验风险</strong>： <span class="math display">$$
+\min_f \Omega(f) + C \sum_{i=1}^m \ell(f(x_i), y_i)
+$$</span> - <span class="math inline"><em>Ω</em>(<em>f</em>)</span>：结构风险（正则化项），表达模型性质偏好 - <span class="math inline">∑ℓ</span>：经验风险，描述与训练数据契合程度 - <span class="math inline"><em>L</em><sub>2</sub></span> 范数使 <span class="math inline"><em>w</em></span> 分量稠密，<span class="math inline"><em>L</em><sub>0</sub></span>/<span class="math inline"><em>L</em><sub>1</sub></span> 范数使分量稀疏</p>
 <hr />
-<h3 id="深度学习">5.6 深度学习</h3>
-<p><strong>深层网络</strong>：增加隐层数比单纯增加隐层神经元更有效（激活函数嵌套层次更多）。</p>
-<h4 id="训练策略">训练策略</h4>
-<p><strong>无监督逐层训练（预训练 + 微调）</strong>： 1. 每次训练一层隐结点，上层输出作为下层输入（预训练） 2. 全部预训练完成后，用 BP 算法对整个网络微调 3. 典型代表：深度信念网络（DBN，堆叠 RBM）</p>
-<p><strong>权共享（卷积神经网络 CNN）</strong>： - 每组神经元使用相同连接权 → 大幅减少训练参数 - 核心结构：卷积层（提取局部特征）+ 采样/池化层（下采样）+ 全连接层 - 适用于图像、语音等具有局部相关性的数据</p>
-<p><strong>本质</strong>：深度学习 = <strong>特征学习 / 表示学习</strong> - 多层处理将低层特征逐步转化为高层特征 - 使“简单模型”也能完成复杂分类任务 - 机器学习从“特征工程”走向“全自动数据分析”</p>
+<h3 id="支持向量回归svr">6.5 支持向量回归（SVR）</h3>
+<p><strong><span class="math inline"><em>ϵ</em></span>-不敏感损失</strong>：允许 <span class="math inline"><em>f</em>(<em>x</em>)</span> 与 <span class="math inline"><em>y</em></span> 间最多有 <span class="math inline"><em>ϵ</em></span> 偏差，落入 <span class="math inline"><em>ϵ</em></span>-间隔带的样本不计损失： <span class="math display">$$
+\ell_{\epsilon}(z) = \begin{cases}
+0, &amp; |z| \leqslant \epsilon \\
+|z| - \epsilon, &amp; \text{otherwise}
+\end{cases}
+$$</span></p>
+<p><strong>SVR 优化问题</strong>： <span class="math display">$$
+\min_{w,b} \frac12 \|w\|^2 + C \sum_{i=1}^m \ell_{\epsilon}(f(x_i) - y_i)
+$$</span></p>
+<p><strong>引入双松弛变量</strong> <span class="math inline"><em>ξ</em><sub><em>i</em></sub>, <em>ξ̂</em><sub><em>i</em></sub></span> 后转化为凸二次规划，对偶解： <span class="math display">$$
+f(x) = \sum_{i=1}^m (\hat{\alpha}_i - \alpha_i) \kappa(x, x_i) + b
+$$</span></p>
+<p>SVR 的支持向量是落在 <span class="math inline"><em>ϵ</em></span>-间隔带之外的样本，解仍具稀疏性。</p>
+<hr />
+<h3 id="核方法">6.6 核方法</h3>
+<p><strong>表示定理</strong>（Representer Theorem）：对于任何单调递增 <span class="math inline"><em>Ω</em></span> 和任何非负损失 <span class="math inline">ℓ</span>，优化问题 <span class="math display">min<sub><em>h</em> ∈ ℍ</sub><em>Ω</em>(∥<em>h</em>∥<sub>ℍ</sub>) + ℓ(<em>h</em>(<em>x</em><sub>1</sub>), …, <em>h</em>(<em>x</em><sub><em>m</em></sub>))</span> 的最优解总可写成核函数的线性组合： <span class="math display">$$
+h^*(x) = \sum_{i=1}^m \alpha_i \kappa(x, x_i)
+$$</span></p>
+<p>KLDA（核线性判别分析）：在核映射后的特征空间中执行 LDA，通过表示定理转化为核矩阵上的广义 Rayleigh 商问题。</p>
 <hr />
 <h3 id="小结">小结</h3>
 <table>
@@ -515,32 +532,32 @@ $$</span></li>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>神经元</strong></td>
-<td>M-P 模型 + 可微激活函数（Sigmoid）</td>
+<td><strong>间隔</strong></td>
+<td><span class="math inline"><em>γ</em> = 2/∥<em>w</em>∥</span>，SVM 最大化间隔</td>
 </tr>
 <tr class="even">
-<td><strong>感知机</strong></td>
-<td>二分类线性模型，不能解 XOR</td>
+<td><strong>对偶</strong></td>
+<td>拉格朗日乘子法 → 支持向量决定模型</td>
 </tr>
 <tr class="odd">
-<td><strong>多层网络</strong></td>
-<td>隐层解决非线性，BP 算法训练</td>
+<td><strong>SMO</strong></td>
+<td>每次选两个变量，闭式更新</td>
 </tr>
 <tr class="even">
-<td><strong>BP 算法</strong></td>
-<td>梯度下降 + 链式法则，标准/累积两种模式</td>
+<td><strong>核技巧</strong></td>
+<td><span class="math inline"><em>κ</em>(<em>x</em><sub><em>i</em></sub>, <em>x</em><sub><em>j</em></sub>) = <em>ϕ</em>(<em>x</em><sub><em>i</em></sub>)<sup><em>T</em></sup><em>ϕ</em>(<em>x</em><sub><em>j</em></sub>)</span>，隐式高维映射</td>
 </tr>
 <tr class="odd">
-<td><strong>过拟合</strong></td>
-<td>早停 / 正则化</td>
+<td><strong>软间隔</strong></td>
+<td>引入 <span class="math inline"><em>ξ</em><sub><em>i</em></sub></span> 和 <span class="math inline"><em>C</em></span>，<span class="math inline"><em>α</em><sub><em>i</em></sub></span> 增加 <span class="math inline"><em>C</em></span> 上界</td>
 </tr>
 <tr class="even">
-<td><strong>局部极小</strong></td>
-<td>多初始化 / 模拟退火 / 随机梯度下降</td>
+<td><strong>SVR</strong></td>
+<td><span class="math inline"><em>ϵ</em></span>-不敏感损失，双松弛变量</td>
 </tr>
 <tr class="odd">
-<td><strong>深度学习</strong></td>
-<td>逐层预训练 + 微调 (DBN) 或权共享 (CNN)</td>
+<td><strong>核方法</strong></td>
+<td>表示定理 → 任何核化模型的解是核函数线性组合</td>
 </tr>
 </tbody>
 </table>
@@ -582,8 +599,8 @@ $$</span></li>
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>《机器学习》自学日记（五）</div>
-      <div>https://suzhenghao.top/2026/07/20/ML-note5/</div>
+      <div>《机器学习》自学日记（六）</div>
+      <div>https://suzhenghao.top/2026/07/22/ML-note6/</div>
     </div>
     <div class="license-meta">
       
@@ -595,7 +612,7 @@ $$</span></li>
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2026年7月20日</div>
+          <div>2026年7月22日</div>
         </div>
       
       
@@ -627,18 +644,12 @@ $$</span></li>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2026/07/22/ML-note6/" title="《机器学习》自学日记（六）">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">《机器学习》自学日记（六）</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2026/07/17/ML-note4/" title="《机器学习》自学日记（四）">
-                        <span class="hidden-mobile">《机器学习》自学日记（四）</span>
+                      <a href="/2026/07/20/ML-note5/" title="《机器学习》自学日记（五）">
+                        <span class="hidden-mobile">《机器学习》自学日记（五）</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
