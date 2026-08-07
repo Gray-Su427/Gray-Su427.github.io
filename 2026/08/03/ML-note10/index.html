@@ -19,21 +19,21 @@
   <meta name="author" content="Gray-Su">
   <meta name="keywords" content="">
   
-    <meta name="description" content="第二章 模型评估与选择——评估方法、性能度量与比较检验">
+    <meta name="description" content="第十章 降维与度量学习——kNN、MDS、PCA、KPCA、流形学习、度量学习">
 <meta property="og:type" content="article">
-<meta property="og:title" content="《机器学习》自学日记（二）">
-<meta property="og:url" content="https://suzhenghao.top/2026/07/15/ML-note2/index.html">
+<meta property="og:title" content="《机器学习》自学日记（十）">
+<meta property="og:url" content="https://suzhenghao.top/2026/08/03/ML-note10/index.html">
 <meta property="og:site_name" content="Gray-Su&#39;s Blog">
-<meta property="og:description" content="第二章 模型评估与选择——评估方法、性能度量与比较检验">
+<meta property="og:description" content="第十章 降维与度量学习——kNN、MDS、PCA、KPCA、流形学习、度量学习">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2026-07-15T08:57:16.000Z">
-<meta property="article:modified_time" content="2026-07-15T09:07:01.280Z">
+<meta property="article:published_time" content="2026-08-03T08:42:58.000Z">
+<meta property="article:modified_time" content="2026-08-07T08:23:21.295Z">
 <meta property="article:author" content="Gray-Su">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>《机器学习》自学日记（二） - Gray-Su&#39;s Blog</title>
+  <title>《机器学习》自学日记（十） - Gray-Su&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -302,7 +302,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="《机器学习》自学日记（二）"></span>
+            <span id="subtitle" data-typed-text="《机器学习》自学日记（十）"></span>
           
         </div>
 
@@ -313,8 +313,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2026-07-15 16:57" pubdate>
-          2026年7月15日 下午
+        <time datetime="2026-08-03 16:42" pubdate>
+          2026年8月3日 下午
         </time>
       </span>
     
@@ -325,7 +325,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.6k 字
+          3.8k 字
         
       </span>
     
@@ -336,7 +336,7 @@
         
         
         
-          22 分钟
+          33 分钟
         
       </span>
     
@@ -375,200 +375,123 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">《机器学习》自学日记（二）</h1>
+            <h1 id="seo-header">《机器学习》自学日记（十）</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="第二章-模型评估与选择">第二章 模型评估与选择</h2>
-<h3 id="经验误差与过拟合">2.1 经验误差与过拟合</h3>
+                <h2 id="第十章-降维与度量学习">第十章 降维与度量学习</h2>
+<h3 id="k近邻学习">10.1 k近邻学习</h3>
+<p><strong>kNN</strong>：给定测试样本，基于距离度量找出训练集中最靠近的 <span class="math inline">\(k\)</span> 个样本，据此预测——分类用<strong>投票法</strong>，回归用<strong>平均法</strong>，也可距离加权。</p>
+<ul>
+<li><strong>懒惰学习</strong>：训练阶段仅保存样本（零训练开销），测试时才处理；对应的急切学习在训练阶段就学习。</li>
+<li><span class="math inline">\(k\)</span> 取值与距离计算方式都会显著影响分类结果。</li>
+</ul>
+<p><strong>最近邻分类器（1NN）泛化错误率上界</strong>：设 <span class="math inline">\(x\)</span> 的最近邻为 <span class="math inline">\(z\)</span>，则 <span class="math display">\[
+P(\mathrm{err}) = 1 - \sum_{c \in \mathcal{Y}} P(c \mid x)P(c \mid z) \lesssim 2 \times (1 - P(c^{*} \mid x))
+\]</span> 即 1NN 的泛化错误率<strong>不超过贝叶斯最优分类器错误率的两倍</strong>（需密采样假设）。</p>
+<hr />
+<h3 id="低维嵌入">10.2 低维嵌入</h3>
+<p><strong>密采样困难 → 维数灾难</strong>：属性维数 20 时需 <span class="math inline">\(10^{60}\)</span> 样本才能密采样；高维还带来距离计算困难。</p>
+<p><strong>降维动机</strong>：数据虽高维，但与任务相关的可能是某个低维分布——低维<strong>嵌入</strong>。降维后样本密度提高、距离计算容易。</p>
+<h4 id="多维缩放mds">多维缩放（MDS）</h4>
+<p>目标：<span class="math inline">\(d&#39;\)</span> 维空间中样本欧氏距离等于原始空间距离，即 <span class="math inline">\(\|z_i - z_j\| = \operatorname{dist}_{ij}\)</span>。</p>
+<p>由内积矩阵 <span class="math inline">\(B = Z^{\mathrm{T}}Z\)</span>（中心化后行、列和均为 0）： <span class="math display">\[
+\operatorname{dist}_{ij}^2 = b_{ii} + b_{jj} - 2b_{ij}
+\]</span> 结合 <span class="math inline">\(\sum_i \operatorname{dist}_{ij}^2 = \operatorname{tr}(B) + m b_{jj}\)</span> 等关系可反解： <span class="math display">\[
+b_{ij} = -\frac{1}{2}\left( \operatorname{dist}_{ij}^2 - \operatorname{dist}_{i\cdot}^2 - \operatorname{dist}_{\cdot j}^2 + \operatorname{dist}_{\cdot\cdot}^2 \right)
+\]</span> 对 <span class="math inline">\(B\)</span> 特征值分解：<span class="math inline">\(B = V\Lambda V^{\mathrm{T}}\)</span>，取 <span class="math inline">\(d&#39;\)</span> 个最大特征值得 <span class="math inline">\(Z = \tilde{\Lambda}^{1/2}\tilde{V}^{\mathrm{T}} \in \mathbb{R}^{d&#39; \times m}\)</span>。</p>
+<p><strong>线性降维</strong>一般形式：<span class="math inline">\(z = W^{\mathrm{T}}x\)</span>，<span class="math inline">\(W \in \mathbb{R}^{d \times d&#39;}\)</span> 为正交变换矩阵，新空间属性是原属性的线性组合；不同方法对 <span class="math inline">\(W\)</span> 施加不同约束。</p>
+<hr />
+<h3 id="主成分分析pca">10.3 主成分分析（PCA）</h3>
+<p>对超平面的要求两条等价性质： - <strong>最近重构性</strong>：样本点到超平面距离足够近 - <strong>最大可分性</strong>：样本点在超平面上投影尽可能分开</p>
+<p>中心化后（<span class="math inline">\(\sum_i x_i = 0\)</span>），投影重构误差 <span class="math inline">\(\propto -\operatorname{tr}(W^{\mathrm{T}}XX^{\mathrm{T}}W)\)</span>，于是两种等价优化目标： <span class="math display">\[
+\min_W -\operatorname{tr}(W^{\mathrm{T}}XX^{\mathrm{T}}W) \quad \text{s.t.} \quad W^{\mathrm{T}}W = I \quad \Longleftrightarrow \quad \max_W \operatorname{tr}(W^{\mathrm{T}}XX^{\mathrm{T}}W)
+\]</span> 拉格朗日乘子法得 <span class="math inline">\(XX^{\mathrm{T}}W = \lambda W\)</span>：对协方差矩阵 <span class="math inline">\(XX^{\mathrm{T}}\)</span> 特征值分解，取前 <span class="math inline">\(d&#39;\)</span> 个最大特征值对应特征向量组成 <span class="math inline">\(W\)</span>。</p>
+<p><strong><span class="math inline">\(d&#39;\)</span> 的选取</strong>：用户指定，或交叉验证，或重构阈值（如 <span class="math inline">\(t=95\%\)</span>）： <span class="math display">\[
+\frac{\sum_{i=1}^{d&#39;} \lambda_i}{\sum_{i=1}^{d} \lambda_i} \geqslant t
+\]</span> PCA 仅需保留 <span class="math inline">\(W\)</span> 与均值向量即可投影新样本。舍弃最小特征值对应的特征向量，既提高采样密度，也能<strong>去噪</strong>（最小特征值常与噪声相关）。</p>
+<hr />
+<h3 id="核化线性降维kpca">10.4 核化线性降维（KPCA）</h3>
+<p>线性降维无法处理非线性嵌入（如 S 形曲面，需<strong>本真低维空间</strong>概念）。核化方法：令 <span class="math inline">\(z_i = \phi(x_i)\)</span>，特征空间中 PCA 的解 <span class="math inline">\(W = \sum_i \phi(x_i)\alpha_i\)</span>，代入特征方程并引入核函数 <span class="math inline">\(\kappa(x_i, x_j) = \phi(x_i)^{\mathrm{T}}\phi(x_j)\)</span> 得： <span class="math display">\[
+K A = \lambda A
+\]</span> 对核矩阵 <span class="math inline">\(K\)</span> 做特征值分解，取 <span class="math inline">\(d&#39;\)</span> 个最大特征值对应特征向量。新样本 <span class="math inline">\(x\)</span> 投影的第 <span class="math inline">\(j\)</span> 维： <span class="math display">\[
+z_j = \sum_{i=1}^{m} \alpha_i^j \kappa(x_i, x)
+\]</span> （需对所有样本求和，计算开销较大）</p>
+<hr />
+<h3 id="流形学习">10.5 流形学习</h3>
+<p><strong>流形</strong>：局部与欧氏空间同胚的空间——局部可用欧氏距离，可局部建立降维映射再推广到全局；降至 2/3 维可做可视化。</p>
+<h4 id="等度量映射isomap">10.5.1 等度量映射（Isomap）</h4>
+<p>高维空间直线距离在低维流形上不可达，两点本真距离是<strong>测地线</strong>距离。计算方式： 1. 每个点按欧氏距离找近邻，建立<strong>近邻连接图</strong> 2. 用 Dijkstra 或 Floyd 算法求图上<strong>最短路径</strong>近似测地线距离 3. 用 MDS 求低维坐标</p>
+<p><strong>问题</strong>：近邻范围过大 → 距离很远的点被误连 → <strong>短路</strong>；范围过小 → 图不连通 → <strong>断路</strong>。新样本的低维坐标只能用回归学习器近似预测（权宜之计）。</p>
+<h4 id="局部线性嵌入lle">10.5.2 局部线性嵌入（LLE)</h4>
+<p>与 Isomap 保持距离不同，LLE 保持<strong>邻域内样本间的线性重构关系</strong>： <span class="math display">\[
+x_i = w_{ij}x_j + w_{ik}x_k + w_{il}x_l
+\]</span> 两步： 1. 对每个 <span class="math inline">\(x_i\)</span>，在近邻集合 <span class="math inline">\(Q_i\)</span> 上求重构系数（<span class="math inline">\(\sum_j w_{ij} = 1\)</span>）： <span class="math display">\[
+   \min_{w_{ij}} \left\| x_i - \sum_{j \in Q_i} w_{ij} x_j \right\|_2^2
+   \]</span> 2. 低维空间中保持 <span class="math inline">\(w_{ij}\)</span> 不变，求 <span class="math inline">\(z_i\)</span>： <span class="math display">\[
+   \min_Z \operatorname{tr}(ZMZ^{\mathrm{T}}) \quad \text{s.t.} \quad ZZ^{\mathrm{T}} = I
+   \]</span> 其中 <span class="math inline">\(M = (I-W)^{\mathrm{T}}(I-W)\)</span>。解：<span class="math inline">\(M\)</span> 最小的 <span class="math inline">\(d&#39;\)</span> 个特征值对应特征向量组成 <span class="math inline">\(Z^{\mathrm{T}}\)</span>。</p>
+<p>局部性思想：邻域外样本如何变化都不影响 <span class="math inline">\(w_{ij}\)</span>、<span class="math inline">\(z_i\)</span>。</p>
+<hr />
+<h3 id="度量学习">10.6 度量学习</h3>
+<p>降维本质是寻找合适的距离度量 → 直接<strong>学习</strong>距离度量。</p>
+<p><strong>推广欧氏距离</strong>：属性加权 <span class="math inline">\(\|x_i - x_j\|_W^2 = (x_i-x_j)^{\mathrm{T}}W(x_i-x_j)\)</span>，<span class="math inline">\(W = \operatorname{diag}(w)\)</span>。但 <span class="math inline">\(W\)</span> 非对角元为 0 意味着属性无关；属性相关时（如西瓜重量与体积）用一般半正定对称矩阵 <span class="math inline">\(M\)</span>，得到<strong>马氏距离</strong>： <span class="math display">\[
+\operatorname{dist}_{\mathrm{mah}}^2(x_i, x_j) = (x_i - x_j)^{\mathrm{T}} M (x_i - x_j)
+\]</span> <span class="math inline">\(M\)</span> 即<strong>度量矩阵</strong>，度量学习即学习 <span class="math inline">\(M\)</span>（须半正定：<span class="math inline">\(M = PP^{\mathrm{T}}\)</span>）。</p>
+<h4 id="近邻成分分析nca">近邻成分分析（NCA）</h4>
+<p>把多数投票改为<strong>概率投票</strong>： <span class="math display">\[
+p_{ij} = \frac{\exp(-\|x_i - x_j\|_M^2)}{\sum_{l \neq i} \exp(-\|x_i - x_l\|_M^2)}
+\]</span> 最大化留一法（LOO）正确率 <span class="math inline">\(\sum_i \sum_{j \in \Omega_i} p_{ij}\)</span>（<span class="math inline">\(\Omega_i\)</span> 为与 <span class="math inline">\(x_i\)</span> 同类样本下标集），代入 <span class="math inline">\(M = PP^{\mathrm{T}}\)</span> 得优化目标，求解即得度量矩阵。</p>
+<h4 id="必连勿连约束领域知识">必连/勿连约束（领域知识）</h4>
+<p><span class="math inline">\(\mathcal{M}\)</span> 必连、<span class="math inline">\(\mathcal{C}\)</span> 勿连约束下的凸优化 [Xing et al.,2003]： <span class="math display">\[
+\min_M \sum_{(x_i, x_j) \in \mathcal{M}} \|x_i - x_j\|_M^2 \quad \text{s.t.} \quad \sum_{(x_i, x_k) \in \mathcal{C}} \|x_i - x_k\|_M \geqslant 1, \quad M \succeq 0
+\]</span></p>
+<p><strong>度量学习与降维的联系</strong>：若学得的 <span class="math inline">\(M\)</span> 低秩（秩 <span class="math inline">\(\operatorname{rank}(M) &lt; d\)</span>），对 <span class="math inline">\(M\)</span> 特征值分解可得降维矩阵 <span class="math inline">\(P \in \mathbb{R}^{d \times \operatorname{rank}(M)}\)</span>，度量学习结果可衍生出降维。</p>
+<hr />
+<h3 id="小结">小结</h3>
 <table>
 <thead>
 <tr class="header">
 <th>概念</th>
-<th>定义</th>
+<th>要点</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>错误率</strong> (error rate)</td>
-<td><span class="math inline">\(E = a/m\)</span>（<span class="math inline">\(a\)</span> 个样本分类错误）</td>
+<td><strong>kNN</strong></td>
+<td>懒惰学习；1NN 错误率 ≤ 2×贝叶斯最优</td>
 </tr>
 <tr class="even">
-<td><strong>精度</strong> (accuracy)</td>
-<td><span class="math inline">\(1 - \text{错误率}\)</span></td>
+<td><strong>维数灾难</strong></td>
+<td>高维下密采样困难、距离计算困难</td>
 </tr>
 <tr class="odd">
-<td><strong>训练误差/经验误差</strong></td>
-<td>学习器在训练集上的误差</td>
+<td><strong>MDS</strong></td>
+<td>由距离矩阵求内积矩阵 <span class="math inline">\(B\)</span>，特征值分解得低维坐标</td>
 </tr>
 <tr class="even">
-<td><strong>泛化误差</strong></td>
-<td>学习器在新样本上的误差</td>
+<td><strong>PCA</strong></td>
+<td>最近重构性 = 最大可分性；<span class="math inline">\(XX^{\mathrm{T}}\)</span> 特征值分解取前 <span class="math inline">\(d&#39;\)</span> 个</td>
 </tr>
 <tr class="odd">
-<td><strong>过拟合</strong> (overfitting)</td>
-<td>把训练样本自身特点当作一般性质，泛化下降</td>
+<td><strong>KPCA</strong></td>
+<td>核矩阵 <span class="math inline">\(K\)</span> 特征值分解；投影需对所有样本求和</td>
 </tr>
 <tr class="even">
-<td><strong>欠拟合</strong> (underfitting)</td>
-<td>对训练样本的一般性质尚未学好</td>
+<td><strong>Isomap</strong></td>
+<td>近邻图最短路径 ≈ 测地线距离 + MDS；短路/断路问题</td>
+</tr>
+<tr class="odd">
+<td><strong>LLE</strong></td>
+<td>保持局部线性重构关系；<span class="math inline">\(M\)</span> 最小特征向量</td>
+</tr>
+<tr class="even">
+<td><strong>度量学习</strong></td>
+<td>马氏距离 <span class="math inline">\(M\)</span> 半正定；NCA 概率投票；必连/勿连凸优化</td>
 </tr>
 </tbody>
 </table>
-<p><strong>关键洞察</strong>：过拟合无法彻底避免，只能缓解（若可彻底避免则 P = NP）。</p>
-<p><strong>模型选择</strong>：在多个学习算法或参数配置中选择泛化误差最小的模型。</p>
-<hr />
-<h3 id="评估方法">2.2 评估方法</h3>
-<p>基本思路：用<strong>测试集</strong>上的<strong>测试误差</strong>近似泛化误差。测试集必须与训练集<strong>互斥</strong>。</p>
-<h4 id="留出法-hold-out">留出法 (hold-out)</h4>
-<ul>
-<li>将数据集 <span class="math inline">\(D\)</span> 划分为互斥的训练集 <span class="math inline">\(S\)</span> 和测试集 <span class="math inline">\(T\)</span></li>
-<li>分层采样保持类别比例</li>
-<li>单次划分不稳定，需多次随机划分取平均值</li>
-<li>常用比例：<span class="math inline">\(2/3 \sim 4/5\)</span> 训练，其余测试</li>
-</ul>
-<h4 id="交叉验证法-cross-validation">交叉验证法 (cross validation)</h4>
-<ul>
-<li>将 <span class="math inline">\(D\)</span> 划分为 <span class="math inline">\(k\)</span> 个互斥子集（分层采样）</li>
-<li>每次用 <span class="math inline">\(k-1\)</span> 个子集训练，剩下 1 个测试，重复 <span class="math inline">\(k\)</span> 次</li>
-<li><span class="math inline">\(k\)</span> 常用取值：5、10、20</li>
-<li><strong>留一法 (LOO)</strong>：<span class="math inline">\(k=m\)</span>，结果准确但计算开销大</li>
-</ul>
-<h4 id="自助法-bootstrapping">自助法 (bootstrapping)</h4>
-<ul>
-<li>从 <span class="math inline">\(D\)</span> 中有放回采样 <span class="math inline">\(m\)</span> 次，形成训练集 <span class="math inline">\(D&#39;\)</span></li>
-<li>约 <span class="math inline">\(36.8\%\)</span> 的样本未被采到（可用作测试集）</li>
-<li>优点：数据集小时有效；缺点：改变数据分布</li>
-</ul>
-<h4 id="调参与最终模型">调参与最终模型</h4>
-<ul>
-<li><strong>参数调节 (调参)</strong>：选定参数范围与步长，评估候选值</li>
-<li><strong>验证集</strong>：模型选择与调参时使用的数据集</li>
-<li>模型选择完成后，应用全量数据 <span class="math inline">\(D\)</span> 重新训练最终模型</li>
-</ul>
-<hr />
-<h3 id="性能度量">2.3 性能度量</h3>
-<h4 id="回归任务">回归任务</h4>
-<p><strong>均方误差 (MSE)</strong>： <span class="math display">\[
-E(f;D) = \frac{1}{m}\sum_{i=1}^m (f(x_i)-y_i)^2
-\]</span></p>
-<h4 id="分类任务">分类任务</h4>
-<p><strong>错误率与精度</strong>： <span class="math display">\[
-E(f;D) = \frac{1}{m}\sum_{i=1}^m \mathbb{I}(f(x_i)\neq y_i),\quad \text{acc}=1-E
-\]</span></p>
-<p><strong>查准率与查全率</strong>（基于混淆矩阵）：</p>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;">真实</th>
-<th style="text-align: left;">预测正例</th>
-<th style="text-align: left;">预测反例</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">正例</td>
-<td style="text-align: left;">TP (真正例)</td>
-<td style="text-align: left;">FN (假反例)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">反例</td>
-<td style="text-align: left;">FP (假正例)</td>
-<td style="text-align: left;">TN (真反例)</td>
-</tr>
-</tbody>
-</table>
-<p><span class="math display">\[
-P = \frac{TP}{TP+FP} \quad (\text{查准率}),\qquad 
-R = \frac{TP}{TP+FN} \quad (\text{查全率})
-\]</span></p>
-<p><strong>P-R 曲线</strong>：纵轴为查准率，横轴为查全率。曲线包围面积越大越好。</p>
-<p><strong>平衡点 (BEP)</strong>：查准率 = 查全率时的取值。</p>
-<p><strong><span class="math inline">\(F1\)</span> 度量</strong>（调和平均）： <span class="math display">\[
-F1 = \frac{2\times P\times R}{P+R}
-\]</span></p>
-<p><strong><span class="math inline">\(F_\beta\)</span></strong>（加权调和平均）： <span class="math display">\[
-F_\beta = \frac{(1+\beta^2)\times P\times R}{(\beta^2\times P)+R}
-\]</span> - <span class="math inline">\(\beta=1\)</span>：标准 F1；<span class="math inline">\(\beta&gt;1\)</span>：更重查全率；<span class="math inline">\(\beta&lt;1\)</span>：更重查准率</p>
-<p><strong>宏/微平均</strong>：多混淆矩阵时，宏（先算再平均）vs 微（先平均再算）。</p>
-<h4 id="roc-与-auc">ROC 与 AUC</h4>
-<p><strong>ROC 曲线</strong>：纵轴 TPR（真正例率），横轴 FPR（假正例率）。</p>
-<p><span class="math display">\[
-TPR = \frac{TP}{TP+FN},\quad FPR = \frac{FP}{TN+FP}
-\]</span></p>
-<ul>
-<li>对角线 = 随机猜测，点 (0,1) = 理想模型</li>
-<li>AUC = ROC 曲线下面积</li>
-</ul>
-<p><strong>AUC 与排序损失</strong>： <span class="math display">\[
-\ell_{rank} = \frac{1}{m^+m^-}\sum_{x^+\in D^+}\sum_{x^-\in D^-}\big(\mathbb{I}(f(x^+)&lt;f(x^-)) + \tfrac12\mathbb{I}(f(x^+)=f(x^-))\big)
-\]</span> <span class="math display">\[
-AUC = 1 - \ell_{rank}
-\]</span></p>
-<h4 id="代价敏感错误率">代价敏感错误率</h4>
-<p>非均等代价下使用<strong>代价矩阵</strong>，最小化总体代价而非错误次数。</p>
-<p><strong>代价曲线</strong>：横轴为正例概率代价 <span class="math inline">\(P(+)cost\)</span>，纵轴为归一化代价 <span class="math inline">\(cost_{norm}\)</span>。</p>
-<hr />
-<h3 id="比较检验">2.4 比较检验</h3>
-<h4 id="假设检验基础">假设检验基础</h4>
-<ul>
-<li>泛化错误率 <span class="math inline">\(\epsilon\)</span> 未知，只能获得测试错误率 <span class="math inline">\(\hat{\epsilon}\)</span></li>
-<li><strong>二项检验</strong>：对假设 <span class="math inline">\(\epsilon \leq \epsilon_0\)</span> 进行检验</li>
-<li><strong>t 检验</strong>：多次训练/测试得到多个测试错误率，用 t 分布检验均值</li>
-</ul>
-<h4 id="交叉验证-t-检验">交叉验证 t 检验</h4>
-<ul>
-<li>对两学习器 A、B，计算每折差值 <span class="math inline">\(\Delta_i = \epsilon_i^A - \epsilon_i^B\)</span></li>
-<li>若差值均值显著不为零，则两学习器性能有显著差别</li>
-<li><strong><span class="math inline">\(5\times2\)</span> 交叉验证</strong>缓解样本重叠导致的非独立性</li>
-</ul>
-<h4 id="mcnemar-检验">McNemar 检验</h4>
-<ul>
-<li>基于列联表 <span class="math inline">\(e_{01}\)</span>（A 错 B 对）和 <span class="math inline">\(e_{10}\)</span>（A 对 B 错）</li>
-<li><span class="math inline">\(\tau_{\chi^2} = (|e_{01}-e_{10}|-1)^2 / (e_{01}+e_{10})\)</span> 服从 <span class="math inline">\(\chi^2(1)\)</span></li>
-</ul>
-<h4 id="friedman-检验-nemenyi-后续检验">Friedman 检验 + Nemenyi 后续检验</h4>
-<ul>
-<li>在多个数据集上比较多个算法</li>
-<li>计算各算法在每个数据集上的<strong>平均序值</strong></li>
-<li>Friedman 检验判断是否所有算法性能相同</li>
-<li>若拒绝原假设，用 Nemenyi 检验计算临界差值 CD</li>
-</ul>
-<hr />
-<h3 id="偏差与方差">2.5 偏差与方差</h3>
-<p><strong>偏差-方差分解</strong>（以回归任务为例）：</p>
-<p><span class="math display">\[
-E(f;D) = bias^2(x) + var(x) + \epsilon^2
-\]</span></p>
-<table>
-<thead>
-<tr class="header">
-<th>分量</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>偏差</strong> <span class="math inline">\(bias^2(x)\)</span></td>
-<td>期望预测与真实标记的偏离 → 刻画算法拟合能力</td>
-</tr>
-<tr class="even">
-<td><strong>方差</strong> <span class="math inline">\(var(x)\)</span></td>
-<td>不同训练集产生的预测变化 → 刻画数据扰动的影响</td>
-</tr>
-<tr class="odd">
-<td><strong>噪声</strong> <span class="math inline">\(\epsilon^2\)</span></td>
-<td>当前任务任何算法能达到的泛化误差下界 → 刻画问题本身难度</td>
-</tr>
-</tbody>
-</table>
-<p><strong>偏差-方差窘境 (bias-variance dilemma)</strong>： - 训练不足 → 偏差主导（欠拟合） - 训练加深 → 方差逐渐主导 - 训练过度 → 发生过拟合</p>
-<p><strong>实际指导意义</strong>：偏差大 → 欠拟合（增加模型复杂度）；方差大 → 过拟合（降低模型复杂度 / 增加数据）。</p>
-<hr />
-<h3 id="小结">小结</h3>
-<p>第二章构建了完整的模型评估与选择框架： 1. <strong>评估方法</strong>：如何划分训练/测试集（留出法、交叉验证、自助法） 2. <strong>性能度量</strong>：如何量化模型好坏（MSE、错误率、P/R/F1、ROC/AUC、代价敏感） 3. <strong>比较检验</strong>：如何统计判断差异是否显著（t 检验、McNemar、Friedman） 4. <strong>偏差-方差分析</strong>：从理论上解释泛化误差的来源</p>
-<p>这些内容是后续各章学习算法“好不好”的判断基础。</p>
 
                 
               </div>
@@ -607,8 +530,8 @@ E(f;D) = bias^2(x) + var(x) + \epsilon^2
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>《机器学习》自学日记（二）</div>
-      <div>https://suzhenghao.top/2026/07/15/ML-note2/</div>
+      <div>《机器学习》自学日记（十）</div>
+      <div>https://suzhenghao.top/2026/08/03/ML-note10/</div>
     </div>
     <div class="license-meta">
       
@@ -620,7 +543,7 @@ E(f;D) = bias^2(x) + var(x) + \epsilon^2
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2026年7月15日</div>
+          <div>2026年8月3日</div>
         </div>
       
       
@@ -652,9 +575,9 @@ E(f;D) = bias^2(x) + var(x) + \epsilon^2
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2026/07/16/ML-note3/" title="《机器学习》自学日记（三）">
+                      <a href="/2026/08/07/ML-note11/" title="《机器学习》自学日记（十一）">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">《机器学习》自学日记（三）</span>
+                        <span class="hidden-mobile">《机器学习》自学日记（十一）</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -662,8 +585,8 @@ E(f;D) = bias^2(x) + var(x) + \epsilon^2
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2026/07/12/PFSchedule/" title="正好课表——为 NJU 选课做的一个小工具">
-                        <span class="hidden-mobile">正好课表——为 NJU 选课做的一个小工具</span>
+                      <a href="/2026/07/31/ML-note9/" title="《机器学习》自学日记（九）">
+                        <span class="hidden-mobile">《机器学习》自学日记（九）</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

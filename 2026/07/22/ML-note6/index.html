@@ -325,7 +325,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.7k 字
+          3.6k 字
         
       </span>
     
@@ -336,7 +336,7 @@
         
         
         
-          23 分钟
+          30 分钟
         
       </span>
     
@@ -383,46 +383,50 @@
                 <h2 id="第六章-支持向量机">第六章 支持向量机</h2>
 <h3 id="间隔与支持向量">6.1 间隔与支持向量</h3>
 <p><strong>SVM 的核心思想</strong>：寻找具有“最大间隔”的划分超平面，使分类结果最鲁棒。</p>
-<p><strong>划分超平面</strong>： <span class="math display"><em>w</em><sup><em>T</em></sup><em>x</em> + <em>b</em> = 0</span> - <span class="math inline"><em>w</em></span> 为法向量，决定超平面方向；<span class="math inline"><em>b</em></span> 为位移项，决定与原点距离</p>
-<p><strong>样本点到超平面距离</strong>： <span class="math display">$$
+<p><strong>划分超平面</strong>： <span class="math display">\[
+w^{\mathrm{T}}x + b = 0
+\]</span> - <span class="math inline">\(w\)</span> 为法向量，决定超平面方向；<span class="math inline">\(b\)</span> 为位移项，决定与原点距离</p>
+<p><strong>样本点到超平面距离</strong>： <span class="math display">\[
 r = \frac{|w^{\mathrm{T}}x + b|}{\|w\|}
-$$</span></p>
-<p><strong>支持向量与间隔</strong>： - 令 <span class="math inline"><em>y</em><sub><em>i</em></sub> =  + 1</span> 时 <span class="math inline"><em>w</em><sup><em>T</em></sup><em>x</em><sub><em>i</em></sub> + <em>b</em> ≥  + 1</span>，<span class="math inline"><em>y</em><sub><em>i</em></sub> =  − 1</span> 时 <span class="math inline"><em>w</em><sup><em>T</em></sup><em>x</em><sub><em>i</em></sub> + <em>b</em> ≤  − 1</span> - <strong>支持向量</strong>：使等号成立的训练样本点 - <strong>间隔</strong>（margin）：两个异类支持向量到超平面距离之和 <span class="math display">$$
+\]</span></p>
+<p><strong>支持向量与间隔</strong>： - 令 <span class="math inline">\(y_i = +1\)</span> 时 <span class="math inline">\(w^{\mathrm{T}}x_i + b \geqslant +1\)</span>，<span class="math inline">\(y_i = -1\)</span> 时 <span class="math inline">\(w^{\mathrm{T}}x_i + b \leqslant -1\)</span> - <strong>支持向量</strong>：使等号成立的训练样本点 - <strong>间隔</strong>（margin）：两个异类支持向量到超平面距离之和 <span class="math display">\[
   \gamma = \frac{2}{\|w\|}
-  $$</span></p>
-<p><strong>SVM 基本型</strong>： <span class="math display">$$
+  \]</span></p>
+<p><strong>SVM 基本型</strong>： <span class="math display">\[
 \min_{w,b} \frac12 \|w\|^2 \quad \text{s.t.} \quad y_i(w^{\mathrm{T}}x_i + b) \geqslant 1,\; i = 1,\dots,m
-$$</span></p>
+\]</span></p>
 <hr />
 <h3 id="对偶问题">6.2 对偶问题</h3>
 <p>利用<strong>拉格朗日乘子法</strong>将原问题转化为对偶问题：</p>
-<p><strong>拉格朗日函数</strong>： <span class="math display">$$
+<p><strong>拉格朗日函数</strong>： <span class="math display">\[
 L(w,b,\alpha) = \frac12 \|w\|^2 + \sum_{i=1}^m \alpha_i (1 - y_i(w^{\mathrm{T}}x_i + b))
-$$</span></p>
-<p>令偏导为零得： <span class="math display">$$
+\]</span></p>
+<p>令偏导为零得： <span class="math display">\[
 w = \sum_{i=1}^m \alpha_i y_i x_i,\quad 0 = \sum_{i=1}^m \alpha_i y_i
-$$</span></p>
-<p><strong>对偶问题</strong>： <span class="math display">$$
+\]</span></p>
+<p><strong>对偶问题</strong>： <span class="math display">\[
 \max_{\alpha} \sum_{i=1}^m \alpha_i - \frac12 \sum_{i=1}^m \sum_{j=1}^m \alpha_i \alpha_j y_i y_j x_i^{\mathrm{T}}x_j
-$$</span> <span class="math display">$$
+\]</span> <span class="math display">\[
 \text{s.t.} \quad \sum_{i=1}^m \alpha_i y_i = 0,\quad \alpha_i \geqslant 0
-$$</span></p>
-<p><strong>KKT 条件</strong>： <span class="math display">$$
+\]</span></p>
+<p><strong>KKT 条件</strong>： <span class="math display">\[
 \begin{cases}
 \alpha_i \geqslant 0 \\
 y_i f(x_i) - 1 \geqslant 0 \\
 \alpha_i (y_i f(x_i) - 1) = 0
 \end{cases}
-$$</span></p>
-<p>核心结论：最终模型仅与 <span class="math inline"><em>α</em><sub><em>i</em></sub> &gt; 0</span> 的<strong>支持向量</strong>有关，非支持向量对模型无影响。</p>
-<p><strong>SMO 算法</strong>（Sequential Minimal Optimization）： 1. 每次选取两个变量 <span class="math inline"><em>α</em><sub><em>i</em></sub>, <em>α</em><sub><em>j</em></sub></span>，固定其余参数 2. 利用约束 <span class="math inline"><em>α</em><sub><em>i</em></sub><em>y</em><sub><em>i</em></sub> + <em>α</em><sub><em>j</em></sub><em>y</em><sub><em>j</em></sub> = <em>c</em></span> 消元，得到关于 <span class="math inline"><em>α</em><sub><em>i</em></sub></span> 的单变量二次规划（有闭式解） 3. 变量选择启发式：找违背 KKT 程度最大的 + 间隔最大的对应样本</p>
-<p><strong>偏移项 <span class="math inline"><em>b</em></span> 的求解</strong>：对所有支持向量求解后取平均： <span class="math display">$$
+\]</span></p>
+<p>核心结论：最终模型仅与 <span class="math inline">\(\alpha_i &gt; 0\)</span> 的<strong>支持向量</strong>有关，非支持向量对模型无影响。</p>
+<p><strong>SMO 算法</strong>（Sequential Minimal Optimization）： 1. 每次选取两个变量 <span class="math inline">\(\alpha_i, \alpha_j\)</span>，固定其余参数 2. 利用约束 <span class="math inline">\(\alpha_i y_i + \alpha_j y_j = c\)</span> 消元，得到关于 <span class="math inline">\(\alpha_i\)</span> 的单变量二次规划（有闭式解） 3. 变量选择启发式：找违背 KKT 程度最大的 + 间隔最大的对应样本</p>
+<p><strong>偏移项 <span class="math inline">\(b\)</span> 的求解</strong>：对所有支持向量求解后取平均： <span class="math display">\[
 b = \frac{1}{|S|} \sum_{s \in S} \left(y_s - \sum_{i \in S} \alpha_i y_i x_i^{\mathrm{T}} x_s\right)
-$$</span></p>
+\]</span></p>
 <hr />
 <h3 id="核函数">6.3 核函数</h3>
 <p><strong>动机</strong>：现实任务中原始空间可能不存在线性可分超平面 → 映射到更高维特征空间。</p>
-<p><strong>核技巧</strong>（kernel trick）：不显式计算 <span class="math inline"><em>ϕ</em>(<em>x</em><sub><em>i</em></sub>)<sup><em>T</em></sup><em>ϕ</em>(<em>x</em><sub><em>j</em></sub>)</span>，而是通过核函数直接计算： <span class="math display"><em>κ</em>(<em>x</em><sub><em>i</em></sub>, <em>x</em><sub><em>j</em></sub>) = ⟨<em>ϕ</em>(<em>x</em><sub><em>i</em></sub>), <em>ϕ</em>(<em>x</em><sub><em>j</em></sub>)⟩ = <em>ϕ</em>(<em>x</em><sub><em>i</em></sub>)<sup><em>T</em></sup><em>ϕ</em>(<em>x</em><sub><em>j</em></sub>)</span></p>
+<p><strong>核技巧</strong>（kernel trick）：不显式计算 <span class="math inline">\(\phi(x_i)^{\mathrm{T}}\phi(x_j)\)</span>，而是通过核函数直接计算： <span class="math display">\[
+\kappa(x_i, x_j) = \langle \phi(x_i), \phi(x_j) \rangle = \phi(x_i)^{\mathrm{T}}\phi(x_j)
+\]</span></p>
 <p><strong>常用核函数</strong>：</p>
 <table>
 
@@ -436,41 +440,41 @@ $$</span></p>
 <tbody>
 <tr class="odd">
 <td>线性核</td>
-<td><span class="math inline"><em>x</em><sub><em>i</em></sub><sup><em>T</em></sup><em>x</em><sub><em>j</em></sub></span></td>
+<td><span class="math inline">\(x_i^{\mathrm{T}}x_j\)</span></td>
 <td>—</td>
 </tr>
 <tr class="even">
 <td>多项式核</td>
-<td><span class="math inline">(<em>x</em><sub><em>i</em></sub><sup><em>T</em></sup><em>x</em><sub><em>j</em></sub>)<sup><em>d</em></sup></span></td>
-<td><span class="math inline"><em>d</em> ≥ 1</span> 次数</td>
+<td><span class="math inline">\((x_i^{\mathrm{T}}x_j)^d\)</span></td>
+<td><span class="math inline">\(d \geqslant 1\)</span> 次数</td>
 </tr>
 <tr class="odd">
 <td>高斯核（RBF）</td>
-<td><span class="math inline">$\exp\left(-\dfrac{\|x_i - x_j\|^2}{2\sigma^2}\right)$</span></td>
-<td><span class="math inline"><em>σ</em> &gt; 0</span> 带宽</td>
+<td><span class="math inline">\(\exp\left(-\dfrac{\|x_i - x_j\|^2}{2\sigma^2}\right)\)</span></td>
+<td><span class="math inline">\(\sigma &gt; 0\)</span> 带宽</td>
 </tr>
 <tr class="even">
 <td>拉普拉斯核</td>
-<td><span class="math inline">$\exp\left(-\dfrac{\|x_i - x_j\|}{\sigma}\right)$</span></td>
-<td><span class="math inline"><em>σ</em> &gt; 0</span></td>
+<td><span class="math inline">\(\exp\left(-\dfrac{\|x_i - x_j\|}{\sigma}\right)\)</span></td>
+<td><span class="math inline">\(\sigma &gt; 0\)</span></td>
 </tr>
 <tr class="odd">
 <td>Sigmoid 核</td>
-<td><span class="math inline">tanh (<em>β</em><em>x</em><sub><em>i</em></sub><sup><em>T</em></sup><em>x</em><sub><em>j</em></sub> + <em>θ</em>)</span></td>
-<td><span class="math inline"><em>β</em> &gt; 0, <em>θ</em> &lt; 0</span></td>
+<td><span class="math inline">\(\tanh(\beta x_i^{\mathrm{T}}x_j + \theta)\)</span></td>
+<td><span class="math inline">\(\beta &gt; 0, \theta &lt; 0\)</span></td>
 </tr>
 </tbody>
 </table>
-<p><strong>核函数判定（Mercer 定理）</strong>：对称函数 <span class="math inline"><em>κ</em></span> 是核函数 <span class="math inline">⇔</span> 对任意数据，核矩阵 <span class="math inline"><strong>K</strong></span> 半正定。</p>
-<p><strong>核函数组合</strong>： - 线性组合 <span class="math inline"><em>γ</em><sub>1</sub><em>κ</em><sub>1</sub> + <em>γ</em><sub>2</sub><em>κ</em><sub>2</sub></span> - 直积 <span class="math inline"><em>κ</em><sub>1</sub> ⊗ <em>κ</em><sub>2</sub>(<em>x</em>, <em>z</em>) = <em>κ</em><sub>1</sub>(<em>x</em>, <em>z</em>)<em>κ</em><sub>2</sub>(<em>x</em>, <em>z</em>)</span> - 函数缩放 <span class="math inline"><em>κ</em>(<em>x</em>, <em>z</em>) = <em>g</em>(<em>x</em>)<em>κ</em><sub>1</sub>(<em>x</em>, <em>z</em>)<em>g</em>(<em>z</em>)</span></p>
+<p><strong>核函数判定（Mercer 定理）</strong>：对称函数 <span class="math inline">\(\kappa\)</span> 是核函数 <span class="math inline">\(\iff\)</span> 对任意数据，核矩阵 <span class="math inline">\(\mathbf{K}\)</span> 半正定。</p>
+<p><strong>核函数组合</strong>： - 线性组合 <span class="math inline">\(\gamma_1\kappa_1 + \gamma_2\kappa_2\)</span> - 直积 <span class="math inline">\(\kappa_1 \otimes \kappa_2(x,z) = \kappa_1(x,z)\kappa_2(x,z)\)</span> - 函数缩放 <span class="math inline">\(\kappa(x,z) = g(x)\kappa_1(x,z)g(z)\)</span></p>
 <p>核函数选择是 SVM 的最大变数。</p>
 <hr />
 <h3 id="软间隔与正则化">6.4 软间隔与正则化</h3>
-<p><strong>硬间隔</strong>：要求所有样本满足 <span class="math inline"><em>y</em><sub><em>i</em></sub>(<em>w</em><sup><em>T</em></sup><em>x</em><sub><em>i</em></sub> + <em>b</em>) ≥ 1</span>（线性可分假设） <strong>软间隔</strong>：允许部分样本不满足约束，引入损失项</p>
-<p><strong>优化目标</strong>： <span class="math display">$$
+<p><strong>硬间隔</strong>：要求所有样本满足 <span class="math inline">\(y_i(w^{\mathrm{T}}x_i + b) \geqslant 1\)</span>（线性可分假设） <strong>软间隔</strong>：允许部分样本不满足约束，引入损失项</p>
+<p><strong>优化目标</strong>： <span class="math display">\[
 \min_{w,b} \frac12 \|w\|^2 + C \sum_{i=1}^m \ell_{0/1}\big(y_i(w^{\mathrm{T}}x_i + b) - 1\big)
-$$</span></p>
-<p><strong>替代损失函数</strong>（<span class="math inline">ℓ<sub>0/1</sub></span> 非凸、不连续，需用凸替代）：</p>
+\]</span></p>
+<p><strong>替代损失函数</strong>（<span class="math inline">\(\ell_{0/1}\)</span> 非凸、不连续，需用凸替代）：</p>
 <table>
 <thead>
 <tr class="header">
@@ -481,45 +485,51 @@ $$</span></p>
 <tbody>
 <tr class="odd">
 <td>Hinge 损失</td>
-<td><span class="math inline">max (0, 1 − <em>z</em>)</span></td>
+<td><span class="math inline">\(\max(0, 1 - z)\)</span></td>
 </tr>
 <tr class="even">
 <td>指数损失</td>
-<td><span class="math inline">exp ( − <em>z</em>)</span></td>
+<td><span class="math inline">\(\exp(-z)\)</span></td>
 </tr>
 <tr class="odd">
 <td>对率损失</td>
-<td><span class="math inline">log (1 + exp ( − <em>z</em>))</span></td>
+<td><span class="math inline">\(\log(1 + \exp(-z))\)</span></td>
 </tr>
 </tbody>
 </table>
-<p><strong>软间隔 SVM（采用 Hinge 损失）</strong>： <span class="math display">$$
+<p><strong>软间隔 SVM（采用 Hinge 损失）</strong>： <span class="math display">\[
 \min_{w,b,\xi_i} \frac12 \|w\|^2 + C \sum_{i=1}^m \xi_i
-$$</span> <span class="math display">s.t.  <em>y</em><sub><em>i</em></sub>(<em>w</em><sup><em>T</em></sup><em>x</em><sub><em>i</em></sub> + <em>b</em>) ≥ 1 − <em>ξ</em><sub><em>i</em></sub>,  <em>ξ</em><sub><em>i</em></sub> ≥ 0</span></p>
-<p><strong>对偶问题</strong>：与硬间隔的唯一差别是 <span class="math inline"><em>α</em><sub><em>i</em></sub></span> 加了上界： <span class="math display">0 ≤ <em>α</em><sub><em>i</em></sub> ≤ <em>C</em></span></p>
-<p><strong>结构风险 vs 经验风险</strong>： <span class="math display">$$
+\]</span> <span class="math display">\[
+\text{s.t.} \quad y_i(w^{\mathrm{T}}x_i + b) \geqslant 1 - \xi_i,\quad \xi_i \geqslant 0
+\]</span></p>
+<p><strong>对偶问题</strong>：与硬间隔的唯一差别是 <span class="math inline">\(\alpha_i\)</span> 加了上界： <span class="math display">\[
+0 \leqslant \alpha_i \leqslant C
+\]</span></p>
+<p><strong>结构风险 vs 经验风险</strong>： <span class="math display">\[
 \min_f \Omega(f) + C \sum_{i=1}^m \ell(f(x_i), y_i)
-$$</span> - <span class="math inline"><em>Ω</em>(<em>f</em>)</span>：结构风险（正则化项），表达模型性质偏好 - <span class="math inline">∑ℓ</span>：经验风险，描述与训练数据契合程度 - <span class="math inline"><em>L</em><sub>2</sub></span> 范数使 <span class="math inline"><em>w</em></span> 分量稠密，<span class="math inline"><em>L</em><sub>0</sub></span>/<span class="math inline"><em>L</em><sub>1</sub></span> 范数使分量稀疏</p>
+\]</span> - <span class="math inline">\(\Omega(f)\)</span>：结构风险（正则化项），表达模型性质偏好 - <span class="math inline">\(\sum \ell\)</span>：经验风险，描述与训练数据契合程度 - <span class="math inline">\(L_2\)</span> 范数使 <span class="math inline">\(w\)</span> 分量稠密，<span class="math inline">\(L_0\)</span>/<span class="math inline">\(L_1\)</span> 范数使分量稀疏</p>
 <hr />
 <h3 id="支持向量回归svr">6.5 支持向量回归（SVR）</h3>
-<p><strong><span class="math inline"><em>ϵ</em></span>-不敏感损失</strong>：允许 <span class="math inline"><em>f</em>(<em>x</em>)</span> 与 <span class="math inline"><em>y</em></span> 间最多有 <span class="math inline"><em>ϵ</em></span> 偏差，落入 <span class="math inline"><em>ϵ</em></span>-间隔带的样本不计损失： <span class="math display">$$
+<p><strong><span class="math inline">\(\epsilon\)</span>-不敏感损失</strong>：允许 <span class="math inline">\(f(x)\)</span> 与 <span class="math inline">\(y\)</span> 间最多有 <span class="math inline">\(\epsilon\)</span> 偏差，落入 <span class="math inline">\(\epsilon\)</span>-间隔带的样本不计损失： <span class="math display">\[
 \ell_{\epsilon}(z) = \begin{cases}
 0, &amp; |z| \leqslant \epsilon \\
 |z| - \epsilon, &amp; \text{otherwise}
 \end{cases}
-$$</span></p>
-<p><strong>SVR 优化问题</strong>： <span class="math display">$$
+\]</span></p>
+<p><strong>SVR 优化问题</strong>： <span class="math display">\[
 \min_{w,b} \frac12 \|w\|^2 + C \sum_{i=1}^m \ell_{\epsilon}(f(x_i) - y_i)
-$$</span></p>
-<p><strong>引入双松弛变量</strong> <span class="math inline"><em>ξ</em><sub><em>i</em></sub>, <em>ξ̂</em><sub><em>i</em></sub></span> 后转化为凸二次规划，对偶解： <span class="math display">$$
+\]</span></p>
+<p><strong>引入双松弛变量</strong> <span class="math inline">\(\xi_i, \hat{\xi}_i\)</span> 后转化为凸二次规划，对偶解： <span class="math display">\[
 f(x) = \sum_{i=1}^m (\hat{\alpha}_i - \alpha_i) \kappa(x, x_i) + b
-$$</span></p>
-<p>SVR 的支持向量是落在 <span class="math inline"><em>ϵ</em></span>-间隔带之外的样本，解仍具稀疏性。</p>
+\]</span></p>
+<p>SVR 的支持向量是落在 <span class="math inline">\(\epsilon\)</span>-间隔带之外的样本，解仍具稀疏性。</p>
 <hr />
 <h3 id="核方法">6.6 核方法</h3>
-<p><strong>表示定理</strong>（Representer Theorem）：对于任何单调递增 <span class="math inline"><em>Ω</em></span> 和任何非负损失 <span class="math inline">ℓ</span>，优化问题 <span class="math display">min<sub><em>h</em> ∈ ℍ</sub><em>Ω</em>(∥<em>h</em>∥<sub>ℍ</sub>) + ℓ(<em>h</em>(<em>x</em><sub>1</sub>), …, <em>h</em>(<em>x</em><sub><em>m</em></sub>))</span> 的最优解总可写成核函数的线性组合： <span class="math display">$$
+<p><strong>表示定理</strong>（Representer Theorem）：对于任何单调递增 <span class="math inline">\(\Omega\)</span> 和任何非负损失 <span class="math inline">\(\ell\)</span>，优化问题 <span class="math display">\[
+\min_{h \in \mathbb{H}} \Omega(\|h\|_{\mathbb{H}}) + \ell(h(x_1),\dots,h(x_m))
+\]</span> 的最优解总可写成核函数的线性组合： <span class="math display">\[
 h^*(x) = \sum_{i=1}^m \alpha_i \kappa(x, x_i)
-$$</span></p>
+\]</span></p>
 <p>KLDA（核线性判别分析）：在核映射后的特征空间中执行 LDA，通过表示定理转化为核矩阵上的广义 Rayleigh 商问题。</p>
 <hr />
 <h3 id="小结">小结</h3>
@@ -533,7 +543,7 @@ $$</span></p>
 <tbody>
 <tr class="odd">
 <td><strong>间隔</strong></td>
-<td><span class="math inline"><em>γ</em> = 2/∥<em>w</em>∥</span>，SVM 最大化间隔</td>
+<td><span class="math inline">\(\gamma = 2/\|w\|\)</span>，SVM 最大化间隔</td>
 </tr>
 <tr class="even">
 <td><strong>对偶</strong></td>
@@ -545,15 +555,15 @@ $$</span></p>
 </tr>
 <tr class="even">
 <td><strong>核技巧</strong></td>
-<td><span class="math inline"><em>κ</em>(<em>x</em><sub><em>i</em></sub>, <em>x</em><sub><em>j</em></sub>) = <em>ϕ</em>(<em>x</em><sub><em>i</em></sub>)<sup><em>T</em></sup><em>ϕ</em>(<em>x</em><sub><em>j</em></sub>)</span>，隐式高维映射</td>
+<td><span class="math inline">\(\kappa(x_i,x_j) = \phi(x_i)^{\mathrm{T}}\phi(x_j)\)</span>，隐式高维映射</td>
 </tr>
 <tr class="odd">
 <td><strong>软间隔</strong></td>
-<td>引入 <span class="math inline"><em>ξ</em><sub><em>i</em></sub></span> 和 <span class="math inline"><em>C</em></span>，<span class="math inline"><em>α</em><sub><em>i</em></sub></span> 增加 <span class="math inline"><em>C</em></span> 上界</td>
+<td>引入 <span class="math inline">\(\xi_i\)</span> 和 <span class="math inline">\(C\)</span>，<span class="math inline">\(\alpha_i\)</span> 增加 <span class="math inline">\(C\)</span> 上界</td>
 </tr>
 <tr class="even">
 <td><strong>SVR</strong></td>
-<td><span class="math inline"><em>ϵ</em></span>-不敏感损失，双松弛变量</td>
+<td><span class="math inline">\(\epsilon\)</span>-不敏感损失，双松弛变量</td>
 </tr>
 <tr class="odd">
 <td><strong>核方法</strong></td>
@@ -643,6 +653,12 @@ $$</span></p>
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2026/07/27/ML-note7/" title="《机器学习》自学日记（七）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">《机器学习》自学日记（七）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">

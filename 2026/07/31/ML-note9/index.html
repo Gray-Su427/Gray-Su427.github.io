@@ -19,21 +19,21 @@
   <meta name="author" content="Gray-Su">
   <meta name="keywords" content="">
   
-    <meta name="description" content="第二章 模型评估与选择——评估方法、性能度量与比较检验">
+    <meta name="description" content="第九章 聚类——性能度量、距离计算、原型&#x2F;密度&#x2F;层次聚类">
 <meta property="og:type" content="article">
-<meta property="og:title" content="《机器学习》自学日记（二）">
-<meta property="og:url" content="https://suzhenghao.top/2026/07/15/ML-note2/index.html">
+<meta property="og:title" content="《机器学习》自学日记（九）">
+<meta property="og:url" content="https://suzhenghao.top/2026/07/31/ML-note9/index.html">
 <meta property="og:site_name" content="Gray-Su&#39;s Blog">
-<meta property="og:description" content="第二章 模型评估与选择——评估方法、性能度量与比较检验">
+<meta property="og:description" content="第九章 聚类——性能度量、距离计算、原型&#x2F;密度&#x2F;层次聚类">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2026-07-15T08:57:16.000Z">
-<meta property="article:modified_time" content="2026-07-15T09:07:01.280Z">
+<meta property="article:published_time" content="2026-07-31T01:14:27.000Z">
+<meta property="article:modified_time" content="2026-08-07T08:23:12.458Z">
 <meta property="article:author" content="Gray-Su">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>《机器学习》自学日记（二） - Gray-Su&#39;s Blog</title>
+  <title>《机器学习》自学日记（九） - Gray-Su&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -302,7 +302,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="《机器学习》自学日记（二）"></span>
+            <span id="subtitle" data-typed-text="《机器学习》自学日记（九）"></span>
           
         </div>
 
@@ -313,8 +313,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2026-07-15 16:57" pubdate>
-          2026年7月15日 下午
+        <time datetime="2026-07-31 09:14" pubdate>
+          2026年7月31日 上午
         </time>
       </span>
     
@@ -325,7 +325,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.6k 字
+          4.3k 字
         
       </span>
     
@@ -336,7 +336,7 @@
         
         
         
-          22 分钟
+          36 分钟
         
       </span>
     
@@ -375,200 +375,132 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">《机器学习》自学日记（二）</h1>
+            <h1 id="seo-header">《机器学习》自学日记（九）</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="第二章-模型评估与选择">第二章 模型评估与选择</h2>
-<h3 id="经验误差与过拟合">2.1 经验误差与过拟合</h3>
+                <h2 id="第九章-聚类">第九章 聚类</h2>
+<h3 id="聚类任务">9.1 聚类任务</h3>
+<p><strong>无监督学习</strong>：训练样本无标记信息，通过学习揭示数据内在性质与规律。</p>
+<p><strong>聚类</strong>：将数据集划分为若干不相交子集——<strong>簇</strong>。簇对应潜在概念（语义需使用者命名），事先未知。</p>
+<p>形式化：样本集 <span class="math inline">\(D = \{x_1, x_2, \dots, x_m\}\)</span>，<span class="math inline">\(x_i\)</span> 为 <span class="math inline">\(n\)</span> 维特征向量，划分为 <span class="math inline">\(k\)</span> 个不相交簇 <span class="math inline">\(\{C_1, \dots, C_k\}\)</span>，<span class="math inline">\(C_{l&#39;} \cap_{l \neq l&#39;} C_l = \emptyset\)</span> 且 <span class="math inline">\(D = \bigcup C_l\)</span>。<span class="math inline">\(\lambda_j\)</span> 为样本 <span class="math inline">\(x_j\)</span> 的<strong>簇标记</strong>。</p>
+<p>聚类两大用途：① 单独过程，发现数据内在分布结构；② 作为分类等任务的前驱（先聚类定义类别，再训练分类器）。</p>
+<hr />
+<h3 id="性能度量有效性指标">9.2 性能度量（有效性指标）</h3>
+<p>目标：“物以类聚”——<strong>簇内相似度高、簇间相似度低</strong>。</p>
+<h4 id="外部指标与参考模型-c-比较">外部指标（与参考模型 <span class="math inline">\(C^*\)</span> 比较）</h4>
+<p>两两样本对定义（<span class="math inline">\(i &lt; j\)</span>，<span class="math inline">\(a + b + c + d = m(m-1)/2\)</span>）： - <span class="math inline">\(a = |SS|\)</span>：<span class="math inline">\(C\)</span> 同簇且 <span class="math inline">\(C^*\)</span> 同簇 - <span class="math inline">\(b = |SD|\)</span>：<span class="math inline">\(C\)</span> 同簇但 <span class="math inline">\(C^*\)</span> 不同簇 - <span class="math inline">\(c = |DS|\)</span>：<span class="math inline">\(C\)</span> 不同簇但 <span class="math inline">\(C^*\)</span> 同簇 - <span class="math inline">\(d = |DD|\)</span>：<span class="math inline">\(C\)</span> 与 <span class="math inline">\(C^*\)</span> 均不同簇</p>
+<p>常用指标（均 <span class="math inline">\([0,1]\)</span>，越大越好）： <span class="math display">\[
+\mathrm{JC} = \frac{a}{a+b+c},\quad \mathrm{FMI} = \sqrt{\frac{a}{a+b} \cdot \frac{a}{a+c}},\quad \mathrm{RI} = \frac{2(a+d)}{m(m-1)}
+\]</span></p>
+<h4 id="内部指标不依赖参考模型">内部指标（不依赖参考模型）</h4>
+<p>簇内距离定义： <span class="math display">\[
+\operatorname{avg}(C) = \frac{2}{|C|(|C|-1)} \sum_{i&lt;j} \operatorname{dist}(x_i, x_j),\quad \operatorname{diam}(C) = \max_{i&lt;j} \operatorname{dist}(x_i, x_j)
+\]</span></p>
+<p>簇间距离： <span class="math display">\[
+d_{\min}(C_i, C_j) = \min \operatorname{dist}(x_i, x_j),\quad d_{\mathrm{cen}}(C_i, C_j) = \operatorname{dist}(\mu_i, \mu_j)
+\]</span></p>
+<ul>
+<li><strong>DB指数（DBI）</strong>：越小越好 <span class="math display">\[
+\mathrm{DBI} = \frac{1}{k} \sum_{i=1}^{k} \max_{j \neq i} \left( \frac{\operatorname{avg}(C_i) + \operatorname{avg}(C_j)}{d_{\mathrm{cen}}(C_i, C_j)} \right)
+\]</span></li>
+<li><strong>Dunn指数（DI）</strong>：越大越好 <span class="math display">\[
+\mathrm{DI} = \min_{1 \leqslant i \leqslant k} \left\{ \min_{j \neq i} \left( \frac{d_{\min}(C_i, C_j)}{\max_{1 \leqslant l \leqslant k} \operatorname{diam}(C_l)} \right) \right\}
+\]</span></li>
+</ul>
+<hr />
+<h3 id="距离计算">9.3 距离计算</h3>
+<p><strong>距离度量四性质</strong>：非负性、同一性（<span class="math inline">\(\operatorname{dist}(x_i,x_j)=0 \iff x_i = x_j\)</span>）、对称性、直递性（三角不等式）。</p>
+<p><strong>闵可夫斯基距离</strong>： <span class="math display">\[
+\operatorname{dist}_{\mathrm{mk}}(x_i, x_j) = \left( \sum_{u=1}^{n} |x_{iu} - x_{ju}|^{p} \right)^{\frac{1}{p}}, \quad p \geqslant 1
+\]</span> - <span class="math inline">\(p=2\)</span>：欧氏距离；<span class="math inline">\(p=1\)</span>：曼哈顿距离</p>
+<p><strong>属性类型</strong>：关键是是否有<strong>序关系</strong>——有序属性可直接算距离（如 <span class="math inline">\(\{1,2,3\}\)</span>）；无序属性（如 <span class="math inline">\(\{\)</span>飞机,火车,轮船<span class="math inline">\(\}\)</span>）用 <strong>VDM</strong>： <span class="math display">\[
+\operatorname{VDM}_p(a, b) = \sum_{i=1}^{k} \left| \frac{m_{u,a,i}}{m_{u,a}} - \frac{m_{u,b,i}}{m_{u,b}} \right|^{p}
+\]</span> （<span class="math inline">\(m_{u,a,i}\)</span> 为第 <span class="math inline">\(i\)</span> 簇中属性 <span class="math inline">\(u\)</span> 取 <span class="math inline">\(a\)</span> 的样本数）</p>
+<p>混合属性：闵可夫斯基距离 + VDM 结合（<strong>MinkovDM</strong>）；属性重要性不同时用<strong>加权距离</strong>。</p>
+<p><strong>非度量距离</strong>：相似度度量不要求满足直递性（例：“人”“马”都与人马相似，但彼此不相似），如图像检索中的部分相似性。距离计算式也可通过<strong>距离度量学习</strong>从数据中习得。</p>
+<hr />
+<h3 id="原型聚类">9.4 原型聚类</h3>
+<h4 id="k均值算法">9.4.1 k均值算法</h4>
+<p>最小化平方误差： <span class="math display">\[
+E = \sum_{i=1}^{k} \sum_{x \in C_i} \|x - \mu_i\|_2^2
+\]</span> - 最优解需穷举所有划分，<strong>NP难</strong> → 贪心迭代：随机初始化均值向量 → 样本划入最近簇 → 重算均值，直至簇划分不变 - 西瓜数据集 4.0 示例（<span class="math inline">\(k=3\)</span>，初值 <span class="math inline">\(x_6, x_{12}, x_{27}\)</span>）：<span class="math inline">\(x_1\)</span> 距 <span class="math inline">\(\mu_1,\mu_2,\mu_3\)</span> 为 <span class="math inline">\(0.369, 0.506, 0.166\)</span> → 划入 <span class="math inline">\(C_3\)</span>；第五轮迭代结果与第四轮相同即停止</p>
+<h4 id="学习向量量化lvq">9.4.2 学习向量量化（LVQ）</h4>
+<p>与 k 均值类似找原型向量，但<strong>利用样本类别标记</strong>辅助聚类（监督信息）。</p>
+<p>迭代规则：随机选样本 <span class="math inline">\(x_j\)</span>，找最近原型 <span class="math inline">\(p_{i^*}\)</span>： - 类别标记相同 → 靠近：<span class="math inline">\(p&#39; = p_{i^*} + \eta(x_j - p_{i^*})\)</span>，距离变为 <span class="math inline">\((1-\eta)\|p_{i^*} - x_j\|_2\)</span> - 类别标记不同 → 远离：距离变为 <span class="math inline">\((1+\eta)\|p_{i^*} - x_j\|_2\)</span></p>
+<p>原型向量划分样本空间形成 <strong>Voronoi 剖分</strong>： <span class="math display">\[
+R_i = \{x \mid \|x - p_i\|_2 \leqslant \|x - p_{i&#39;}\|_2,\ i&#39; \neq i\}
+\]</span></p>
+<h4 id="高斯混合聚类mixture-of-gaussian">9.4.3 高斯混合聚类（Mixture-of-Gaussian）</h4>
+<p>用<strong>概率模型</strong>表达原型。多元高斯分布 <span class="math inline">\(p(x \mid \mu, \Sigma)\)</span>，高斯混合分布： <span class="math display">\[
+p_M(x) = \sum_{i=1}^{k} \alpha_i \cdot p(x \mid \mu_i, \Sigma_i)
+\]</span></p>
+<p>生成过程：先按 <span class="math inline">\(\alpha_i\)</span> 选混合成分，再按该成分的密度采样。</p>
+<p><strong>后验概率</strong>（<span class="math inline">\(x_j\)</span> 由第 <span class="math inline">\(i\)</span> 个成分生成）： <span class="math display">\[
+\gamma_{ji} = p_M(z_j = i \mid x_j) = \frac{\alpha_i \cdot p(x_j \mid \mu_i, \Sigma_i)}{\sum_{l=1}^{k} \alpha_l \cdot p(x_j \mid \mu_l, \Sigma_l)}
+\]</span></p>
+<p>簇标记：<span class="math inline">\(\lambda_j = \arg\max_i \gamma_{ji}\)</span>。</p>
+<p><strong>参数求解（EM 算法）</strong>：最大化对数似然 <span class="math inline">\(LL(D) = \sum_j \ln \left( \sum_i \alpha_i p(x_j \mid \mu_i, \Sigma_i) \right)\)</span>，令对各参数偏导为 0： <span class="math display">\[
+\mu_i = \frac{\sum_j \gamma_{ji} x_j}{\sum_j \gamma_{ji}},\quad \Sigma_i = \frac{\sum_j \gamma_{ji} (x_j - \mu_i)(x_j - \mu_i)^{\mathrm{T}}}{\sum_j \gamma_{ji}},\quad \alpha_i = \frac{1}{m} \sum_{j=1}^{m} \gamma_{ji}
+\]</span></p>
+<p>E步算后验 <span class="math inline">\(\gamma_{ji}\)</span>，M步更新参数，迭代至似然增益很小。西瓜示例（<span class="math inline">\(k=3\)</span>）：初始 <span class="math inline">\(\alpha_i = \frac13\)</span>，<span class="math inline">\(x_1\)</span> 的 <span class="math inline">\(\gamma_{11},\gamma_{12},\gamma_{13} = 0.219, 0.404, 0.377\)</span>。</p>
+<hr />
+<h3 id="密度聚类dbscan">9.5 密度聚类（DBSCAN）</h3>
+<p>基于邻域参数 <span class="math inline">\((\epsilon, MinPts)\)</span> 刻画样本分布紧密程度。</p>
+<p><strong>核心概念</strong>： - <strong><span class="math inline">\(\epsilon\)</span>-邻域</strong>：<span class="math inline">\(N_\epsilon(x_j) = \{x_i \mid \operatorname{dist}(x_i, x_j) \leqslant \epsilon\}\)</span> - <strong>核心对象</strong>：<span class="math inline">\(|N_\epsilon(x_j)| \geqslant MinPts\)</span> - <strong>密度直达</strong>：<span class="math inline">\(x_j \in N_\epsilon(x_i)\)</span> 且 <span class="math inline">\(x_i\)</span> 为核心对象 - <strong>密度可达</strong>：存在序列 <span class="math inline">\(p_1, \dots, p_n\)</span> 使 <span class="math inline">\(p_{t+1}\)</span> 由 <span class="math inline">\(p_t\)</span> 密度直达 - <strong>密度相连</strong>：存在 <span class="math inline">\(x_k\)</span> 使 <span class="math inline">\(x_i\)</span>、<span class="math inline">\(x_j\)</span> 均由 <span class="math inline">\(x_k\)</span> 密度可达</p>
+<p><strong>簇的定义</strong>：由密度可达导出的最大密度相连样本集合，满足<strong>连接性</strong>（簇内两两密度相连）与<strong>最大性</strong>（由簇内核心对象可达的样本必在簇内）。</p>
+<p><strong>算法</strong>：找出所有核心对象 → 任选核心对象为种子，扩展出所有密度可达样本成簇 → 移除簇内核心对象，重复直到 <span class="math inline">\(O\)</span> 为空。其余样本为<strong>噪声</strong>。</p>
+<p>西瓜示例（<span class="math inline">\(\epsilon=0.11, MinPts=5\)</span>）：核心对象集合 13 个，依次生成 <span class="math inline">\(C_1\)</span>（9样本）、<span class="math inline">\(C_2\)</span>、<span class="math inline">\(C_3\)</span>、<span class="math inline">\(C_4\)</span>。</p>
+<hr />
+<h3 id="层次聚类agnes">9.6 层次聚类（AGNES）</h3>
+<p>自底向上聚合：初始每个样本一个簇，逐步合并<strong>距离最近</strong>的两个簇，直到达到预设簇数。</p>
+<p><strong>簇间距离</strong>： - 最小距离 <span class="math inline">\(d_{\min}\)</span>（最近样本决定）→ <strong>单链接</strong> - 最大距离 <span class="math inline">\(d_{\max}\)</span>（最远样本决定）→ <strong>全链接</strong> - 平均距离 <span class="math inline">\(d_{\operatorname{avg}} = \frac{1}{|C_i||C_j|}\sum_{x \in C_i} \sum_{z \in C_j} \operatorname{dist}(x, z)\)</span> → <strong>均链接</strong></p>
+<p>西瓜示例：合并到 <span class="math inline">\(k=1\)</span> 得<strong>树状图</strong>，在特定层次分割可得任意簇数的划分（如虚线分割得 7 簇）。</p>
+<hr />
+<h3 id="小结">小结</h3>
 <table>
 <thead>
 <tr class="header">
 <th>概念</th>
-<th>定义</th>
+<th>要点</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>错误率</strong> (error rate)</td>
-<td><span class="math inline">\(E = a/m\)</span>（<span class="math inline">\(a\)</span> 个样本分类错误）</td>
+<td><strong>外部指标</strong></td>
+<td>JC / FMI / RI，与参考模型比较</td>
 </tr>
 <tr class="even">
-<td><strong>精度</strong> (accuracy)</td>
-<td><span class="math inline">\(1 - \text{错误率}\)</span></td>
+<td><strong>内部指标</strong></td>
+<td>DBI（越小越好）/ DI（越大越好）</td>
 </tr>
 <tr class="odd">
-<td><strong>训练误差/经验误差</strong></td>
-<td>学习器在训练集上的误差</td>
+<td><strong>距离度量</strong></td>
+<td>四性质；闵可夫斯基族；VDM 处理无序属性</td>
 </tr>
 <tr class="even">
-<td><strong>泛化误差</strong></td>
-<td>学习器在新样本上的误差</td>
+<td><strong>k均值</strong></td>
+<td>最小化 <span class="math inline">\(E\)</span>，贪心迭代，NP难，凸簇效果好</td>
 </tr>
 <tr class="odd">
-<td><strong>过拟合</strong> (overfitting)</td>
-<td>把训练样本自身特点当作一般性质，泛化下降</td>
+<td><strong>LVQ</strong></td>
+<td>利用类别标记，原型靠近/远离样本</td>
 </tr>
 <tr class="even">
-<td><strong>欠拟合</strong> (underfitting)</td>
-<td>对训练样本的一般性质尚未学好</td>
+<td><strong>高斯混合</strong></td>
+<td>概率模型 + EM 求解，软聚类</td>
+</tr>
+<tr class="odd">
+<td><strong>DBSCAN</strong></td>
+<td>密度相连最大集合，可处理噪声与非凸簇</td>
+</tr>
+<tr class="even">
+<td><strong>AGNES</strong></td>
+<td>自底向上合并，单/全/均链接，树状图</td>
 </tr>
 </tbody>
 </table>
-<p><strong>关键洞察</strong>：过拟合无法彻底避免，只能缓解（若可彻底避免则 P = NP）。</p>
-<p><strong>模型选择</strong>：在多个学习算法或参数配置中选择泛化误差最小的模型。</p>
-<hr />
-<h3 id="评估方法">2.2 评估方法</h3>
-<p>基本思路：用<strong>测试集</strong>上的<strong>测试误差</strong>近似泛化误差。测试集必须与训练集<strong>互斥</strong>。</p>
-<h4 id="留出法-hold-out">留出法 (hold-out)</h4>
-<ul>
-<li>将数据集 <span class="math inline">\(D\)</span> 划分为互斥的训练集 <span class="math inline">\(S\)</span> 和测试集 <span class="math inline">\(T\)</span></li>
-<li>分层采样保持类别比例</li>
-<li>单次划分不稳定，需多次随机划分取平均值</li>
-<li>常用比例：<span class="math inline">\(2/3 \sim 4/5\)</span> 训练，其余测试</li>
-</ul>
-<h4 id="交叉验证法-cross-validation">交叉验证法 (cross validation)</h4>
-<ul>
-<li>将 <span class="math inline">\(D\)</span> 划分为 <span class="math inline">\(k\)</span> 个互斥子集（分层采样）</li>
-<li>每次用 <span class="math inline">\(k-1\)</span> 个子集训练，剩下 1 个测试，重复 <span class="math inline">\(k\)</span> 次</li>
-<li><span class="math inline">\(k\)</span> 常用取值：5、10、20</li>
-<li><strong>留一法 (LOO)</strong>：<span class="math inline">\(k=m\)</span>，结果准确但计算开销大</li>
-</ul>
-<h4 id="自助法-bootstrapping">自助法 (bootstrapping)</h4>
-<ul>
-<li>从 <span class="math inline">\(D\)</span> 中有放回采样 <span class="math inline">\(m\)</span> 次，形成训练集 <span class="math inline">\(D&#39;\)</span></li>
-<li>约 <span class="math inline">\(36.8\%\)</span> 的样本未被采到（可用作测试集）</li>
-<li>优点：数据集小时有效；缺点：改变数据分布</li>
-</ul>
-<h4 id="调参与最终模型">调参与最终模型</h4>
-<ul>
-<li><strong>参数调节 (调参)</strong>：选定参数范围与步长，评估候选值</li>
-<li><strong>验证集</strong>：模型选择与调参时使用的数据集</li>
-<li>模型选择完成后，应用全量数据 <span class="math inline">\(D\)</span> 重新训练最终模型</li>
-</ul>
-<hr />
-<h3 id="性能度量">2.3 性能度量</h3>
-<h4 id="回归任务">回归任务</h4>
-<p><strong>均方误差 (MSE)</strong>： <span class="math display">\[
-E(f;D) = \frac{1}{m}\sum_{i=1}^m (f(x_i)-y_i)^2
-\]</span></p>
-<h4 id="分类任务">分类任务</h4>
-<p><strong>错误率与精度</strong>： <span class="math display">\[
-E(f;D) = \frac{1}{m}\sum_{i=1}^m \mathbb{I}(f(x_i)\neq y_i),\quad \text{acc}=1-E
-\]</span></p>
-<p><strong>查准率与查全率</strong>（基于混淆矩阵）：</p>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;">真实</th>
-<th style="text-align: left;">预测正例</th>
-<th style="text-align: left;">预测反例</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">正例</td>
-<td style="text-align: left;">TP (真正例)</td>
-<td style="text-align: left;">FN (假反例)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">反例</td>
-<td style="text-align: left;">FP (假正例)</td>
-<td style="text-align: left;">TN (真反例)</td>
-</tr>
-</tbody>
-</table>
-<p><span class="math display">\[
-P = \frac{TP}{TP+FP} \quad (\text{查准率}),\qquad 
-R = \frac{TP}{TP+FN} \quad (\text{查全率})
-\]</span></p>
-<p><strong>P-R 曲线</strong>：纵轴为查准率，横轴为查全率。曲线包围面积越大越好。</p>
-<p><strong>平衡点 (BEP)</strong>：查准率 = 查全率时的取值。</p>
-<p><strong><span class="math inline">\(F1\)</span> 度量</strong>（调和平均）： <span class="math display">\[
-F1 = \frac{2\times P\times R}{P+R}
-\]</span></p>
-<p><strong><span class="math inline">\(F_\beta\)</span></strong>（加权调和平均）： <span class="math display">\[
-F_\beta = \frac{(1+\beta^2)\times P\times R}{(\beta^2\times P)+R}
-\]</span> - <span class="math inline">\(\beta=1\)</span>：标准 F1；<span class="math inline">\(\beta&gt;1\)</span>：更重查全率；<span class="math inline">\(\beta&lt;1\)</span>：更重查准率</p>
-<p><strong>宏/微平均</strong>：多混淆矩阵时，宏（先算再平均）vs 微（先平均再算）。</p>
-<h4 id="roc-与-auc">ROC 与 AUC</h4>
-<p><strong>ROC 曲线</strong>：纵轴 TPR（真正例率），横轴 FPR（假正例率）。</p>
-<p><span class="math display">\[
-TPR = \frac{TP}{TP+FN},\quad FPR = \frac{FP}{TN+FP}
-\]</span></p>
-<ul>
-<li>对角线 = 随机猜测，点 (0,1) = 理想模型</li>
-<li>AUC = ROC 曲线下面积</li>
-</ul>
-<p><strong>AUC 与排序损失</strong>： <span class="math display">\[
-\ell_{rank} = \frac{1}{m^+m^-}\sum_{x^+\in D^+}\sum_{x^-\in D^-}\big(\mathbb{I}(f(x^+)&lt;f(x^-)) + \tfrac12\mathbb{I}(f(x^+)=f(x^-))\big)
-\]</span> <span class="math display">\[
-AUC = 1 - \ell_{rank}
-\]</span></p>
-<h4 id="代价敏感错误率">代价敏感错误率</h4>
-<p>非均等代价下使用<strong>代价矩阵</strong>，最小化总体代价而非错误次数。</p>
-<p><strong>代价曲线</strong>：横轴为正例概率代价 <span class="math inline">\(P(+)cost\)</span>，纵轴为归一化代价 <span class="math inline">\(cost_{norm}\)</span>。</p>
-<hr />
-<h3 id="比较检验">2.4 比较检验</h3>
-<h4 id="假设检验基础">假设检验基础</h4>
-<ul>
-<li>泛化错误率 <span class="math inline">\(\epsilon\)</span> 未知，只能获得测试错误率 <span class="math inline">\(\hat{\epsilon}\)</span></li>
-<li><strong>二项检验</strong>：对假设 <span class="math inline">\(\epsilon \leq \epsilon_0\)</span> 进行检验</li>
-<li><strong>t 检验</strong>：多次训练/测试得到多个测试错误率，用 t 分布检验均值</li>
-</ul>
-<h4 id="交叉验证-t-检验">交叉验证 t 检验</h4>
-<ul>
-<li>对两学习器 A、B，计算每折差值 <span class="math inline">\(\Delta_i = \epsilon_i^A - \epsilon_i^B\)</span></li>
-<li>若差值均值显著不为零，则两学习器性能有显著差别</li>
-<li><strong><span class="math inline">\(5\times2\)</span> 交叉验证</strong>缓解样本重叠导致的非独立性</li>
-</ul>
-<h4 id="mcnemar-检验">McNemar 检验</h4>
-<ul>
-<li>基于列联表 <span class="math inline">\(e_{01}\)</span>（A 错 B 对）和 <span class="math inline">\(e_{10}\)</span>（A 对 B 错）</li>
-<li><span class="math inline">\(\tau_{\chi^2} = (|e_{01}-e_{10}|-1)^2 / (e_{01}+e_{10})\)</span> 服从 <span class="math inline">\(\chi^2(1)\)</span></li>
-</ul>
-<h4 id="friedman-检验-nemenyi-后续检验">Friedman 检验 + Nemenyi 后续检验</h4>
-<ul>
-<li>在多个数据集上比较多个算法</li>
-<li>计算各算法在每个数据集上的<strong>平均序值</strong></li>
-<li>Friedman 检验判断是否所有算法性能相同</li>
-<li>若拒绝原假设，用 Nemenyi 检验计算临界差值 CD</li>
-</ul>
-<hr />
-<h3 id="偏差与方差">2.5 偏差与方差</h3>
-<p><strong>偏差-方差分解</strong>（以回归任务为例）：</p>
-<p><span class="math display">\[
-E(f;D) = bias^2(x) + var(x) + \epsilon^2
-\]</span></p>
-<table>
-<thead>
-<tr class="header">
-<th>分量</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>偏差</strong> <span class="math inline">\(bias^2(x)\)</span></td>
-<td>期望预测与真实标记的偏离 → 刻画算法拟合能力</td>
-</tr>
-<tr class="even">
-<td><strong>方差</strong> <span class="math inline">\(var(x)\)</span></td>
-<td>不同训练集产生的预测变化 → 刻画数据扰动的影响</td>
-</tr>
-<tr class="odd">
-<td><strong>噪声</strong> <span class="math inline">\(\epsilon^2\)</span></td>
-<td>当前任务任何算法能达到的泛化误差下界 → 刻画问题本身难度</td>
-</tr>
-</tbody>
-</table>
-<p><strong>偏差-方差窘境 (bias-variance dilemma)</strong>： - 训练不足 → 偏差主导（欠拟合） - 训练加深 → 方差逐渐主导 - 训练过度 → 发生过拟合</p>
-<p><strong>实际指导意义</strong>：偏差大 → 欠拟合（增加模型复杂度）；方差大 → 过拟合（降低模型复杂度 / 增加数据）。</p>
-<hr />
-<h3 id="小结">小结</h3>
-<p>第二章构建了完整的模型评估与选择框架： 1. <strong>评估方法</strong>：如何划分训练/测试集（留出法、交叉验证、自助法） 2. <strong>性能度量</strong>：如何量化模型好坏（MSE、错误率、P/R/F1、ROC/AUC、代价敏感） 3. <strong>比较检验</strong>：如何统计判断差异是否显著（t 检验、McNemar、Friedman） 4. <strong>偏差-方差分析</strong>：从理论上解释泛化误差的来源</p>
-<p>这些内容是后续各章学习算法“好不好”的判断基础。</p>
 
                 
               </div>
@@ -607,8 +539,8 @@ E(f;D) = bias^2(x) + var(x) + \epsilon^2
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>《机器学习》自学日记（二）</div>
-      <div>https://suzhenghao.top/2026/07/15/ML-note2/</div>
+      <div>《机器学习》自学日记（九）</div>
+      <div>https://suzhenghao.top/2026/07/31/ML-note9/</div>
     </div>
     <div class="license-meta">
       
@@ -620,7 +552,7 @@ E(f;D) = bias^2(x) + var(x) + \epsilon^2
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2026年7月15日</div>
+          <div>2026年7月31日</div>
         </div>
       
       
@@ -652,9 +584,9 @@ E(f;D) = bias^2(x) + var(x) + \epsilon^2
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2026/07/16/ML-note3/" title="《机器学习》自学日记（三）">
+                      <a href="/2026/08/03/ML-note10/" title="《机器学习》自学日记（十）">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">《机器学习》自学日记（三）</span>
+                        <span class="hidden-mobile">《机器学习》自学日记（十）</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -662,8 +594,8 @@ E(f;D) = bias^2(x) + var(x) + \epsilon^2
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2026/07/12/PFSchedule/" title="正好课表——为 NJU 选课做的一个小工具">
-                        <span class="hidden-mobile">正好课表——为 NJU 选课做的一个小工具</span>
+                      <a href="/2026/07/29/ML-note8/" title="《机器学习》自学日记（八）">
+                        <span class="hidden-mobile">《机器学习》自学日记（八）</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

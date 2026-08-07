@@ -325,7 +325,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.1k 字
+          2.2k 字
         
       </span>
     
@@ -336,7 +336,7 @@
         
         
         
-          18 分钟
+          19 分钟
         
       </span>
     
@@ -390,26 +390,26 @@
 <h3 id="划分选择">4.2 划分选择</h3>
 <p>划分的核心目标：使分支结点的<strong>纯度</strong>越来越高。</p>
 <h4 id="信息增益id3">4.2.1 信息增益（ID3）</h4>
-<p><strong>信息熵</strong>度量纯度： <span class="math display">$$
+<p><strong>信息熵</strong>度量纯度： <span class="math display">\[
 \operatorname{Ent}(D) = -\sum_{k=1}^{|\mathcal{Y}|} p_k \log_2 p_k
-$$</span> 熵越小，纯度越高。</p>
-<p><strong>信息增益</strong>： <span class="math display">$$
+\]</span> 熵越小，纯度越高。</p>
+<p><strong>信息增益</strong>： <span class="math display">\[
 \operatorname{Gain}(D, a) = \operatorname{Ent}(D) - \sum_{v=1}^{V} \frac{|D^v|}{|D|} \operatorname{Ent}(D^v)
-$$</span></p>
-<p>信息增益越大，表示用属性 <span class="math inline"><em>a</em></span> 划分带来的纯度提升越大。ID3 算法选择增益最大的属性。</p>
+\]</span></p>
+<p>信息增益越大，表示用属性 <span class="math inline">\(a\)</span> 划分带来的纯度提升越大。ID3 算法选择增益最大的属性。</p>
 <p><strong>偏好</strong>：对可取值数目较多的属性有偏好（如“编号”产生的信息增益极大但无意义）。</p>
 <h4 id="增益率c4.5">4.2.2 增益率（C4.5）</h4>
-<p><strong>增益率</strong>： <span class="math display">$$
+<p><strong>增益率</strong>： <span class="math display">\[
 \operatorname{Gain\_ratio}(D, a) = \frac{\operatorname{Gain}(D, a)}{\operatorname{IV}(a)}
-$$</span> 其中 <span class="math inline">$\operatorname{IV}(a) = -\sum_{v=1}^{V} \frac{|D^v|}{|D|} \log_2 \frac{|D^v|}{|D|}$</span> 称为<strong>固有值</strong>，属性取值越多，<span class="math inline">IV (<em>a</em>)</span> 越大。</p>
+\]</span> 其中 <span class="math inline">\(\operatorname{IV}(a) = -\sum_{v=1}^{V} \frac{|D^v|}{|D|} \log_2 \frac{|D^v|}{|D|}\)</span> 称为<strong>固有值</strong>，属性取值越多，<span class="math inline">\(\operatorname{IV}(a)\)</span> 越大。</p>
 <p>C4.5 启发式：先从候选属性中找出<strong>信息增益高于平均</strong>的，再选其中<strong>增益率最高</strong>的。</p>
 <h4 id="基尼指数cart">4.2.3 基尼指数（CART）</h4>
-<p><strong>基尼值</strong>： <span class="math display">$$
+<p><strong>基尼值</strong>： <span class="math display">\[
 \operatorname{Gini}(D) = 1 - \sum_{k=1}^{|\mathcal{Y}|} p_k^2
-$$</span> 反映从 <span class="math inline"><em>D</em></span> 中随机抽取两个样本类别标记不一致的概率。Gini 越小，纯度越高。</p>
-<p><strong>基尼指数</strong>： <span class="math display">$$
+\]</span> 反映从 <span class="math inline">\(D\)</span> 中随机抽取两个样本类别标记不一致的概率。Gini 越小，纯度越高。</p>
+<p><strong>基尼指数</strong>： <span class="math display">\[
 \operatorname{Gini\_index}(D, a) = \sum_{v=1}^{V} \frac{|D^v|}{|D|} \operatorname{Gini}(D^v)
-$$</span></p>
+\]</span></p>
 <p>CART 选择使基尼指数最小的属性。</p>
 <hr />
 <h3 id="剪枝处理">4.3 剪枝处理</h3>
@@ -429,25 +429,27 @@ $$</span></p>
 <hr />
 <h3 id="连续与缺失值">4.4 连续与缺失值</h3>
 <h4 id="连续值处理二分法">连续值处理（二分法）</h4>
-<p>将连续属性 <span class="math inline"><em>a</em></span> 的 <span class="math inline"><em>n</em></span> 个取值排序，取相邻值中点作为候选划分点： <span class="math display">$$
+<p>将连续属性 <span class="math inline">\(a\)</span> 的 <span class="math inline">\(n\)</span> 个取值排序，取相邻值中点作为候选划分点： <span class="math display">\[
 T_a = \left\{ \frac{a^i + a^{i+1}}{2} \mid 1 \leqslant i \leqslant n-1 \right\}
-$$</span></p>
-<p>选择使信息增益最大的划分点： <span class="math display">Gain (<em>D</em>, <em>a</em>) = max<sub><em>t</em> ∈ <em>T</em><sub><em>a</em></sub></sub>Gain (<em>D</em>, <em>a</em>, <em>t</em>)</span></p>
+\]</span></p>
+<p>选择使信息增益最大的划分点： <span class="math display">\[
+\operatorname{Gain}(D, a) = \max_{t \in T_a} \operatorname{Gain}(D, a, t)
+\]</span></p>
 <p>与离散属性不同，连续属性在其后代结点中<strong>仍可被再次使用</strong>。</p>
 <h4 id="缺失值处理c4.5">缺失值处理（C4.5）</h4>
-<p>需解决两个问题： 1. <strong>如何选择划分属性</strong>：仅用无缺失值样本 <span class="math inline"><em>D̃</em></span> 计算信息增益，再乘以 <span class="math inline">$\rho = \frac{\sum_{x\in\tilde{D}} w_x}{\sum_{x\in D} w_x}$</span></p>
-<p><span class="math display">$$
+<p>需解决两个问题： 1. <strong>如何选择划分属性</strong>：仅用无缺失值样本 <span class="math inline">\(\tilde{D}\)</span> 计算信息增益，再乘以 <span class="math inline">\(\rho = \frac{\sum_{x\in\tilde{D}} w_x}{\sum_{x\in D} w_x}\)</span></p>
+<p><span class="math display">\[
 \operatorname{Gain}(D, a) = \rho \times \big( \operatorname{Ent}(\tilde{D}) - \sum_{v=1}^{V} \tilde{r}_v \operatorname{Ent}(\tilde{D}^v) \big)
-$$</span></p>
+\]</span></p>
 <ol start="2" type="1">
-<li><strong>缺失样本如何划分</strong>：同时划入所有分支，权重调整为 <span class="math inline"><em>r̃</em><sub><em>v</em></sub> ⋅ <em>w</em><sub><em>x</em></sub></span>（即以不同概率进入不同分支）</li>
+<li><strong>缺失样本如何划分</strong>：同时划入所有分支，权重调整为 <span class="math inline">\(\tilde{r}_v \cdot w_x\)</span>（即以不同概率进入不同分支）</li>
 </ol>
 <hr />
 <h3 id="多变量决策树">4.5 多变量决策树</h3>
 <p><strong>单变量决策树</strong>：分类边界与坐标轴平行，可解释性好，但对复杂边界需要大量分段。</p>
-<p><strong>多变量决策树</strong>：非叶结点不再是单个属性测试，而是属性的线性组合： <span class="math display">$$
+<p><strong>多变量决策树</strong>：非叶结点不再是单个属性测试，而是属性的线性组合： <span class="math display">\[
 \sum_{i=1}^{d} w_i a_i = t
-$$</span> 即每个非叶结点是一个线性分类器，能实现<strong>斜划分</strong>，简化模型结构。</p>
+\]</span> 即每个非叶结点是一个线性分类器，能实现<strong>斜划分</strong>，简化模型结构。</p>
 <hr />
 <h3 id="小结">小结</h3>
 <p>决策树的核心三要素：</p>

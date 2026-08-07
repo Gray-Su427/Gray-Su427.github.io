@@ -19,21 +19,21 @@
   <meta name="author" content="Gray-Su">
   <meta name="keywords" content="">
   
-    <meta name="description" content="第二章 模型评估与选择——评估方法、性能度量与比较检验">
+    <meta name="description" content="第七章 贝叶斯分类器——贝叶斯决策论、极大似然、朴素贝叶斯、贝叶斯网与EM算法">
 <meta property="og:type" content="article">
-<meta property="og:title" content="《机器学习》自学日记（二）">
-<meta property="og:url" content="https://suzhenghao.top/2026/07/15/ML-note2/index.html">
+<meta property="og:title" content="《机器学习》自学日记（七）">
+<meta property="og:url" content="https://suzhenghao.top/2026/07/27/ML-note7/index.html">
 <meta property="og:site_name" content="Gray-Su&#39;s Blog">
-<meta property="og:description" content="第二章 模型评估与选择——评估方法、性能度量与比较检验">
+<meta property="og:description" content="第七章 贝叶斯分类器——贝叶斯决策论、极大似然、朴素贝叶斯、贝叶斯网与EM算法">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2026-07-15T08:57:16.000Z">
-<meta property="article:modified_time" content="2026-07-15T09:07:01.280Z">
+<meta property="article:published_time" content="2026-07-27T12:46:12.000Z">
+<meta property="article:modified_time" content="2026-08-07T08:22:40.624Z">
 <meta property="article:author" content="Gray-Su">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>《机器学习》自学日记（二） - Gray-Su&#39;s Blog</title>
+  <title>《机器学习》自学日记（七） - Gray-Su&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -302,7 +302,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="《机器学习》自学日记（二）"></span>
+            <span id="subtitle" data-typed-text="《机器学习》自学日记（七）"></span>
           
         </div>
 
@@ -313,8 +313,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2026-07-15 16:57" pubdate>
-          2026年7月15日 下午
+        <time datetime="2026-07-27 20:46" pubdate>
+          2026年7月27日 晚上
         </time>
       </span>
     
@@ -325,7 +325,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.6k 字
+          3.8k 字
         
       </span>
     
@@ -336,7 +336,7 @@
         
         
         
-          22 分钟
+          32 分钟
         
       </span>
     
@@ -375,200 +375,141 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">《机器学习》自学日记（二）</h1>
+            <h1 id="seo-header">《机器学习》自学日记（七）</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="第二章-模型评估与选择">第二章 模型评估与选择</h2>
-<h3 id="经验误差与过拟合">2.1 经验误差与过拟合</h3>
+                <h2 id="第七章-贝叶斯分类器">第七章 贝叶斯分类器</h2>
+<h3 id="贝叶斯决策论">7.1 贝叶斯决策论</h3>
+<p><strong>核心思想</strong>：在概率框架下，基于后验概率和误判损失选择最优类别标记。</p>
+<p><strong>条件风险</strong>（期望损失）： <span class="math display">\[
+R(c_i \mid x) = \sum_{j=1}^{N} \lambda_{ij} P(c_j \mid x)
+\]</span></p>
+<p><strong>贝叶斯判定准则</strong>：为最小化总体风险，每个样本选择使条件风险最小的类别： <span class="math display">\[
+h^*(x) = \arg\min_{c \in \mathcal{Y}} R(c \mid x)
+\]</span></p>
+<p><span class="math inline">\(h^*\)</span> 称为<strong>贝叶斯最优分类器</strong>，<span class="math inline">\(R(h^*)\)</span> 称为<strong>贝叶斯风险</strong>，<span class="math inline">\(1 - R(h^*)\)</span> 是模型精度的理论上限。</p>
+<p><strong>0/1 损失</strong>下，<span class="math inline">\(R(c \mid x) = 1 - P(c \mid x)\)</span>，判定准则简化为： <span class="math display">\[
+h^*(x) = \arg\max_{c \in \mathcal{Y}} P(c \mid x)
+\]</span></p>
+<p><strong>两种建模策略</strong>： - <strong>判别式模型</strong>：直接建模 <span class="math inline">\(P(c \mid x)\)</span>（决策树、BP、SVM） - <strong>生成式模型</strong>：先对联合分布 <span class="math inline">\(P(x,c)\)</span> 建模</p>
+<p><strong>贝叶斯定理</strong>： <span class="math display">\[
+P(c \mid x) = \frac{P(c)P(x \mid c)}{P(x)}
+\]</span> - <span class="math inline">\(P(c)\)</span>：类先验概率（可用频率估计，大数定律） - <span class="math inline">\(P(x \mid c)\)</span>：似然（类条件概率），涉及所有属性的联合概率，难以直接估计——样本空间大小 <span class="math inline">\(2^d\)</span> 往往远大于训练样本数，“未被观测到” ≠ “概率为零”</p>
+<hr />
+<h3 id="极大似然估计mle">7.2 极大似然估计（MLE）</h3>
+<p><strong>思想</strong>：假定类条件概率具有确定的分布形式，用训练样本估计参数。</p>
+<p><strong>频率主义学派</strong>：参数是固定值，通过优化似然函数确定；<strong>贝叶斯学派</strong>：参数是随机变量，有先验分布。</p>
+<p>似然：<span class="math inline">\(P(D_c \mid \theta_c) = \prod_{x \in D_c} P(x \mid \theta_c)\)</span>，连乘易下溢 → 用<strong>对数似然</strong>： <span class="math display">\[
+LL(\theta_c) = \sum_{x \in D_c} \log P(x \mid \theta_c)
+\]</span></p>
+<p><strong>正态分布示例</strong>：若 <span class="math inline">\(p(x \mid c) \sim \mathcal{N}(\mu_c, \sigma_c^2)\)</span>，则 <span class="math display">\[
+\hat{\mu}_c = \frac{1}{|D_c|}\sum_{x \in D_c} x,\quad \hat{\sigma}_c^2 = \frac{1}{|D_c|}\sum_{x \in D_c} (x - \hat{\mu}_c)(x - \hat{\mu}_c)^{\mathrm{T}}
+\]</span></p>
+<p>即 MLE 得到均值 = 样本均值。注意：结果准确性严重依赖假设的分布形式是否符合真实分布。</p>
+<hr />
+<h3 id="朴素贝叶斯分类器">7.3 朴素贝叶斯分类器</h3>
+<p><strong>属性条件独立性假设</strong>：对已知类别，假设所有属性相互独立。</p>
+<p><span class="math display">\[
+h_{nb}(x) = \arg\max_{c \in \mathcal{Y}} P(c) \prod_{i=1}^{d} P(x_i \mid c)
+\]</span></p>
+<p><strong>概率估计</strong>（训练即计数）： - 先验：<span class="math inline">\(P(c) = \frac{|D_c|}{|D|}\)</span> - 离散属性：<span class="math inline">\(P(x_i \mid c) = \frac{|D_{c,x_i}|}{|D_c|}\)</span> - 连续属性：假定正态分布 <span class="math inline">\(p(x_i \mid c) \sim \mathcal{N}(\mu_{c,i}, \sigma_{c,i}^2)\)</span> 代入密度函数</p>
+<p><strong>西瓜数据集 3.0 实例</strong>（测1：青绿/蜷缩/浊响/清晰/凹陷/硬滑/密度0.697/含糖0.460）： - <span class="math inline">\(P(\text{好瓜=是}) \approx 0.471\)</span>，各条件概率连乘后总概率 ≈ 0.038；“好瓜=否” ≈ <span class="math inline">\(6.80 \times 10^{-5}\)</span> → 判别为<strong>好瓜</strong></p>
+<p><strong>拉普拉斯修正</strong>（处理“某个属性值未与某类同时出现”导致概率为 0 的问题）： <span class="math display">\[
+\hat{P}(c) = \frac{|D_c| + 1}{|D| + N},\quad \hat{P}(x_i \mid c) = \frac{|D_{c,x_i}| + 1}{|D_c| + N_i}
+\]</span> 其中 <span class="math inline">\(N\)</span> 为类别数，<span class="math inline">\(N_i\)</span> 为第 <span class="math inline">\(i\)</span> 个属性取值数。例：<span class="math inline">\(P_{\text{清脆|是}} = \frac{0+1}{8+3} \approx 0.091\)</span>。</p>
+<p>实质是假设属性值与类别均匀分布的先验；样本增多后影响可忽略。</p>
+<p><strong>使用方式</strong>：预计算查表（预测快）/ 懒惰学习（数据更替频繁）/ 增量学习（数据不断增加）。</p>
+<hr />
+<h3 id="半朴素贝叶斯分类器">7.4 半朴素贝叶斯分类器</h3>
+<p><strong>独依赖估计（ODE）</strong>：假设每个属性在类别之外最多仅依赖一个其他属性： <span class="math display">\[
+P(c \mid x) \propto P(c) \prod_{i=1}^{d} P(x_i \mid c, pa_i)
+\]</span></p>
+<p><strong>SPODE</strong>：所有属性依赖同一个“超父”属性，用交叉验证确定超父。</p>
+<p><strong>TAN</strong>（树增强朴素贝叶斯）：基于最大带权生成树保留强相关依赖。步骤： 1. 计算属性对的条件互信息 <span class="math inline">\(I(x_i, x_j \mid y)\)</span> 2. 以 <span class="math inline">\(I\)</span> 为边权构建完全图 3. 求最大带权生成树，选根变量，边置有向 4. 加入类别结点 <span class="math inline">\(y\)</span>，加 <span class="math inline">\(y \to\)</span> 每个属性的边</p>
+<p><strong>AODE</strong>（平均独依赖估计）：将每个属性作为超父构建 SPODE，集成有足够样本支撑（<span class="math inline">\(|D_{c,x_i}| \geqslant m&#39;\)</span>）的： <span class="math display">\[
+P(c \mid x) \propto \sum_{\substack{i=1 \\ D_{c,x_i} \geqslant m&#39;}}^{d} P(c, x_i) \prod_{j=1}^{d} P(x_j \mid c, x_i)
+\]</span> 同样可用拉普拉斯修正计数估计，无需模型选择，支持预计算/懒惰学习/增量学习。</p>
+<p><strong>kDE</strong>：考虑 <span class="math inline">\(k\)</span> 个父属性，但训练样本需求随 <span class="math inline">\(k\)</span> 指数增长。</p>
+<hr />
+<h3 id="贝叶斯网">7.5 贝叶斯网</h3>
+<p><strong>定义</strong>：贝叶斯网 <span class="math inline">\(B = \langle G, \Theta \rangle\)</span>，<span class="math inline">\(G\)</span> 为有向无环图（DAG），<span class="math inline">\(\Theta\)</span> 为条件概率表（CPT）。</p>
+<p>联合概率分布： <span class="math display">\[
+P_B(x_1, \dots, x_d) = \prod_{i=1}^{d} P_B(x_i \mid \pi_i)
+\]</span></p>
+<h4 id="结构三种典型依赖关系">结构（三种典型依赖关系）</h4>
+<ul>
+<li><strong>同父结构</strong>：给定父结点 <span class="math inline">\(x_1\)</span>，<span class="math inline">\(x_3 \perp x_4 \mid x_1\)</span>；但 <span class="math inline">\(x_1\)</span> 未知时 <span class="math inline">\(x_3 \perp x_4\)</span> 不成立</li>
+<li><strong>顺序结构</strong>：<span class="math inline">\(y \perp z \mid x\)</span>，但 <span class="math inline">\(y \perp z\)</span> 不成立</li>
+<li><strong>V型结构（冲撞）</strong>：给定子结点 <span class="math inline">\(x_4\)</span>，<span class="math inline">\(x_1\)</span> 与 <span class="math inline">\(x_2\)</span> 必不独立；<span class="math inline">\(x_4\)</span> 未知时 <span class="math inline">\(x_1 \perp x_2\)</span> 成立</li>
+</ul>
+<p><strong>D-分离与道德图</strong>：找出所有 V 型结构，父结点之间加无向边，所有边改无向 → 道德图。若 <span class="math inline">\(x\)</span>、<span class="math inline">\(y\)</span> 在道德图中被 <span class="math inline">\(z\)</span> 分开（去除 <span class="math inline">\(z\)</span> 后分属不同连通分支），则 <span class="math inline">\(x \perp y \mid z\)</span>。</p>
+<h4 id="学习评分搜索">学习（评分搜索）</h4>
+<ul>
+<li><strong>评分函数</strong>：<span class="math inline">\(s(B \mid D) = f(\theta)|B| - LL(B \mid D)\)</span>，其中 <span class="math inline">\(LL(B \mid D) = \sum_{i=1}^{m} \log P_B(x_i)\)</span></li>
+<li><span class="math inline">\(f(\theta)=1\)</span> → <strong>AIC</strong>；<span class="math inline">\(f(\theta)=\frac12\log m\)</span> → <strong>BIC</strong></li>
+<li>结构固定时参数可直接用经验分布估计：<span class="math inline">\(\theta_{x_i|\pi_i} = \hat{P}_D(x_i \mid \pi_i)\)</span></li>
+<li>搜索最优结构是 <strong>NP 难问题</strong> → 贪心法（每次调整一条边）/ 施加约束（限树形结构）</li>
+</ul>
+<h4 id="推断">推断</h4>
+<ul>
+<li><strong>精确推断是 NP 难</strong> → 用<strong>吉布斯采样</strong>（近似推断，马尔可夫链蒙特卡洛）</li>
+<li>采样 <span class="math inline">\(T\)</span> 次，与查询 <span class="math inline">\(\mathbf{q}\)</span> 一致的样本 <span class="math inline">\(n_q\)</span> 个：<span class="math inline">\(P(\mathbf{Q}=\mathbf{q} \mid \mathbf{E}=\mathbf{e}) \simeq \frac{n_q}{T}\)</span></li>
+<li>马尔可夫链收敛慢；存在极端概率 0/1 时可能无平稳分布而给出错误结果</li>
+</ul>
+<hr />
+<h3 id="em-算法">7.6 EM 算法</h3>
+<p><strong>动机</strong>：训练样本存在<strong>隐变量</strong> <span class="math inline">\(\mathbf{Z}\)</span>（未观测变量），无法直接极大化 <span class="math inline">\(LL(\Theta \mid \mathbf{X}, \mathbf{Z}) = \ln P(\mathbf{X},\mathbf{Z} \mid \Theta)\)</span>。</p>
+<p><strong>边际似然</strong>：对 <span class="math inline">\(\mathbf{Z}\)</span> 求和取期望： <span class="math display">\[
+LL(\Theta \mid \mathbf{X}) = \ln \sum_{\mathbf{Z}} P(\mathbf{X}, \mathbf{Z} \mid \Theta)
+\]</span></p>
+<p><strong>EM 迭代</strong>： - <strong>E步</strong>：以当前参数 <span class="math inline">\(\Theta^t\)</span> 推断隐变量分布，计算 <span class="math inline">\(Q(\Theta \mid \Theta^t) = \mathbb{E}_{\mathbf{Z}|\mathbf{X},\Theta^t} LL(\Theta \mid \mathbf{X},\mathbf{Z})\)</span> - <strong>M步</strong>：<span class="math inline">\(\Theta^{t+1} = \arg\max_{\Theta} Q(\Theta \mid \Theta^t)\)</span></p>
+<p>EM 可看作坐标下降法最大化对数似然下界；是非梯度优化方法（梯度法求和项随隐变量数指数增长）。典型应用：高斯混合模型（GMM）、k 均值聚类（9.4节）。</p>
+<hr />
+<h3 id="小结">小结</h3>
 <table>
 <thead>
 <tr class="header">
 <th>概念</th>
-<th>定义</th>
+<th>要点</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>错误率</strong> (error rate)</td>
-<td><span class="math inline">\(E = a/m\)</span>（<span class="math inline">\(a\)</span> 个样本分类错误）</td>
+<td><strong>贝叶斯决策</strong></td>
+<td>最小化条件风险，<span class="math inline">\(h^*\)</span> 是理论上限</td>
 </tr>
 <tr class="even">
-<td><strong>精度</strong> (accuracy)</td>
-<td><span class="math inline">\(1 - \text{错误率}\)</span></td>
+<td><strong>判别 vs 生成</strong></td>
+<td>直接建模 <span class="math inline">\(P(c\|x)\)</span> vs 建模 <span class="math inline">\(P(x,c)\)</span></td>
 </tr>
 <tr class="odd">
-<td><strong>训练误差/经验误差</strong></td>
-<td>学习器在训练集上的误差</td>
+<td><strong>MLE</strong></td>
+<td>假设分布形式 → 对数似然估计参数</td>
 </tr>
 <tr class="even">
-<td><strong>泛化误差</strong></td>
-<td>学习器在新样本上的误差</td>
+<td><strong>朴素贝叶斯</strong></td>
+<td>属性条件独立假设，训练即计数</td>
 </tr>
 <tr class="odd">
-<td><strong>过拟合</strong> (overfitting)</td>
-<td>把训练样本自身特点当作一般性质，泛化下降</td>
+<td><strong>拉普拉斯修正</strong></td>
+<td>避免概率为 0，<span class="math inline">\(+1\)</span> 平滑</td>
 </tr>
 <tr class="even">
-<td><strong>欠拟合</strong> (underfitting)</td>
-<td>对训练样本的一般性质尚未学好</td>
+<td><strong>半朴素贝叶斯</strong></td>
+<td>ODE/SPODE/TAN/AODE/kDE</td>
+</tr>
+<tr class="odd">
+<td><strong>贝叶斯网</strong></td>
+<td>DAG + CPT，道德图判独立性</td>
+</tr>
+<tr class="even">
+<td><strong>EM 算法</strong></td>
+<td>E步期望 + M步最大化，处理隐变量</td>
 </tr>
 </tbody>
 </table>
-<p><strong>关键洞察</strong>：过拟合无法彻底避免，只能缓解（若可彻底避免则 P = NP）。</p>
-<p><strong>模型选择</strong>：在多个学习算法或参数配置中选择泛化误差最小的模型。</p>
-<hr />
-<h3 id="评估方法">2.2 评估方法</h3>
-<p>基本思路：用<strong>测试集</strong>上的<strong>测试误差</strong>近似泛化误差。测试集必须与训练集<strong>互斥</strong>。</p>
-<h4 id="留出法-hold-out">留出法 (hold-out)</h4>
-<ul>
-<li>将数据集 <span class="math inline">\(D\)</span> 划分为互斥的训练集 <span class="math inline">\(S\)</span> 和测试集 <span class="math inline">\(T\)</span></li>
-<li>分层采样保持类别比例</li>
-<li>单次划分不稳定，需多次随机划分取平均值</li>
-<li>常用比例：<span class="math inline">\(2/3 \sim 4/5\)</span> 训练，其余测试</li>
-</ul>
-<h4 id="交叉验证法-cross-validation">交叉验证法 (cross validation)</h4>
-<ul>
-<li>将 <span class="math inline">\(D\)</span> 划分为 <span class="math inline">\(k\)</span> 个互斥子集（分层采样）</li>
-<li>每次用 <span class="math inline">\(k-1\)</span> 个子集训练，剩下 1 个测试，重复 <span class="math inline">\(k\)</span> 次</li>
-<li><span class="math inline">\(k\)</span> 常用取值：5、10、20</li>
-<li><strong>留一法 (LOO)</strong>：<span class="math inline">\(k=m\)</span>，结果准确但计算开销大</li>
-</ul>
-<h4 id="自助法-bootstrapping">自助法 (bootstrapping)</h4>
-<ul>
-<li>从 <span class="math inline">\(D\)</span> 中有放回采样 <span class="math inline">\(m\)</span> 次，形成训练集 <span class="math inline">\(D&#39;\)</span></li>
-<li>约 <span class="math inline">\(36.8\%\)</span> 的样本未被采到（可用作测试集）</li>
-<li>优点：数据集小时有效；缺点：改变数据分布</li>
-</ul>
-<h4 id="调参与最终模型">调参与最终模型</h4>
-<ul>
-<li><strong>参数调节 (调参)</strong>：选定参数范围与步长，评估候选值</li>
-<li><strong>验证集</strong>：模型选择与调参时使用的数据集</li>
-<li>模型选择完成后，应用全量数据 <span class="math inline">\(D\)</span> 重新训练最终模型</li>
-</ul>
-<hr />
-<h3 id="性能度量">2.3 性能度量</h3>
-<h4 id="回归任务">回归任务</h4>
-<p><strong>均方误差 (MSE)</strong>： <span class="math display">\[
-E(f;D) = \frac{1}{m}\sum_{i=1}^m (f(x_i)-y_i)^2
-\]</span></p>
-<h4 id="分类任务">分类任务</h4>
-<p><strong>错误率与精度</strong>： <span class="math display">\[
-E(f;D) = \frac{1}{m}\sum_{i=1}^m \mathbb{I}(f(x_i)\neq y_i),\quad \text{acc}=1-E
-\]</span></p>
-<p><strong>查准率与查全率</strong>（基于混淆矩阵）：</p>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;">真实</th>
-<th style="text-align: left;">预测正例</th>
-<th style="text-align: left;">预测反例</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">正例</td>
-<td style="text-align: left;">TP (真正例)</td>
-<td style="text-align: left;">FN (假反例)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">反例</td>
-<td style="text-align: left;">FP (假正例)</td>
-<td style="text-align: left;">TN (真反例)</td>
-</tr>
-</tbody>
-</table>
-<p><span class="math display">\[
-P = \frac{TP}{TP+FP} \quad (\text{查准率}),\qquad 
-R = \frac{TP}{TP+FN} \quad (\text{查全率})
-\]</span></p>
-<p><strong>P-R 曲线</strong>：纵轴为查准率，横轴为查全率。曲线包围面积越大越好。</p>
-<p><strong>平衡点 (BEP)</strong>：查准率 = 查全率时的取值。</p>
-<p><strong><span class="math inline">\(F1\)</span> 度量</strong>（调和平均）： <span class="math display">\[
-F1 = \frac{2\times P\times R}{P+R}
-\]</span></p>
-<p><strong><span class="math inline">\(F_\beta\)</span></strong>（加权调和平均）： <span class="math display">\[
-F_\beta = \frac{(1+\beta^2)\times P\times R}{(\beta^2\times P)+R}
-\]</span> - <span class="math inline">\(\beta=1\)</span>：标准 F1；<span class="math inline">\(\beta&gt;1\)</span>：更重查全率；<span class="math inline">\(\beta&lt;1\)</span>：更重查准率</p>
-<p><strong>宏/微平均</strong>：多混淆矩阵时，宏（先算再平均）vs 微（先平均再算）。</p>
-<h4 id="roc-与-auc">ROC 与 AUC</h4>
-<p><strong>ROC 曲线</strong>：纵轴 TPR（真正例率），横轴 FPR（假正例率）。</p>
-<p><span class="math display">\[
-TPR = \frac{TP}{TP+FN},\quad FPR = \frac{FP}{TN+FP}
-\]</span></p>
-<ul>
-<li>对角线 = 随机猜测，点 (0,1) = 理想模型</li>
-<li>AUC = ROC 曲线下面积</li>
-</ul>
-<p><strong>AUC 与排序损失</strong>： <span class="math display">\[
-\ell_{rank} = \frac{1}{m^+m^-}\sum_{x^+\in D^+}\sum_{x^-\in D^-}\big(\mathbb{I}(f(x^+)&lt;f(x^-)) + \tfrac12\mathbb{I}(f(x^+)=f(x^-))\big)
-\]</span> <span class="math display">\[
-AUC = 1 - \ell_{rank}
-\]</span></p>
-<h4 id="代价敏感错误率">代价敏感错误率</h4>
-<p>非均等代价下使用<strong>代价矩阵</strong>，最小化总体代价而非错误次数。</p>
-<p><strong>代价曲线</strong>：横轴为正例概率代价 <span class="math inline">\(P(+)cost\)</span>，纵轴为归一化代价 <span class="math inline">\(cost_{norm}\)</span>。</p>
-<hr />
-<h3 id="比较检验">2.4 比较检验</h3>
-<h4 id="假设检验基础">假设检验基础</h4>
-<ul>
-<li>泛化错误率 <span class="math inline">\(\epsilon\)</span> 未知，只能获得测试错误率 <span class="math inline">\(\hat{\epsilon}\)</span></li>
-<li><strong>二项检验</strong>：对假设 <span class="math inline">\(\epsilon \leq \epsilon_0\)</span> 进行检验</li>
-<li><strong>t 检验</strong>：多次训练/测试得到多个测试错误率，用 t 分布检验均值</li>
-</ul>
-<h4 id="交叉验证-t-检验">交叉验证 t 检验</h4>
-<ul>
-<li>对两学习器 A、B，计算每折差值 <span class="math inline">\(\Delta_i = \epsilon_i^A - \epsilon_i^B\)</span></li>
-<li>若差值均值显著不为零，则两学习器性能有显著差别</li>
-<li><strong><span class="math inline">\(5\times2\)</span> 交叉验证</strong>缓解样本重叠导致的非独立性</li>
-</ul>
-<h4 id="mcnemar-检验">McNemar 检验</h4>
-<ul>
-<li>基于列联表 <span class="math inline">\(e_{01}\)</span>（A 错 B 对）和 <span class="math inline">\(e_{10}\)</span>（A 对 B 错）</li>
-<li><span class="math inline">\(\tau_{\chi^2} = (|e_{01}-e_{10}|-1)^2 / (e_{01}+e_{10})\)</span> 服从 <span class="math inline">\(\chi^2(1)\)</span></li>
-</ul>
-<h4 id="friedman-检验-nemenyi-后续检验">Friedman 检验 + Nemenyi 后续检验</h4>
-<ul>
-<li>在多个数据集上比较多个算法</li>
-<li>计算各算法在每个数据集上的<strong>平均序值</strong></li>
-<li>Friedman 检验判断是否所有算法性能相同</li>
-<li>若拒绝原假设，用 Nemenyi 检验计算临界差值 CD</li>
-</ul>
-<hr />
-<h3 id="偏差与方差">2.5 偏差与方差</h3>
-<p><strong>偏差-方差分解</strong>（以回归任务为例）：</p>
-<p><span class="math display">\[
-E(f;D) = bias^2(x) + var(x) + \epsilon^2
-\]</span></p>
-<table>
-<thead>
-<tr class="header">
-<th>分量</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>偏差</strong> <span class="math inline">\(bias^2(x)\)</span></td>
-<td>期望预测与真实标记的偏离 → 刻画算法拟合能力</td>
-</tr>
-<tr class="even">
-<td><strong>方差</strong> <span class="math inline">\(var(x)\)</span></td>
-<td>不同训练集产生的预测变化 → 刻画数据扰动的影响</td>
-</tr>
-<tr class="odd">
-<td><strong>噪声</strong> <span class="math inline">\(\epsilon^2\)</span></td>
-<td>当前任务任何算法能达到的泛化误差下界 → 刻画问题本身难度</td>
-</tr>
-</tbody>
-</table>
-<p><strong>偏差-方差窘境 (bias-variance dilemma)</strong>： - 训练不足 → 偏差主导（欠拟合） - 训练加深 → 方差逐渐主导 - 训练过度 → 发生过拟合</p>
-<p><strong>实际指导意义</strong>：偏差大 → 欠拟合（增加模型复杂度）；方差大 → 过拟合（降低模型复杂度 / 增加数据）。</p>
-<hr />
-<h3 id="小结">小结</h3>
-<p>第二章构建了完整的模型评估与选择框架： 1. <strong>评估方法</strong>：如何划分训练/测试集（留出法、交叉验证、自助法） 2. <strong>性能度量</strong>：如何量化模型好坏（MSE、错误率、P/R/F1、ROC/AUC、代价敏感） 3. <strong>比较检验</strong>：如何统计判断差异是否显著（t 检验、McNemar、Friedman） 4. <strong>偏差-方差分析</strong>：从理论上解释泛化误差的来源</p>
-<p>这些内容是后续各章学习算法“好不好”的判断基础。</p>
 
                 
               </div>
@@ -607,8 +548,8 @@ E(f;D) = bias^2(x) + var(x) + \epsilon^2
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>《机器学习》自学日记（二）</div>
-      <div>https://suzhenghao.top/2026/07/15/ML-note2/</div>
+      <div>《机器学习》自学日记（七）</div>
+      <div>https://suzhenghao.top/2026/07/27/ML-note7/</div>
     </div>
     <div class="license-meta">
       
@@ -620,7 +561,7 @@ E(f;D) = bias^2(x) + var(x) + \epsilon^2
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2026年7月15日</div>
+          <div>2026年7月27日</div>
         </div>
       
       
@@ -652,9 +593,9 @@ E(f;D) = bias^2(x) + var(x) + \epsilon^2
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2026/07/16/ML-note3/" title="《机器学习》自学日记（三）">
+                      <a href="/2026/07/29/ML-note8/" title="《机器学习》自学日记（八）">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">《机器学习》自学日记（三）</span>
+                        <span class="hidden-mobile">《机器学习》自学日记（八）</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -662,8 +603,8 @@ E(f;D) = bias^2(x) + var(x) + \epsilon^2
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2026/07/12/PFSchedule/" title="正好课表——为 NJU 选课做的一个小工具">
-                        <span class="hidden-mobile">正好课表——为 NJU 选课做的一个小工具</span>
+                      <a href="/2026/07/22/ML-note6/" title="《机器学习》自学日记（六）">
+                        <span class="hidden-mobile">《机器学习》自学日记（六）</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

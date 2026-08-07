@@ -325,7 +325,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2k 字
+          2.3k 字
         
       </span>
     
@@ -336,7 +336,7 @@
         
         
         
-          17 分钟
+          20 分钟
         
       </span>
     
@@ -382,37 +382,45 @@
                 
                 <h2 id="第五章-神经网络">第五章 神经网络</h2>
 <h3 id="神经元模型">5.1 神经元模型</h3>
-<p><strong>M-P 神经元模型</strong>（McCulloch &amp; Pitts, 1943）： <span class="math display">$$
+<p><strong>M-P 神经元模型</strong>（McCulloch &amp; Pitts, 1943）： <span class="math display">\[
 y = f\left(\sum_{i=1}^{n} w_i x_i - \theta\right)
-$$</span> - 输入信号通过带权重的连接传递 - 神经元接收总输入与阈值 <span class="math inline"><em>θ</em></span> 比较 - 通过激活函数处理产生输出</p>
-<p><strong>激活函数</strong>： - <strong>阶跃函数</strong>：理想但不可微，不连续 - <strong>Sigmoid 函数</strong>：常用替代，将输入挤压到 <span class="math inline">(0, 1)</span> <span class="math display">$$
+\]</span> - 输入信号通过带权重的连接传递 - 神经元接收总输入与阈值 <span class="math inline">\(\theta\)</span> 比较 - 通过激活函数处理产生输出</p>
+<p><strong>激活函数</strong>： - <strong>阶跃函数</strong>：理想但不可微，不连续 - <strong>Sigmoid 函数</strong>：常用替代，将输入挤压到 <span class="math inline">\((0,1)\)</span> <span class="math display">\[
   \text{sigmoid}(x) = \frac{1}{1 + e^{-x}}
-  $$</span></p>
+  \]</span></p>
 <p>神经网络 = 多个神经元按层次结构连接而成的数学模型。</p>
 <hr />
 <h3 id="感知机与多层网络">5.2 感知机与多层网络</h3>
 <p><strong>感知机</strong>：两层神经元（输入层 + 输出层），输出层是 M-P 神经元。</p>
-<p>感知机可实现逻辑与、或、非运算。学习规则： <span class="math display"><em>w</em><sub><em>i</em></sub> ← <em>w</em><sub><em>i</em></sub> + <em>Δ</em><em>w</em><sub><em>i</em></sub>,  <em>Δ</em><em>w</em><sub><em>i</em></sub> = <em>η</em>(<em>y</em> − <em>ŷ</em>)<em>x</em><sub><em>i</em></sub></span> 其中 <span class="math inline"><em>η</em> ∈ (0, 1)</span> 为学习率。</p>
+<p>感知机可实现逻辑与、或、非运算。学习规则： <span class="math display">\[
+w_i \leftarrow w_i + \Delta w_i,\quad \Delta w_i = \eta (y - \hat{y}) x_i
+\]</span> 其中 <span class="math inline">\(\eta \in (0,1)\)</span> 为学习率。</p>
 <p><strong>局限</strong>：只能解决<strong>线性可分</strong>问题（如与、或、非），但无法解决<strong>异或 (XOR)</strong> 等非线性可分问题（Minsky &amp; Papert, 1969）。</p>
 <p><strong>多层网络</strong>：引入隐层（hidden layer）解决非线性问题。<strong>多层前馈神经网络</strong>的结构特点： - 每层与下一层全互连 - 无同层连接、无跨层连接 - 输入层仅传递信号，隐层和输出层包含功能神经元 - 学习到的知识蕴涵在连接权与阈值中</p>
 <hr />
 <h3 id="误差逆传播算法bp">5.3 误差逆传播算法（BP）</h3>
 <p>BP 算法是迄今最成功的神经网络学习算法，基于<strong>梯度下降</strong>策略。</p>
 <h4 id="符号定义">符号定义</h4>
-<p>以 <span class="math inline"><em>d</em></span> 个输入、<span class="math inline"><em>l</em></span> 个输出、<span class="math inline"><em>q</em></span> 个隐层神经元为例： - <span class="math inline"><em>v</em><sub><em>i</em><em>h</em></sub></span>：输入层第 <span class="math inline"><em>i</em></span> 个神经元 → 隐层第 <span class="math inline"><em>h</em></span> 个神经元的连接权 - <span class="math inline"><em>w</em><sub><em>h</em><em>j</em></sub></span>：隐层第 <span class="math inline"><em>h</em></span> 个神经元 → 输出层第 <span class="math inline"><em>j</em></span> 个神经元的连接权 - <span class="math inline"><em>γ</em><sub><em>h</em></sub></span>：隐层第 <span class="math inline"><em>h</em></span> 个神经元的阈值 - <span class="math inline"><em>θ</em><sub><em>j</em></sub></span>：输出层第 <span class="math inline"><em>j</em></span> 个神经元的阈值</p>
+<p>以 <span class="math inline">\(d\)</span> 个输入、<span class="math inline">\(l\)</span> 个输出、<span class="math inline">\(q\)</span> 个隐层神经元为例： - <span class="math inline">\(v_{ih}\)</span>：输入层第 <span class="math inline">\(i\)</span> 个神经元 → 隐层第 <span class="math inline">\(h\)</span> 个神经元的连接权 - <span class="math inline">\(w_{hj}\)</span>：隐层第 <span class="math inline">\(h\)</span> 个神经元 → 输出层第 <span class="math inline">\(j\)</span> 个神经元的连接权 - <span class="math inline">\(\gamma_h\)</span>：隐层第 <span class="math inline">\(h\)</span> 个神经元的阈值 - <span class="math inline">\(\theta_j\)</span>：输出层第 <span class="math inline">\(j\)</span> 个神经元的阈值</p>
 <h4 id="前向传播">前向传播</h4>
-<p>隐层输入 <span class="math inline"><em>α</em><sub><em>h</em></sub> = ∑<sub><em>i</em></sub><em>v</em><sub><em>i</em><em>h</em></sub><em>x</em><sub><em>i</em></sub></span>，输出层输入 <span class="math inline"><em>β</em><sub><em>j</em></sub> = ∑<sub><em>h</em></sub><em>w</em><sub><em>h</em><em>j</em></sub><em>b</em><sub><em>h</em></sub></span></p>
+<p>隐层输入 <span class="math inline">\(\alpha_h = \sum_{i} v_{ih} x_i\)</span>，输出层输入 <span class="math inline">\(\beta_j = \sum_{h} w_{hj} b_h\)</span></p>
 <h4 id="误差与梯度">误差与梯度</h4>
-<p>对训练例 <span class="math inline">(<em>x</em><sub><em>k</em></sub>, <em>y</em><sub><em>k</em></sub>)</span>，均方误差： <span class="math display">$$
+<p>对训练例 <span class="math inline">\((x_k, y_k)\)</span>，均方误差： <span class="math display">\[
 E_k = \frac12 \sum_{j=1}^{l} (\hat{y}_j^k - y_j^k)^2
-$$</span></p>
-<p>Sigmoid 函数重要性质：<span class="math inline"><em>f</em>′(<em>x</em>) = <em>f</em>(<em>x</em>)(1 − <em>f</em>(<em>x</em>))</span></p>
+\]</span></p>
+<p>Sigmoid 函数重要性质：<span class="math inline">\(f&#39;(x) = f(x)(1 - f(x))\)</span></p>
 <h4 id="权值更新公式链式法则推导">权值更新公式（链式法则推导）</h4>
-<p>输出层梯度项 <span class="math inline"><em>g</em><sub><em>j</em></sub></span>： <span class="math display"><em>g</em><sub><em>j</em></sub> = <em>ŷ</em><sub><em>j</em></sub><sup><em>k</em></sup>(1 − <em>ŷ</em><sub><em>j</em></sub><sup><em>k</em></sup>)(<em>y</em><sub><em>j</em></sub><sup><em>k</em></sup> − <em>ŷ</em><sub><em>j</em></sub><sup><em>k</em></sup>)</span></p>
-<p>隐层梯度项 <span class="math inline"><em>e</em><sub><em>h</em></sub></span>： <span class="math display">$$
+<p>输出层梯度项 <span class="math inline">\(g_j\)</span>： <span class="math display">\[
+g_j = \hat{y}_j^k (1 - \hat{y}_j^k) (y_j^k - \hat{y}_j^k)
+\]</span></p>
+<p>隐层梯度项 <span class="math inline">\(e_h\)</span>： <span class="math display">\[
 e_h = b_h (1 - b_h) \sum_{j=1}^{l} w_{hj} g_j
-$$</span></p>
-<p>更新公式： <span class="math display"><em>Δ</em><em>w</em><sub><em>h</em><em>j</em></sub> = <em>η</em><em>g</em><sub><em>j</em></sub><em>b</em><sub><em>h</em></sub>,  <em>Δ</em><em>θ</em><sub><em>j</em></sub> =  − <em>η</em><em>g</em><sub><em>j</em></sub></span> <span class="math display"><em>Δ</em><em>v</em><sub><em>i</em><em>h</em></sub> = <em>η</em><em>e</em><sub><em>h</em></sub><em>x</em><sub><em>i</em></sub>,  <em>Δ</em><em>γ</em><sub><em>h</em></sub> =  − <em>η</em><em>e</em><sub><em>h</em></sub></span></p>
+\]</span></p>
+<p>更新公式： <span class="math display">\[
+\Delta w_{hj} = \eta g_j b_h,\quad \Delta \theta_j = -\eta g_j
+\]</span> <span class="math display">\[
+\Delta v_{ih} = \eta e_h x_i,\quad \Delta \gamma_h = -\eta e_h
+\]</span></p>
 <h4 id="标准bp-vs-累积bp">标准BP vs 累积BP</h4>
 <table>
 <thead>
@@ -442,9 +450,9 @@ $$</span></p>
 <h4 id="缓解过拟合">缓解过拟合</h4>
 <ol type="1">
 <li><strong>早停</strong>：训练集误差↓但验证集误差↑ → 停止，返回最小验证集误差的参数</li>
-<li><strong>正则化</strong>：在误差函数中添加网络复杂度项（连接权与阈值的平方和） <span class="math display">$$
+<li><strong>正则化</strong>：在误差函数中添加网络复杂度项（连接权与阈值的平方和） <span class="math display">\[
 E = \lambda \frac1m \sum_{k=1}^{m} E_k + (1-\lambda) \sum_i w_i^2
-$$</span></li>
+\]</span></li>
 </ol>
 <hr />
 <h3 id="全局最小与局部极小">5.4 全局最小与局部极小</h3>
